@@ -16,8 +16,8 @@
         android:text="@string/start_toggle"
         android:id="@+id/start_toggle"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/linearLayout2"
-        android:layout_alignEnd="@+id/linearLayout2" />
+        android:layout_alignRight="@+id/seekVal"
+        android:layout_alignEnd="@+id/seekVal" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,11 +40,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
-        android:layout_alignTop="@+id/linearLayout2"
+        android:layout_gravity="center|left"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="36dp"
-        android:layout_gravity="center|left">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,8 +70,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2"
         android:layout_gravity="right|left"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/seekVal">
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -93,35 +92,28 @@
     </LinearLayout>
 
     <SeekBar
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
+        android:id="@+id/timeSeek"
         android:max="24"
         android:layout_marginTop="66dp"
         android:layout_below="@+id/linearLayout"
         android:layout_alignLeft="@+id/linearLayout"
         android:layout_alignStart="@+id/linearLayout"
-        android:layout_alignRight="@+id/linearLayout2"
-        android:layout_alignEnd="@+id/linearLayout2" />
+        android:indeterminate="false"
+        android:layout_alignRight="@+id/status_text"
+        android:layout_alignEnd="@+id/status_text" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="16"
+        android:text="Hours: 16"
         android:id="@+id/seekVal"
         android:textSize="14sp"
-        android:layout_marginTop="33dp"
         android:layout_below="@+id/linearLayout2"
-        android:layout_toRightOf="@+id/textView2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Hours: "
-        android:id="@+id/textView2"
-        android:layout_alignBottom="@+id/seekVal"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/timeSeek"
+        android:layout_alignEnd="@+id/timeSeek"
+        android:layout_marginRight="31dp" />
 
 </RelativeLayout>
