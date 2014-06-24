@@ -58,20 +58,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Current Clock"
+            android:text="21:00:22"
             android:id="@+id/clock_text"
             android:textSize="15sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2"
         android:layout_gravity="right|left"
         android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -82,13 +82,40 @@
             android:textStyle="bold"
             android:textSize="20sp" />
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Finish Clock"
-            android:id="@+id/endclock_text"
-            android:textSize="15sp" />
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="22:"
+                android:id="@+id/dynamicHour"
+                android:textSize="15sp"
+                android:layout_above="@+id/seekVal"
+                android:layout_toRightOf="@+id/linearLayout2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="00:22"
+                android:id="@+id/endclock_text"
+                android:textSize="15sp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="78dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=" Tomorrow"
+                android:id="@+id/dayText"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <SeekBar
