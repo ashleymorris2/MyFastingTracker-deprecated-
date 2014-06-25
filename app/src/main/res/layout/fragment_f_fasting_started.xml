@@ -1,0 +1,45 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.avaygo.myfastingtracker.fFastingStarted">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"
+            android:id="@+id/fasting_length"
+            android:layout_gravity="center"
+            android:layout_marginLeft="58dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="start"
+            android:id="@+id/start_time"
+            android:layout_below="@+id/fasting_length"
+            android:layout_alignLeft="@+id/fasting_length"
+            android:layout_alignStart="@+id/fasting_length" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="End"
+            android:id="@+id/end_time"
+            android:layout_below="@+id/start_time"
+            android:layout_alignLeft="@+id/start_time"
+            android:layout_alignStart="@+id/start_time" />
+    </RelativeLayout>
+
+</FrameLayout>

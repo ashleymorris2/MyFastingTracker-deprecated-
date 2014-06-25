@@ -1,6 +1,7 @@
 package com.avaygo.myfastingtracker;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,18 +30,26 @@ public class fFastingLength extends Fragment {
     SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
     SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
-    SimpleDateFormat dayFormat = new SimpleDateFormat(" EE");//For the day of the week.
+    SimpleDateFormat dayFormat = new SimpleDateFormat(" EE");//
+
+    //Fragment Class
+    FragmentTransaction fragmentChange;
+
+    //Classes
+    cNotificationSetup myNotification  = new cNotificationSetup();//Used to set the notification reminder.
+
+    public fFastingLength(){
+        //empty constructor, ok then.
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_fasting_length, container, false);
-
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
 
         myThread = new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
         myThread.start();
@@ -68,15 +77,20 @@ public class fFastingLength extends Fragment {
 
         futureCalendar.add(Calendar.HOUR_OF_DAY, 1); //Sets the future clock to be at least an hour ahead.
         TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
-
     }
 
     //On click listener for BStartToggle
     final View.OnClickListener BStartToggle_OnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            //place holder
-            TStatusText.setText("Started");
-            BStartToggle.setText("Breakfast");
+
+            //Passes the future time to the notification class so that it can set a notification at that time.
+            myNotification.setReminderCalendar(futureCalendar);
+            myNotification.createAlarm(getActivity());
+
+            //Launches a new fragment and replaces the current one.
+            fragmentChange = getActivity().getFragmentManager().beginTransaction();
+            fragmentChange.replace(R.id.container, new fFastingStarted());
+            fragmentChange.commit();
         }
     };
 

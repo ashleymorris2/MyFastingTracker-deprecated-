@@ -1,12 +1,13 @@
 package com.avaygo.myfastingtracker;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class aFastingTracker extends Activity {
+public class aFastingTracker extends Activity implements fFastingStarted.OnFragmentInteractionListener {
 
 
     @Override
@@ -19,11 +20,7 @@ public class aFastingTracker extends Activity {
                     .add(R.id.container, new fFastingLength())
                     .commit();
         }
-
-
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -41,5 +38,10 @@ public class aFastingTracker extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

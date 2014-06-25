@@ -17,6 +17,11 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".myNotification"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
