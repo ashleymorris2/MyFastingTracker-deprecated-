@@ -1,6 +1,8 @@
 package com.avaygo.myfastingtracker;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,9 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 
 public class frontpage extends Activity {
 
@@ -26,16 +28,19 @@ public class frontpage extends Activity {
 
     //Calendars and time formatting.
     Calendar currentCalendar, futureCalendar;
-    SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm:ss");//Current time
+    SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
-    SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm:ss");//The minutes for the future clock
+    SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
+    SimpleDateFormat dayFormat =  new SimpleDateFormat(" EE");//For the day of the week.
+
+    FragmentManager manager = getFragmentManager();
+    FragmentTransaction ft = getFragmentManager().beginTransaction();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frontpage);//Load the layout
-
 
         myThread= new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
         myThread.start();
@@ -72,7 +77,6 @@ public class frontpage extends Activity {
             //place holder
             TStatusText.setText("Started");
             BStartToggle.setText("Breakfast");
-
         }
     };
 
@@ -82,8 +86,7 @@ public class frontpage extends Activity {
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
             int seekValue = progress + 1;
-
-            SimpleDateFormat dayFormat;
+            TDayText.setText(" ");
 
             if (seekValue == 1) {
                 TSeekVal.setText("Duration: " + seekValue + " hour");
@@ -93,12 +96,13 @@ public class frontpage extends Activity {
             }
 
             futureCalendar = Calendar.getInstance();
-
-            dayFormat = new SimpleDateFormat(" EE");//For the day of the week.
-
             futureCalendar.add(Calendar.HOUR_OF_DAY, seekValue);//Adds seekValue to the current hour of the day.
             TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
-            TDayText.setText(dayFormat.format(futureCalendar.getTime()));
+
+            if(currentCalendar.get(Calendar.DAY_OF_WEEK)!= futureCalendar.get(Calendar.DAY_OF_WEEK)){
+                //Checks if today matches future date, if not then it must be tomorrow.
+                TDayText.setText(dayFormat.format(futureCalendar.getTime()));
+            }
 
         }
 
@@ -136,6 +140,8 @@ public class frontpage extends Activity {
             }
         });
     }
+
+
 
     class CountDownRunner implements Runnable{
         //This thread runs every 1 second in the background which updates the text view in the upDateTime() method.
