@@ -4,14 +4,23 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.avaygo.myfastingtracker.R;
 
-public class FastingTracker extends Activity {
+
+public class aFastingTracker extends Activity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
+
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new fFastingLength())
+                    .commit();
+        }
+
+
     }
 
 

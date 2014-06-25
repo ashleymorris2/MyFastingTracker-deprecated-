@@ -1,20 +1,18 @@
 package com.avaygo.myfastingtracker;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
-public class frontpage extends Activity {
+public class fFastingLength extends Fragment {
 
     //UI Elements:
     Button BStartToggle;
@@ -31,35 +29,37 @@ public class frontpage extends Activity {
     SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
     SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
-    SimpleDateFormat dayFormat =  new SimpleDateFormat(" EE");//For the day of the week.
-
-    FragmentManager manager = getFragmentManager();
-    FragmentTransaction ft = getFragmentManager().beginTransaction();
+    SimpleDateFormat dayFormat = new SimpleDateFormat(" EE");//For the day of the week.
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frontpage);//Load the layout
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_fasting_length, container, false);
 
-        myThread= new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        myThread = new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
         myThread.start();
 
         //Find View Elements
-        TStatusText = (TextView) findViewById(R.id.status_text);
-        TCurrentTime = (TextView) findViewById(R.id.current_time);
-        TCurrentClock = (TextView) findViewById(R.id.clock_text);
+        TStatusText = (TextView) getView().findViewById(R.id.status_text);
+        TCurrentTime = (TextView) getView().findViewById(R.id.current_time);
+        TCurrentClock = (TextView) getView().findViewById(R.id.clock_text);
 
-        TEndClock = (TextView) findViewById(R.id.endclock_text);
-        TEndHour = (TextView) findViewById(R.id.dynamicHour);
-        TEndTime = (TextView) findViewById(R.id.end_time);
-        TSeekVal = (TextView) findViewById(R.id.seekVal);
-        TDayText = (TextView) findViewById(R.id.dayText);
+        TEndClock = (TextView) getView().findViewById(R.id.endclock_text);
+        TEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
+        TEndTime = (TextView) getView().findViewById(R.id.end_time);
+        TSeekVal = (TextView) getView().findViewById(R.id.seekVal);
+        TDayText = (TextView) getView().findViewById(R.id.dayText);
 
-        timeSeek = (SeekBar) findViewById(R.id.timeSeek);
+        timeSeek = (SeekBar) getView().findViewById(R.id.timeSeek);
         timeSeek.setOnSeekBarChangeListener(timeSeek_listener);
 
-        BStartToggle = (Button) findViewById(R.id.start_toggle);
+        BStartToggle = (Button) getView().findViewById(R.id.start_toggle);
         BStartToggle.setOnClickListener(BStartToggle_OnClickListener);
 
         //Starts the clocks.
@@ -73,7 +73,7 @@ public class frontpage extends Activity {
 
     //On click listener for BStartToggle
     final View.OnClickListener BStartToggle_OnClickListener = new View.OnClickListener() {
-        public void onClick(View v){
+        public void onClick(View v) {
             //place holder
             TStatusText.setText("Started");
             BStartToggle.setText("Breakfast");
@@ -90,8 +90,7 @@ public class frontpage extends Activity {
 
             if (seekValue == 1) {
                 TSeekVal.setText("Duration: " + seekValue + " hour");
-            }
-            else{
+            } else {
                 TSeekVal.setText("Duration: " + seekValue + " hours");
             }
 
@@ -99,7 +98,7 @@ public class frontpage extends Activity {
             futureCalendar.add(Calendar.HOUR_OF_DAY, seekValue);//Adds seekValue to the current hour of the day.
             TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
 
-            if(currentCalendar.get(Calendar.DAY_OF_WEEK)!= futureCalendar.get(Calendar.DAY_OF_WEEK)){
+            if (currentCalendar.get(Calendar.DAY_OF_WEEK) != futureCalendar.get(Calendar.DAY_OF_WEEK)) {
                 //Checks if today matches future date, if not then it must be tomorrow.
                 TDayText.setText(dayFormat.format(futureCalendar.getTime()));
             }
@@ -116,24 +115,23 @@ public class frontpage extends Activity {
 
         }
     };
+
     public void upDateTime() {
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                try{
-                    int previousHour =  currentCalendar.get(Calendar.HOUR_OF_DAY);
+                try {
+                    int previousHour = currentCalendar.get(Calendar.HOUR_OF_DAY);
 
                     currentCalendar = Calendar.getInstance();
 
-                    if (previousHour != currentCalendar.get(Calendar.HOUR_OF_DAY))
-                    {
+                    if (previousHour != currentCalendar.get(Calendar.HOUR_OF_DAY)) {
                         // This block of code checks if the hour has changed, if it has the futureTime gets incremented by 1.
                         futureCalendar.add(Calendar.HOUR_OF_DAY, 1);
                         TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
                     }
                     TCurrentClock.setText(currentTimeFormat.format(currentCalendar.getTime()));
                     TEndClock.setText(futureMinuteFormat.format(currentCalendar.getTime()));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
 
 
                 }
@@ -141,18 +139,16 @@ public class frontpage extends Activity {
         });
     }
 
-
-
-    class CountDownRunner implements Runnable{
+    class CountDownRunner implements Runnable {
         //This thread runs every 1 second in the background which updates the text view in the upDateTime() method.
         public void run() {
-            while(!Thread.currentThread().isInterrupted()){
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
                     upDateTime();
                     Thread.sleep(1000); // Pause of 1 Second
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                }catch(Exception e){
+                } catch (Exception e) {
                     Thread.currentThread().interrupt();
                 }
             }
@@ -160,27 +156,11 @@ public class frontpage extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroyView() {
         myThread.interrupt();
-        super.onDestroy();
+        super.onDestroyView();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.frontpage, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
+
