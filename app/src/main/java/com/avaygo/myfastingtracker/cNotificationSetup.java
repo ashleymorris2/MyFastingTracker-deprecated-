@@ -16,7 +16,7 @@ import java.util.Calendar;
 public class cNotificationSetup {
 
     Calendar reminderCalendar;
-    SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("HH:mm:ss EE");
+    SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("EEEE HH:mm");
 
     public Calendar getReminderCalendar() {
         return reminderCalendar;
@@ -27,6 +27,9 @@ public class cNotificationSetup {
     }
 
     public void createAlarm(Activity activity) {
+        //Creates an intent that will be called at a future time. Our intent here is the notification service.
+        //AlarmManager is used to set the time for when the intent is called.
+        //Pending intent is an intent that will be called at a later time.
 
         Intent myIntent = new Intent(activity, myNotification.class);
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);

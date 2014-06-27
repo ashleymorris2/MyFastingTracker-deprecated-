@@ -2,12 +2,14 @@ package com.avaygo.myfastingtracker;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Button;
 
 
 /**
@@ -21,28 +23,47 @@ public class fFastingStarted extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    //UI Elements:
+    Button BStopButton;
+
+    FragmentTransaction fragmentChange;
+
     public fFastingStarted() {
         // Required empty public constructor
-
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_f_fasting_started, container, false);
-
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        BStopButton = (Button) getView().findViewById(R.id.stop_button);
+        BStopButton.setOnClickListener(BStopButton_OnClickListener);
+    }
+
+    final View.OnClickListener BStopButton_OnClickListener = new View.OnClickListener() {
+        public void onClick(View view) {
+
+            //Shared preferences, stores the current state on the button press to save the activity's session.
+            SharedPreferences preferences = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = preferences.edit();
+
+            //IS_FASTING tag is used to describe the current state of the session.
+            editor.putBoolean("IS_FASTING", false);
+
+            // Commit the edits
+            editor.commit();
+
+            //Launches a new fragment and replaces the current one.
+            fragmentChange = getActivity().getFragmentManager().beginTransaction();
+            fragmentChange.replace(R.id.container, new fFastingSettings());
+            fragmentChange.commit();
         }
-    }
+    };
 
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {

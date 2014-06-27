@@ -40,6 +40,17 @@
             android:layout_below="@+id/start_time"
             android:layout_alignLeft="@+id/start_time"
             android:layout_alignStart="@+id/start_time" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btnStop"
+            android:id="@+id/stop_button"
+            android:layout_marginBottom="54dp"
+            android:layout_marginRight="59dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 </FrameLayout>

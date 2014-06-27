@@ -1,6 +1,7 @@
 package com.avaygo.myfastingtracker;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,18 +10,40 @@ import android.view.MenuItem;
 
 public class aFastingTracker extends Activity implements fFastingStarted.OnFragmentInteractionListener {
 
+    boolean fastingState;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
 
-        if (savedInstanceState == null) {
+        //Shared preferences to load the activity's session.
+        SharedPreferences preferences = getSharedPreferences("MyPref", 0); // 0 - for private mode
+        fastingState = preferences.getBoolean("IS_FASTING", false);
+
+            loadSavedSession(fastingState);
+
+    }
+
+    private void loadSavedSession(boolean state) {
+   /*Loads the previous session for the user:
+     If the user is not fasting then fFastingSettings() is the default.
+     If the user is fasting then fFastingStarted() is loaded instead.*/
+
+        boolean mFastingState = state;
+
+        if (mFastingState == false){
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new fFastingLength())
+                    .add(R.id.container, new fFastingSettings())
                     .commit();
         }
+        else{
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new fFastingStarted())
+                    .commit();
+        }
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
