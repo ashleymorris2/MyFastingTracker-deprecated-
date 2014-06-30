@@ -16,12 +16,13 @@ public class aFastingTracker extends Activity implements fFastingStarted.OnFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
 
-        //Shared preferences to load the activity's session.
-        SharedPreferences preferences = getSharedPreferences("MyPref", 0); // 0 - for private mode
-        fastingState = preferences.getBoolean("IS_FASTING", false);
+        if (savedInstanceState == null) {
+            //Shared preferences to load the activity's session.
+            SharedPreferences preferences = getSharedPreferences("appData", 0); // 0 - for private mode
+            fastingState = preferences.getBoolean("IS_FASTING", false);
 
             loadSavedSession(fastingState);
-
+        }
     }
 
     private void loadSavedSession(boolean state) {
@@ -41,7 +42,6 @@ public class aFastingTracker extends Activity implements fFastingStarted.OnFragm
                     .add(R.id.container, new fFastingStarted())
                     .commit();
         }
-
     }
 
     @Override

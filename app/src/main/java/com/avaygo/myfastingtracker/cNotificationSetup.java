@@ -31,7 +31,7 @@ public class cNotificationSetup {
         //AlarmManager is used to set the time for when the intent is called.
         //Pending intent is an intent that will be called at a later time.
 
-        Intent myIntent = new Intent(activity, myNotification.class);
+        Intent myIntent = new Intent(activity, sNotificationService.class);
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getService(activity, 0 ,myIntent, 0);
 
@@ -43,6 +43,6 @@ public class cNotificationSetup {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
 
-        Toast.makeText(activity,"Fasting started, End at " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(activity,"Fasting started. End time: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_LONG).show();
     }
 }

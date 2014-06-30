@@ -6,26 +6,32 @@ import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link fFastingStarted.OnFragmentInteractionListener} interface
- * to handle interaction events.
- *
- */
+
 public class fFastingStarted extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     //UI Elements:
-    Button BStopButton;
+    Button BtnBreakFast;
+    TextView txtStartTime, txtEndTime;
 
+    //Calendars and time formatting
+    Calendar startCalendar, endCalendar;
+    SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
+
+
+    //Fragment Class:
     FragmentTransaction fragmentChange;
 
     public fFastingStarted() {
@@ -40,15 +46,39 @@ public class fFastingStarted extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        BStopButton = (Button) getView().findViewById(R.id.stop_button);
-        BStopButton.setOnClickListener(BStopButton_OnClickListener);
+        //Find View Elements
+        txtStartTime = (TextView) getView().findViewById(R.id.start_time);
+        txtEndTime = (TextView) getView().findViewById(R.id.end_time);
+
+        BtnBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
+        BtnBreakFast.setOnClickListener(BtnBreakFast_OnClickListener);
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+
+        long startMill = preferences.getLong("START_TIME", 0);
+        long endMill = preferences.getLong("END_TIME", 0);
+
+        //Starts and sets the clocks.
+        startCalendar = Calendar.getInstance();
+        endCalendar = Calendar.getInstance();
+        startCalendar.setTimeInMillis(startMill);
+        endCalendar.setTimeInMillis(endMill);
+
+
+        txtStartTime.setText(TimeFormat.format(startCalendar.getTime()));
+        txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
+
+
+
     }
 
-    final View.OnClickListener BStopButton_OnClickListener = new View.OnClickListener() {
+
+
+    final View.OnClickListener BtnBreakFast_OnClickListener = new View.OnClickListener() {
         public void onClick(View view) {
 
             //Shared preferences, stores the current state on the button press to save the activity's session.
-            SharedPreferences preferences = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
 
             //IS_FASTING tag is used to describe the current state of the session.
@@ -79,17 +109,6 @@ public class fFastingStarted extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);

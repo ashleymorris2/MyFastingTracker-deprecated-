@@ -11,6 +11,6 @@
     <string name="end_time">Finish time</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_fasting_tracker">Fasting tracker</string>
-    <string name="btnStop">Stop</string>
+    <string name="btnStop">Breakfast</string>
 
 </resources>

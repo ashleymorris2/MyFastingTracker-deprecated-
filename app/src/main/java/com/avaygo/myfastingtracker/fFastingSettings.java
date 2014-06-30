@@ -39,13 +39,11 @@ public class fFastingSettings extends Fragment {
         //empty constructor, ok then.
     }
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fasting_length, container, false);
     }
 
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -86,11 +84,14 @@ public class fFastingSettings extends Fragment {
             myNotification.createAlarm(getActivity());
 
             //Shared preferences, stores the current state on the button press to save the activity's session.
-            SharedPreferences preferences = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
 
             //IS_FASTING tag is used to describe the current state of the session.
             editor.putBoolean("IS_FASTING", true);
+
+            editor.putLong("START_TIME", currentCalendar.getTimeInMillis());
+            editor.putLong("END_TIME", futureCalendar.getTimeInMillis());
 
             // Commit the edits
             editor.commit();
@@ -126,7 +127,6 @@ public class fFastingSettings extends Fragment {
             if (currentCalendar.get(Calendar.DAY_OF_WEEK) != futureCalendar.get(Calendar.DAY_OF_WEEK)) {
                 TDayText.setText(dayFormat.format(futureCalendar.getTime()));
             }
-
         }
 
         @Override
@@ -144,7 +144,6 @@ public class fFastingSettings extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 try {
-
                     //Gets the hour before updating the time.
                     int previousHour = currentCalendar.get(Calendar.HOUR_OF_DAY);
                     currentCalendar = Calendar.getInstance();
