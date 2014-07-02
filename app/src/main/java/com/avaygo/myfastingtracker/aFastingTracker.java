@@ -1,6 +1,7 @@
 package com.avaygo.myfastingtracker;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -67,4 +68,7 @@ public class aFastingTracker extends Activity implements fFastingStarted.OnFragm
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
 }
+

@@ -39,10 +39,10 @@ public class cNotificationSetup {
         alarmCalendar.set(Calendar.DATE,reminderCalendar.get(Calendar.DATE));
         alarmCalendar.set(Calendar.HOUR_OF_DAY, reminderCalendar.get(Calendar.HOUR_OF_DAY));
         alarmCalendar.set(Calendar.MINUTE,reminderCalendar.get(Calendar.MINUTE) );
-        alarmCalendar.set(Calendar.SECOND, 0);
+        alarmCalendar.set(Calendar.SECOND,reminderCalendar.get(Calendar.SECOND));
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
 
-        Toast.makeText(activity,"Fasting started. End time: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(activity,"Fasting started. End time: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_SHORT).show();
     }
 }

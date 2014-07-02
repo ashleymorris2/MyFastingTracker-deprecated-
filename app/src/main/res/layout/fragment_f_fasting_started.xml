@@ -153,7 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="24 Hours"
-            android:id="@+id/txt_length"
+            android:id="@+id/txt_FastingDuration"
             android:layout_below="@+id/length"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:text="Completed"
             android:id="@+id/textView2"
-            android:layout_above="@+id/txt_length"
+            android:layout_above="@+id/txt_FastingDuration"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:textStyle="bold" />

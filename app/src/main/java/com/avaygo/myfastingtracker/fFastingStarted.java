@@ -82,7 +82,7 @@ public class fFastingStarted extends Fragment {
         }else {txtFastDuration.setText(endHour + " Hours");}
 
         if (timerStarted == true){
-          long difference =  endMill - saveTime ;
+          long difference =  System.currentTimeMillis() - saveTime ;
             endMillies = endMillies - difference;
         }
 

@@ -47,8 +47,6 @@ public class fFastingSettings extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d("fFastingSettings-onActivityCreated", "fasting should be 0");
-
         myThread = new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
         myThread.start();
 
@@ -66,13 +64,24 @@ public class fFastingSettings extends Fragment {
         BStartToggle = (Button) getView().findViewById(R.id.start_toggle);
         BStartToggle.setOnClickListener(BStartToggle_OnClickListener);
 
-        //Starts the clocks.
         futureCalendar = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
 
         //Sets the future clock to be at least an hour ahead and updates the text.
         futureCalendar.add(Calendar.HOUR_OF_DAY, 1);
         TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
+
+        //Starts the clocks
+        TCurrentClock.setText(currentTimeFormat.format(currentCalendar.getTime()));
+        TEndClock.setText(futureMinuteFormat.format(currentCalendar.getTime()));
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = preferences.edit();
+
+        //Default end of one hour is set.
+        editor.putInt("END_HOUR", 1);
+        editor.putLong("END_MILLISEC", 3600000);
+        editor.commit();
     }
 
     //On click listener for BStartToggle
@@ -89,7 +98,6 @@ public class fFastingSettings extends Fragment {
 
             //IS_FASTING tag is used to describe the current state of the session.
             editor.putBoolean("IS_FASTING", true);
-
             editor.putLong("START_TIME", currentCalendar.getTimeInMillis());
             editor.putLong("END_TIME", futureCalendar.getTimeInMillis());
 
@@ -128,15 +136,26 @@ public class fFastingSettings extends Fragment {
                 TDayText.setText(dayFormat.format(futureCalendar.getTime()));
             }
         }
-
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
 
         }
-
-        @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+           int seekValue = seekBar.getProgress();
 
+            seekValue+=1;
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = preferences.edit();
+
+            //3600000 is 1 hour in milliseconds.
+            long endMillies = seekValue * 3600000;
+
+            //@END_HOUR how many hours into the future the timer will run until
+            //@END_MILLISEC the number of hours broken down into milliseconds.
+            editor.putInt("END_HOUR", seekValue);
+            editor.putLong("END_MILLISEC", endMillies);
+            editor.commit();
         }
     };
 
@@ -180,10 +199,10 @@ public class fFastingSettings extends Fragment {
         }
     }
 
-    @Override
+
     public void onDestroyView() {
-        myThread.interrupt();
         super.onDestroyView();
+        myThread.interrupt();
     }
 
 
