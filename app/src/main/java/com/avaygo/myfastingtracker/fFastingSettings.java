@@ -26,6 +26,7 @@ public class fFastingSettings extends Fragment {
     Runnable myRunnableThread = new CountDownRunner();
     //Calendars and time formatting:
     Calendar currentCalendar, futureCalendar;
+   // Remove seconds
     SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
     SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
@@ -64,6 +65,7 @@ public class fFastingSettings extends Fragment {
         BStartToggle = (Button) getView().findViewById(R.id.start_toggle);
         BStartToggle.setOnClickListener(BStartToggle_OnClickListener);
 
+
         futureCalendar = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
 
@@ -88,11 +90,14 @@ public class fFastingSettings extends Fragment {
     final View.OnClickListener BStartToggle_OnClickListener = new View.OnClickListener() {
         public void onClick(View view) {
 
+            futureCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
+            futureCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
+
             //Passes the future time to the notification class so that it can set a notification at that time.
             myNotification.setReminderCalendar(futureCalendar);
             myNotification.createAlarm(getActivity());
 
-            //Shared preferences, stores the current state on the button press to save the activity's session.
+           //Shared preferences, stores the current state on the button press to save the activity's session.
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
 

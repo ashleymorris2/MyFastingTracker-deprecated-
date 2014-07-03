@@ -17,8 +17,6 @@ public class sNotificationService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
-    @Override
     public void onCreate() {
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -34,7 +32,11 @@ public class sNotificationService extends Service {
                 .setSound(sound)
                 .build();
 
+        mNotify.flags = Notification.FLAG_AUTO_CANCEL;
+
         mNM.notify(2, mNotify);
+
+
 
         stopSelf();
 

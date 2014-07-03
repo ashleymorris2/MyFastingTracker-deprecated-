@@ -24,23 +24,26 @@
         android:layout_marginTop="87dp"
         android:id="@+id/linearLayout2"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="23:59"
+            android:text="00:59"
             android:id="@+id/txt_time_HoursMins"
-            android:textSize="90sp" />
+            android:textSize="90sp"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text=":42"
+            android:text=":59"
             android:id="@+id/txt_time_seconds"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:gravity="center" />
 
     </LinearLayout>
 
@@ -59,12 +62,14 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
+            android:id="@+id/fastingProgressBar"
             android:layout_below="@+id/linearLayout2"
             android:layout_alignLeft="@+id/linearLayout2"
             android:layout_alignStart="@+id/linearLayout2"
             android:layout_alignRight="@+id/linearLayout2"
-            android:layout_alignEnd="@+id/linearLayout2" />
+            android:layout_alignEnd="@+id/linearLayout2"
+            android:indeterminate="false"
+            android:max="100" />
 
         <RelativeLayout
             android:orientation="horizontal"
@@ -86,16 +91,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="End"
-                    android:id="@+id/end"
-                    android:textStyle="bold" />
+                    android:text="Start"
+                    android:id="@+id/start"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="22:00"
-                    android:id="@+id/end_time" />
+                    android:id="@+id/start_time"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -113,8 +123,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Start"
-                    android:id="@+id/start"
+                    android:text="End"
+                    android:id="@+id/end"
                     android:textStyle="bold" />
 
                 <TextView
@@ -122,7 +132,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="22:00"
-                    android:id="@+id/start_time" />
+                    android:id="@+id/end_time" />
+
             </LinearLayout>
 
         </RelativeLayout>

@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 
 public class fFastingStarted extends Fragment {
@@ -23,11 +23,14 @@ public class fFastingStarted extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     //UI Elements:
-    Button BtnBreakFast;
-    TextView txtStartTime, txtEndTime, txtHourMins, txtSecs, txtFastDuration;
+
+   private Button BtnBreakFast;
+   private TextView txtStartTime, txtEndTime, txtHourMins, txtSecs, txtFastDuration, txtPercentComplete;
+   private ProgressBar mTimerProgress;
+
     //Calendars and time formatting
     Calendar startCalendar, endCalendar;
-    SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
+    SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");//remove seconds
     //Threads and Runnables:
     Thread myThread = null;
     Runnable myRunnableThread = new CountDownSaver();
@@ -54,9 +57,12 @@ public class fFastingStarted extends Fragment {
         txtHourMins = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
         txtSecs = (TextView) getView().findViewById(R.id.txt_time_seconds);
         txtFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
+        txtPercentComplete = (TextView) getView().findViewById(R.id.txt_completed);
 
         BtnBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
         BtnBreakFast.setOnClickListener(BtnBreakFast_OnClickListener);
+
+        mTimerProgress = (ProgressBar) getView().findViewById(R.id.fastingProgressBar);
 
         //Shared preferences to retrieve the session data.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
@@ -66,8 +72,8 @@ public class fFastingStarted extends Fragment {
         int endHour = preferences.getInt("END_HOUR", 1);// @Param endHour how many hours into the future the timer ends
         long endMillies = preferences.getLong("END_MILLISEC", 0);// @Param endMillies the hours in milliseconds
         long saveTime = preferences.getLong("SAVE_TIME", 0);
-
         boolean timerStarted = preferences.getBoolean("TIMER_START", false);
+
         //Starts and sets the clocks.
         startCalendar = Calendar.getInstance();
         endCalendar = Calendar.getInstance();
@@ -79,13 +85,15 @@ public class fFastingStarted extends Fragment {
 
         if (endHour == 1) {
             txtFastDuration.setText(endHour + " Hour");
-        }else {txtFastDuration.setText(endHour + " Hours");}
-
-        if (timerStarted == true){
-          long difference =  System.currentTimeMillis() - saveTime ;
-            endMillies = endMillies - difference;
+        } else {
+            txtFastDuration.setText(endHour + " Hours");
         }
 
+        //Calculates the difference in the current time and the saved time on the system
+        if (timerStarted == true) {
+            long difference = System.currentTimeMillis() - saveTime;
+            endMillies = endMillies - difference;
+        }
         counter = new MyCounter(endMillies, 1000);//
         myThread = new Thread(myRunnableThread);//New thread to save the state so that the UI doesn't get held up.
         myThread.start();
@@ -97,7 +105,6 @@ public class fFastingStarted extends Fragment {
             //Shared preferences, stores the current state on the button press to save the activity's session.
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
-
 
             // Commit the edits
             editor.clear();
@@ -123,6 +130,7 @@ public class fFastingStarted extends Fragment {
     private class MyCounter extends CountDownTimer {
 
         private long mTimeLeft;
+        int mEndMinutes, mElapsedTime, mPercentCompleted;
 
         /*Constructor for MyCounter class
         @param millisInFuture time in milliseconds in the future.
@@ -130,30 +138,60 @@ public class fFastingStarted extends Fragment {
         private MyCounter(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
 
-            super.start();
-
             mTimeLeft = millisInFuture;
 
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
+            mEndMinutes = preferences.getInt("END_HOUR", 0) * 3600; // 3600 for seconds, 60 for minutes.
             editor.putBoolean("TIMER_START", true);
             editor.commit();
+
+            super.start();
         }
 
         public void onTick(long millisUntilFinished) {
 
-            int seconds = (int) (millisUntilFinished / 1000) % 60;
-            int minutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
-            int hours = (int) ((millisUntilFinished / (1000 * 60 * 60)) % 24);
+            String hours,minutes,seconds;
 
-            txtHourMins.setText(Integer.toString(hours) + ":" + Integer.toString(minutes));
-            txtSecs.setText(Integer.toString(seconds));
+            int iSeconds = (int) (millisUntilFinished / 1000) % 60;
+            int iMinutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
+            int iHours = (int) ((millisUntilFinished / (1000 * 60 * 60)) % 24);
+
+            int totalMinutes = (int) (millisUntilFinished / 1000);
+
+            //Formatting code.
+            if (iHours < 10) {
+                hours = ("0" + Integer.toString(iHours));
+            } else {
+                hours = Integer.toString(iHours);
+            }
+            if (iMinutes < 10) {
+                minutes = ("0" + Integer.toString(iMinutes));
+            } else {
+                minutes = Integer.toString(iMinutes);
+            }
+            if (iSeconds < 10) {
+                seconds = ("0" + Integer.toString(iSeconds));
+            } else {
+                seconds = Integer.toString(iSeconds);
+            }
+
+            txtHourMins.setText(hours + ":" + minutes);
+            txtSecs.setText(seconds);
+
+            //Calculates the remaining time as a percentage for the progress bar.
+            // Seconds fot high accuracy and minutes for low accuracy.
+            mElapsedTime = mEndMinutes - totalMinutes;
+            mPercentCompleted = (mElapsedTime * 100) / mEndMinutes;
+
+            mTimerProgress.setProgress(mPercentCompleted);
+            txtPercentComplete.setText(mPercentCompleted + "%");
 
             this.mTimeLeft = millisUntilFinished;
         }
 
-       /* This method is run in a separate thread, saves the current millisecond time so that it can be
-        retrieved later.*/
+        /* This method is run in a separate thread, saves the current millisecond time so that it can be
+         retrieved later.*/
         public void saveTimer() {
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
@@ -163,8 +201,13 @@ public class fFastingStarted extends Fragment {
         }
 
         public void onFinish() {
-            txtHourMins.setText("Finished!");
+            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("END_MILLISEC", this.mTimeLeft);
+            editor.putLong("SAVE_TIME", System.currentTimeMillis());
+            editor.commit();
         }
+
     }
 
     public void onDestroyView() {
@@ -187,6 +230,7 @@ public class fFastingStarted extends Fragment {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     counter.saveTimer();
+
                     Thread.sleep(1000); // Pause of 1 Second
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
