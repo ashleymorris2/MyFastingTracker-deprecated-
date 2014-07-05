@@ -3,29 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.avaygo.myfastingtracker.fFastingStarted"
-    android:id="@+id/main2">
+    android:id="@+id/main2"
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_horizontal_margin">
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btnStop"
         android:id="@+id/breakFast_button"
-        android:layout_marginBottom="17dp"
+        style="@style/AppTheme"
+        android:singleLine="false"
+        android:layout_alignWithParentIfMissing="false"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="38dp" />
+        android:layout_alignLeft="@+id/relativeLayout"
+        android:layout_alignStart="@+id/relativeLayout"
+        android:layout_alignRight="@+id/relativeLayout"
+        android:layout_alignEnd="@+id/relativeLayout" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:weightSum="1"
-        android:layout_marginTop="87dp"
+        android:layout_marginTop="80dp"
         android:id="@+id/linearLayout2"
+        android:gravity="center"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center">
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +67,7 @@
         android:layout_centerHorizontal="true">
 
         <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fastingProgressBar"
@@ -74,7 +82,7 @@
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="52dp"
+            android:layout_height="36dp"
             android:id="@+id/relative1">
 
             <LinearLayout
@@ -104,7 +112,8 @@
                     android:text="22:00"
                     android:id="@+id/start_time"
                     android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="1dp" />
 
             </LinearLayout>
 
@@ -116,7 +125,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:gravity="right">
+                android:gravity="right"
+                android:id="@+id/linearLayout">
 
 
                 <TextView
@@ -132,7 +142,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="22:00"
-                    android:id="@+id/end_time" />
+                    android:id="@+id/end_time"
+                    android:paddingTop="1dp" />
 
             </LinearLayout>
 
@@ -146,6 +157,8 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/linearLayout3"
         android:layout_alignStart="@+id/linearLayout3"
+        android:paddingTop="8dp"
+        android:id="@+id/relativeLayout"
         android:layout_below="@+id/linearLayout3"
         android:layout_centerHorizontal="true">
 
@@ -167,7 +180,8 @@
             android:id="@+id/txt_FastingDuration"
             android:layout_below="@+id/length"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:paddingTop="1dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -186,7 +200,8 @@
             android:id="@+id/txt_completed"
             android:layout_below="@+id/textView2"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:paddingTop="1dp" />
 
     </RelativeLayout>
 

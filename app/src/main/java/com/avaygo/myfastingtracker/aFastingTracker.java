@@ -69,6 +69,5 @@ public class aFastingTracker extends Activity implements fFastingStarted.OnFragm
 
     }
 
-
 }
 

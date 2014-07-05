@@ -10,14 +10,17 @@
     android:id="@+id/main">
 
     <Button
-        style="?android:attr/buttonStyleSmall"
+        style="@android:style/Holo.SegmentedButton"
         android:layout_width="85sp"
         android:layout_height="wrap_content"
         android:text="@string/start_toggle"
         android:id="@+id/start_toggle"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/seekVal"
-        android:layout_alignEnd="@+id/seekVal" />
+        android:layout_alignEnd="@+id/seekVal"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/timeSeek"
+        android:layout_alignStart="@+id/timeSeek" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -124,9 +127,9 @@
         android:max="23"
         android:layout_marginTop="66dp"
         android:layout_below="@+id/linearLayout"
-        android:layout_alignLeft="@+id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout"
         android:indeterminate="false"
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:layout_alignStart="@+id/linearLayout2"
         android:layout_alignRight="@+id/status_text"
         android:layout_alignEnd="@+id/status_text" />
 
@@ -137,7 +140,6 @@
         android:text="Duration:  1 hour"
         android:id="@+id/seekVal"
         android:textSize="14sp"
-        android:layout_marginRight="19dp"
         android:layout_below="@+id/linearLayout2"
         android:layout_alignRight="@+id/timeSeek"
         android:layout_alignEnd="@+id/timeSeek" />

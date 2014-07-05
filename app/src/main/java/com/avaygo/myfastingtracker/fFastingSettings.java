@@ -141,7 +141,6 @@ public class fFastingSettings extends Fragment {
                 TDayText.setText(dayFormat.format(futureCalendar.getTime()));
             }
         }
-        @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
 
         }
