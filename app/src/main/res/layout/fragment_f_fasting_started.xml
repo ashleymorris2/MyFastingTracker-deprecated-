@@ -1,17 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context="com.avaygo.myfastingtracker.fFastingStarted"
     android:id="@+id/main2"
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_horizontal_margin">
+    android:paddingBottom="@dimen/activity_horizontal_margin"
+    android:gravity="fill_horizontal|fill_vertical"
+    android:background="#2C3E50">
 
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="85sp"
         android:layout_height="wrap_content"
         android:text="@string/btnStop"
         android:id="@+id/breakFast_button"
@@ -19,191 +21,192 @@
         android:singleLine="false"
         android:layout_alignWithParentIfMissing="false"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/relativeLayout"
-        android:layout_alignStart="@+id/relativeLayout"
-        android:layout_alignRight="@+id/relativeLayout"
-        android:layout_alignEnd="@+id/relativeLayout" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:layout_marginTop="80dp"
-        android:id="@+id/linearLayout2"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="00:59"
-            android:id="@+id/txt_time_HoursMins"
-            android:textSize="90sp"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text=":59"
-            android:id="@+id/txt_time_seconds"
-            android:layout_gravity="center_vertical"
-            android:gravity="center" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:layout_alignEnd="@+id/linearLayout2"
-        android:layout_alignStart="@+id/linearLayout2"
-        android:id="@+id/linearLayout3"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_centerHorizontal="true">
-
-        <ProgressBar
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fastingProgressBar"
-            android:layout_below="@+id/linearLayout2"
-            android:layout_alignLeft="@+id/linearLayout2"
-            android:layout_alignStart="@+id/linearLayout2"
-            android:layout_alignRight="@+id/linearLayout2"
-            android:layout_alignEnd="@+id/linearLayout2"
-            android:indeterminate="false"
-            android:max="100" />
-
-        <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:id="@+id/relative1">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="0dp"
-                android:id="@+id/linearLayout4">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Start"
-                    android:id="@+id/start"
-                    android:textStyle="bold"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="22:00"
-                    android:id="@+id/start_time"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:paddingTop="1dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="right"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:gravity="right"
-                android:id="@+id/linearLayout">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="End"
-                    android:id="@+id/end"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="22:00"
-                    android:id="@+id/end_time"
-                    android:paddingTop="1dp" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </LinearLayout>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/linearLayout3"
-        android:layout_alignStart="@+id/linearLayout3"
-        android:paddingTop="8dp"
-        android:id="@+id/relativeLayout"
-        android:layout_below="@+id/linearLayout3"
-        android:layout_centerHorizontal="true">
+        android:paddingBottom="5dp"
+        android:id="@+id/clock_relative"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dip">
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Length"
-            android:id="@+id/length"
-            android:textStyle="bold"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="0dp"
+            android:id="@+id/clock_linear"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="90dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:59"
+                android:id="@+id/txt_time_HoursMins"
+                android:textSize="70sp"
+                android:gravity="center"
+                android:textColor="@color/snow_primary"
+                android:typeface="normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=":59"
+                android:id="@+id/txt_time_seconds"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/snow_light"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="false"
+
+
+            android:gravity="center"
+            android:id="@+id/completed_linear"
+            android:layout_below="@+id/clock_linear"
+            android:layout_alignRight="@+id/clock_linear"
+            android:layout_alignEnd="@+id/clock_linear"
+            android:layout_alignLeft="@+id/clock_linear"
+            android:layout_alignStart="@+id/clock_linear">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed"
+                android:id="@+id/textView2"
+                android:layout_above="@+id/txt_FastingDuration"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="14sp"
+                android:textColor="@color/snow_light"
+                android:typeface="normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1%"
+                android:id="@+id/txt_completed"
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingTop="1dp"
+                android:textColor="@color/snow_light" />
+
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="24 Hours"
             android:id="@+id/txt_FastingDuration"
-            android:layout_below="@+id/length"
+            android:paddingTop="1dp"
+            android:textColor="@color/snow_light"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="64dp"
+            android:textSize="14sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/clock_linear"
+            android:layout_alignEnd="@+id/clock_linear"
+            android:layout_alignLeft="@+id/clock_linear"
+            android:layout_alignStart="@+id/clock_linear" />
+
+        <de.passy.holocircularprogressbar.HoloCircularProgressBar
+            android:id="@+id/holoCircularProgressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="280dp"
+            style="@style/CircularProgressBarLight"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:paddingTop="1dp" />
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="40dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Completed"
-            android:id="@+id/textView2"
-            android:layout_above="@+id/txt_FastingDuration"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Start"
+            android:id="@+id/start"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="14sp"
+            android:textColor="@color/snow_light"
+            android:layout_gravity="left"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1%"
-            android:id="@+id/txt_completed"
-            android:layout_below="@+id/textView2"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:paddingTop="1dp" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="22:00"
+            android:id="@+id/start_time"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="1dp"
+            android:textColor="@color/snow_light"
+            android:layout_gravity="left" />
 
-    </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="40dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="End"
+            android:id="@+id/end"
+            android:textSize="14sp"
+            android:textColor="@color/snow_light"
+            android:layout_gravity="right"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="22:00"
+            android:id="@+id/end_time"
+            android:paddingTop="1dp"
+            android:textColor="@color/snow_light"
+            android:layout_gravity="right"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -1,5 +1,8 @@
 package com.avaygo.myfastingtracker;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -20,27 +23,26 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import de.passy.holocircularprogressbar.HoloCircularProgressBar;
+
 
 public class fFastingStarted extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     //UI Elements:
+    private HoloCircularProgressBar holoCircularProgressBar;
     private Button BtnBreakFast;
     private TextView txtStartTime, txtEndTime, txtHourMins, txtSecs, txtFastDuration, txtPercentComplete;
     private ProgressBar mTimerProgress;
     //Calendars and time formatting
     private Calendar startCalendar, endCalendar;
-    SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");//remove seconds
-    SimpleDateFormat TimeDateFormat = new SimpleDateFormat("EE - HH:mm");//remove seconds
-    //Threads and Runnables:
-    private static  Thread myThread = null;
-    private Runnable myRunnableThread = new CountDownSaver();
+    SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
+    SimpleDateFormat TimeDateFormat = new SimpleDateFormat("EE - HH:mm");
     //Fragment Class:
     FragmentTransaction fragmentChange;
     //CountDownTimer class, overwritten methods to save state.
     private static MyCounter counter;
-
 
     public fFastingStarted() {
         // Required empty public constructor
@@ -54,6 +56,7 @@ public class fFastingStarted extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         //Find View Elements
         txtStartTime = (TextView) getView().findViewById(R.id.start_time);
         txtEndTime = (TextView) getView().findViewById(R.id.end_time);
@@ -64,7 +67,8 @@ public class fFastingStarted extends Fragment {
         BtnBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
         BtnBreakFast.setOnClickListener(BtnBreakFast_OnClickListener);
 
-        mTimerProgress = (ProgressBar) getView().findViewById(R.id.fastingProgressBar);
+        holoCircularProgressBar = (HoloCircularProgressBar) getView().findViewById(R.id.holoCircularProgressBar1);
+
 
         //Shared preferences to retrieve the session data.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
@@ -79,12 +83,10 @@ public class fFastingStarted extends Fragment {
         //Calculates the difference in the current time and the end time.
         if (timerStarted == true) {
              endHourInMills = endMill - System.currentTimeMillis();
-           //endHourInMills = endHourInMills - difference;
         }
 
         counter = new MyCounter(endHourInMills, 1000);//
-        myThread = new Thread(myRunnableThread);//New thread to save the state so that the UI doesn't get held up.
-        myThread.start();
+
 
         //Starts and sets the clocks.
         startCalendar = Calendar.getInstance();
@@ -163,11 +165,22 @@ public class fFastingStarted extends Fragment {
         }
     }
 
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
+
     private class MyCounter extends CountDownTimer {
 
         private long mTimeLeft;
         private int mEndMinutes, mElapsedTime, mPercentCompleted;
         private boolean dateChange = false;
+        private  float percentAsFloat;
 
         /*Constructor for MyCounter class
         @param millisInFuture time in milliseconds in the future.
@@ -189,6 +202,7 @@ public class fFastingStarted extends Fragment {
         public void onTick(long millisUntilFinished) {
 
             String hours, minutes, seconds;
+
 
             int iSeconds = (int) (millisUntilFinished / 1000) % 60;
             int iMinutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
@@ -220,7 +234,12 @@ public class fFastingStarted extends Fragment {
             mElapsedTime = mEndMinutes - totalMinutes;
             mPercentCompleted = (mElapsedTime * 100) / mEndMinutes;
 
-            mTimerProgress.setProgress(mPercentCompleted);
+            //@percentageAsFloat is needed because the circular progress bar is set to a maximum of 1.
+            percentAsFloat = mPercentCompleted / 100f;
+            holoCircularProgressBar.setProgress(percentAsFloat);
+            holoCircularProgressBar.setMarkerProgress(percentAsFloat);
+
+
             txtPercentComplete.setText(mPercentCompleted + "%");
 
             if (dateChange == false) {
@@ -256,18 +275,14 @@ public class fFastingStarted extends Fragment {
         public void onFinish() {
             //Set the percentage to 100
             mPercentCompleted = 100;
-            mTimerProgress.setProgress(mPercentCompleted);
+            percentAsFloat = 1;
+            holoCircularProgressBar.setProgress(percentAsFloat);
+            holoCircularProgressBar.setMarkerProgress(percentAsFloat);
             txtPercentComplete.setText(mPercentCompleted + "%");
 
             txtHourMins.setText("00:00");
             txtSecs.setText(":00");
 
-            //Save the result in the shared preferences.
-            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putLong("END_MILLISEC", this.mTimeLeft);
-            editor.putLong("SAVE_TIME", System.currentTimeMillis());
-            editor.commit();
         }
 
         public int getPercentageComplete(){
@@ -275,28 +290,4 @@ public class fFastingStarted extends Fragment {
         }
     }
 
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
-    private class CountDownSaver implements Runnable {
-        public void run() {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    //counter.saveTimer();
-                    Thread.sleep(1000); // Pause of 1 Second
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } catch (Exception e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-    }
 }

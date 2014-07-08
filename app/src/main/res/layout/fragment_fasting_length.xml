@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -10,7 +11,7 @@
     android:id="@+id/main">
 
     <Button
-        style="@android:style/Holo.SegmentedButton"
+
         android:layout_width="85sp"
         android:layout_height="wrap_content"
         android:text="@string/start_toggle"
@@ -19,24 +20,8 @@
         android:layout_alignRight="@+id/seekVal"
         android:layout_alignEnd="@+id/seekVal"
         android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/timeSeek"
-        android:layout_alignStart="@+id/timeSeek" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/status_text"
-        android:id="@+id/status_text"
-        android:textSize="45sp"
-        android:textStyle="bold"
-        android:textColor="#0099CC"
-        android:gravity="center_horizontal"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -70,7 +55,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout2"
+        android:id="@+id/clock_linear"
         android:layout_gravity="right|left"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true"
@@ -98,7 +83,7 @@
                 android:id="@+id/dynamicHour"
                 android:textSize="15sp"
                 android:layout_above="@+id/seekVal"
-                android:layout_toRightOf="@+id/linearLayout2" />
+                android:layout_toRightOf="@+id/clock_linear" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -128,10 +113,8 @@
         android:layout_marginTop="66dp"
         android:layout_below="@+id/linearLayout"
         android:indeterminate="false"
-        android:layout_alignLeft="@+id/linearLayout2"
-        android:layout_alignStart="@+id/linearLayout2"
-        android:layout_alignRight="@+id/status_text"
-        android:layout_alignEnd="@+id/status_text" />
+        android:layout_alignLeft="@+id/clock_linear"
+        android:layout_alignStart="@+id/clock_linear" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -140,8 +123,10 @@
         android:text="Duration:  1 hour"
         android:id="@+id/seekVal"
         android:textSize="14sp"
-        android:layout_below="@+id/linearLayout2"
+        android:layout_below="@+id/clock_linear"
         android:layout_alignRight="@+id/timeSeek"
         android:layout_alignEnd="@+id/timeSeek" />
+
+
 
 </RelativeLayout>

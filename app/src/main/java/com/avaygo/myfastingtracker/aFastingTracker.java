@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.cengalabs.flatui.FlatUI;
+
 
 public class aFastingTracker extends Activity implements fFastingStarted.OnFragmentInteractionListener {
 
@@ -16,6 +18,11 @@ public class aFastingTracker extends Activity implements fFastingStarted.OnFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
+
+        FlatUI.initDefaultValues(this);
+        FlatUI.setDefaultTheme(FlatUI.SEA);
+
+
 
         if (savedInstanceState == null) {
             //Shared preferences to load the activity's session.

@@ -36,8 +36,6 @@ public class sNotificationService extends Service {
 
         mNM.notify(2, mNotify);
 
-
-
         stopSelf();
 
     }
