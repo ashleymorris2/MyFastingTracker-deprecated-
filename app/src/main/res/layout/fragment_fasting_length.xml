@@ -1,14 +1,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".main"
-    android:id="@+id/main">
+    android:id="@+id/main"
+    android:background="#2C3E50">
+
+
+    <com.devadvance.circularseekbar.CircularSeekBar
+        android:id="@+id/circularSeekBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="285dp"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="false"
+        app:max="23"
+
+        app:pointer_radius="6"
+        app:pointer_halo_width="8"
+
+        app:pointer_alpha_ontouch="255"
+        app:pointer_color="#b3c0392b"
+        app:pointer_halo_color_ontouch="#b3e74c3c"
+        app:pointer_halo_color="#e74c3c"
+
+        app:circle_color="#bdc3c7"
+        app:circle_progress_color="#c0392b"
+            android:paddingRight="5dp" />
 
     <Button
 
@@ -17,116 +42,148 @@
         android:text="@string/start_toggle"
         android:id="@+id/start_toggle"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/seekVal"
-        android:layout_alignEnd="@+id/seekVal"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/relative"
+        android:layout_alignEnd="@+id/relative" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:layout_gravity="center|left"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/current_time"
-            android:id="@+id/current_time"
-            android:textStyle="bold"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="21:00"
-            android:id="@+id/clock_text"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/clock_linear"
-        android:layout_gravity="right|left"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/end_time"
-            android:id="@+id/end_time"
-            android:textStyle="bold"
-            android:textSize="20sp" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignTop="@+id/circularSeekBar1"
+        android:layout_alignBottom="@+id/circularSeekBar1"
+        android:id="@+id/relative">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="22:"
-                android:id="@+id/dynamicHour"
-                android:textSize="15sp"
-                android:layout_above="@+id/seekVal"
-                android:layout_toRightOf="@+id/clock_linear" />
+                android:text="01:00"
+                android:id="@+id/seekVal"
+                android:textSize="70sp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentStart="false"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="@color/snow_primary"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentEnd="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="61dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=":00"
+                android:id="@+id/txt_seconds"
+                android:textColor="@color/snow_light"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/end_time"
+        android:weightSum="4"
+        android:id="@+id/linearLayout2">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingRight="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="00"
-                android:id="@+id/endclock_text"
-                android:textSize="15sp"
-                android:layout_gravity="center_horizontal" />
+                android:text="@string/end_time"
+                android:id="@+id/end_time"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_above="@+id/current_time"
+                android:layout_toLeftOf="@+id/current_time"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:textColor="@color/snow_light" />
 
-            <TextView
-                android:layout_width="78dp"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/dayText"
-                android:textSize="15sp" />
+                android:layout_weight="1"
+                android:layout_gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="22:"
+                    android:id="@+id/dynamicHour"
+                    android:textSize="14sp"
+                    android:layout_above="@+id/seekVal"
+                    android:layout_toRightOf="@+id/clock_linear"
+                    android:textColor="@color/snow_light" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="00"
+                    android:id="@+id/endclock_text"
+                    android:textSize="15sp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/snow_light" />
+            </LinearLayout>
+
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/current_time"
+                android:id="@+id/current_time"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_alignTop="@+id/circularSeekBar1"
+                android:layout_alignRight="@+id/circularSeekBar1"
+                android:layout_alignEnd="@+id/circularSeekBar1"
+                android:layout_marginRight="42dp"
+                android:textColor="@color/snow_light" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="21:00"
+                android:id="@+id/clock_text"
+                android:textSize="14sp"
+                android:layout_below="@+id/current_time"
+                android:layout_toRightOf="@+id/end_time"
+                android:textColor="@color/snow_light" />
+        </LinearLayout>
 
     </LinearLayout>
-
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/timeSeek"
-        android:max="23"
-        android:layout_marginTop="66dp"
-        android:layout_below="@+id/linearLayout"
-        android:indeterminate="false"
-        android:layout_alignLeft="@+id/clock_linear"
-        android:layout_alignStart="@+id/clock_linear" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Duration:  1 hour"
-        android:id="@+id/seekVal"
-        android:textSize="14sp"
-        android:layout_below="@+id/clock_linear"
-        android:layout_alignRight="@+id/timeSeek"
-        android:layout_alignEnd="@+id/timeSeek" />
-
 
 
 </RelativeLayout>

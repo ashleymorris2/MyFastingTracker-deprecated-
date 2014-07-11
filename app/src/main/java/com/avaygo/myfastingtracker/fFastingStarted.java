@@ -1,8 +1,5 @@
 package com.avaygo.myfastingtracker;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -17,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -34,11 +30,12 @@ public class fFastingStarted extends Fragment {
     private HoloCircularProgressBar holoCircularProgressBar;
     private Button BtnBreakFast;
     private TextView txtStartTime, txtEndTime, txtHourMins, txtSecs, txtFastDuration, txtPercentComplete;
-    private ProgressBar mTimerProgress;
+
     //Calendars and time formatting
     private Calendar startCalendar, endCalendar;
     SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat TimeDateFormat = new SimpleDateFormat("EE - HH:mm");
+    SimpleDateFormat TimeDateFormat = new SimpleDateFormat("EE HH:mm");
+    SimpleDateFormat TimeDateFormat2 = new SimpleDateFormat("HH:mm EE");
     //Fragment Class:
     FragmentTransaction fragmentChange;
     //CountDownTimer class, overwritten methods to save state.
@@ -245,7 +242,7 @@ public class fFastingStarted extends Fragment {
             if (dateChange == false) {
                 //Checks if today's date matches the end date and updates the texts appropriately.
                 if (startCalendar.get(Calendar.DATE) != Calendar.getInstance().get(Calendar.DATE)) {
-                    txtStartTime.setText(TimeDateFormat.format(startCalendar.getTime()));
+                    txtStartTime.setText(TimeDateFormat2.format(startCalendar.getTime()));
                     txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
                     dateChange = true;
 

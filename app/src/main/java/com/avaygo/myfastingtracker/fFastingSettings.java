@@ -1,5 +1,7 @@
 package com.avaygo.myfastingtracker;
 
+
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
@@ -9,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SeekBar;
+
 import android.widget.TextView;
+import com.devadvance.circularseekbar.CircularSeekBar;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,9 +22,10 @@ import java.util.Calendar;
 public class fFastingSettings extends Fragment {
 
     //UI Elements:
-    Button BStartToggle;
-    TextView TStatusText, TCurrentTime, TEndTime, TSeekVal, TCurrentClock, TEndClock, TEndHour, TDayText;
-    SeekBar timeSeek;
+    private Button BStartToggle;
+    private TextView TStatusText, TCurrentTime, TEndTime, TSeekVal, TCurrentClock, TEndClock, TEndHour;
+    private CircularSeekBar timeSeekBar;
+
     //Threads and Runnables:
     Thread myThread = null;
     Runnable myRunnableThread = new CountDownRunner();
@@ -29,6 +34,7 @@ public class fFastingSettings extends Fragment {
    // Remove seconds
     SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
+    SimpleDateFormat futureHourFormat2 = new SimpleDateFormat("EE HH:");//The hour for the future clock.
     SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
     SimpleDateFormat dayFormat = new SimpleDateFormat(" EE");//
     //Fragment Class:
@@ -59,9 +65,10 @@ public class fFastingSettings extends Fragment {
         TEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
         TEndTime = (TextView) getView().findViewById(R.id.end_time);
         TSeekVal = (TextView) getView().findViewById(R.id.seekVal);
-        TDayText = (TextView) getView().findViewById(R.id.dayText);
-        timeSeek = (SeekBar) getView().findViewById(R.id.timeSeek);
-        timeSeek.setOnSeekBarChangeListener(timeSeek_listener);
+
+        timeSeekBar = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar1);
+        timeSeekBar.setOnSeekBarChangeListener(timeSeek_listener);
+
         BStartToggle = (Button) getView().findViewById(R.id.start_toggle);
         BStartToggle.setOnClickListener(BStartToggle_OnClickListener);
 
@@ -117,16 +124,16 @@ public class fFastingSettings extends Fragment {
     };
 
     //Seek bar listener for timeSeek
-    final SeekBar.OnSeekBarChangeListener timeSeek_listener = new SeekBar.OnSeekBarChangeListener() {
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    final CircularSeekBar.OnCircularSeekBarChangeListener timeSeek_listener = new CircularSeekBar.OnCircularSeekBarChangeListener() {
+        public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
 
             int seekValue = progress + 1;
-            TDayText.setText(" ");
 
-            if (seekValue == 1) {
-                TSeekVal.setText("Duration: " + seekValue + " hour");
+            if (seekValue < 10) {
+                TSeekVal.setText("0" +seekValue+ ":00");
             } else {
-                TSeekVal.setText("Duration: " + seekValue + " hours");
+                TSeekVal.setText(seekValue + ":00");
             }
 
             futureCalendar = Calendar.getInstance();//Opens an instance of the future calendar.
@@ -138,16 +145,18 @@ public class fFastingSettings extends Fragment {
             /*Checks if today matches future date, if not then it must be tomorrow, sets the text to tomorrows
             day.*/
             if (currentCalendar.get(Calendar.DAY_OF_WEEK) != futureCalendar.get(Calendar.DAY_OF_WEEK)) {
-                TDayText.setText(dayFormat.format(futureCalendar.getTime()));
+                TEndHour.setText(futureHourFormat2.format(futureCalendar.getTime()));
             }
-        }
-        public void onStartTrackingTouch(SeekBar seekBar) {
 
         }
-        public void onStopTrackingTouch(SeekBar seekBar) {
-           int seekValue = seekBar.getProgress();
 
-            seekValue+=1;
+        public void onStartTrackingTouch(CircularSeekBar seekBar) {
+
+        }
+        public void onStopTrackingTouch(CircularSeekBar seekBar) {
+            int seekValue = seekBar.getProgress();
+
+            seekValue += 1;
 
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
