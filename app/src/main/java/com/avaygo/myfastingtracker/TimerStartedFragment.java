@@ -22,7 +22,7 @@ import java.util.Calendar;
 import de.passy.holocircularprogressbar.HoloCircularProgressBar;
 
 
-public class fFastingStarted extends Fragment {
+public class TimerStartedFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
@@ -36,12 +36,14 @@ public class fFastingStarted extends Fragment {
     SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
     SimpleDateFormat TimeDateFormat = new SimpleDateFormat("EE HH:mm");
     SimpleDateFormat TimeDateFormat2 = new SimpleDateFormat("HH:mm EE");
+
     //Fragment Class:
     FragmentTransaction fragmentChange;
+
     //CountDownTimer class, overwritten methods to save state.
     private static MyCounter counter;
 
-    public fFastingStarted() {
+    public TimerStartedFragment() {
         // Required empty public constructor
     }
 
@@ -52,7 +54,6 @@ public class fFastingStarted extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
 
         //Find View Elements
         txtStartTime = (TextView) getView().findViewById(R.id.start_time);
@@ -66,7 +67,6 @@ public class fFastingStarted extends Fragment {
 
         holoCircularProgressBar = (HoloCircularProgressBar) getView().findViewById(R.id.holoCircularProgressBar1);
 
-
         //Shared preferences to retrieve the session data.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
 
@@ -74,7 +74,6 @@ public class fFastingStarted extends Fragment {
         long endMill = preferences.getLong("END_TIME", 0);// @Param endMill the end time in milliseconds
         int endHour = preferences.getInt("END_HOUR", 1);// @Param endHour how many hours into the future the timer ends
         long endHourInMills = preferences.getLong("END_MILLISEC", 0);// @Param endHourInMills the hours in milliseconds
-        long saveTime = preferences.getLong("SAVE_TIME", 0);
         boolean timerStarted = preferences.getBoolean("TIMER_START", false);
 
         //Calculates the difference in the current time and the end time.
@@ -83,7 +82,6 @@ public class fFastingStarted extends Fragment {
         }
 
         counter = new MyCounter(endHourInMills, 1000);//
-
 
         //Starts and sets the clocks.
         startCalendar = Calendar.getInstance();
@@ -94,18 +92,16 @@ public class fFastingStarted extends Fragment {
         txtStartTime.setText(TimeFormat.format(startCalendar.getTime()));
 
         //If end day is tomorrow then show tomorrows date for the user, if not then it isn't necessary.
-        if (endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE)){
+        if (endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE)) {
             txtEndTime.setText(TimeDateFormat.format(endCalendar.getTime()));
-        }else{
+        } else {
             txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
         }
-
         if (endHour == 1) {
             txtFastDuration.setText(endHour + " Hour");
         } else {
             txtFastDuration.setText(endHour + " Hours");
         }
-
     }
 
     final View.OnClickListener BtnBreakFast_OnClickListener = new View.OnClickListener() {
@@ -115,8 +111,8 @@ public class fFastingStarted extends Fragment {
                 changeFragment();
             }
             else{
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(fFastingStarted.this.getActivity());
-               builder1.setMessage("Do you want to break your fast early?");
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(TimerStartedFragment.this.getActivity());
+                builder1.setMessage("Do you want to break your fast early?");
                 builder1.setCancelable(true);
                 builder1.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
@@ -148,7 +144,7 @@ public class fFastingStarted extends Fragment {
 
         //Launches a new fragment and replaces the current one.
         fragmentChange = getActivity().getFragmentManager().beginTransaction();
-        fragmentChange.replace(R.id.container, new fFastingSettings());
+        fragmentChange.replace(R.id.container, new TimerSettingFragment());
         fragmentChange.commit();
     }
 
@@ -168,13 +164,11 @@ public class fFastingStarted extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
     private class MyCounter extends CountDownTimer {
 
-        private long mTimeLeft;
         private int mEndMinutes, mElapsedTime, mPercentCompleted;
         private boolean dateChange = false;
         private  float percentAsFloat;
@@ -185,8 +179,6 @@ public class fFastingStarted extends Fragment {
         private MyCounter(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
 
-            mTimeLeft = millisInFuture;
-
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
             mEndMinutes = preferences.getInt("END_HOUR", 0) * 3600; // 3600 for seconds, 60 for minutes.
@@ -196,10 +188,13 @@ public class fFastingStarted extends Fragment {
             super.start();
         }
 
+        public int getPercentageComplete(){
+            return  mPercentCompleted;
+        }
+
         public void onTick(long millisUntilFinished) {
 
             String hours, minutes, seconds;
-
 
             int iSeconds = (int) (millisUntilFinished / 1000) % 60;
             int iMinutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
@@ -236,7 +231,6 @@ public class fFastingStarted extends Fragment {
             holoCircularProgressBar.setProgress(percentAsFloat);
             holoCircularProgressBar.setMarkerProgress(percentAsFloat);
 
-
             txtPercentComplete.setText(mPercentCompleted + "%");
 
             if (dateChange == false) {
@@ -245,28 +239,8 @@ public class fFastingStarted extends Fragment {
                     txtStartTime.setText(TimeDateFormat2.format(startCalendar.getTime()));
                     txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
                     dateChange = true;
-
                 }
             }
-
-            this.mTimeLeft = millisUntilFinished;
-        }
-
-        /* This method is run in a separate thread, saves the current millisecond time so that it can be
-         retrieved later.*/
-        public void saveTimer() {
-            try {
-                    SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putLong("END_MILLISEC", this.mTimeLeft);
-                    editor.putLong("SAVE_TIME", System.currentTimeMillis());
-                    editor.commit();
-            }
-            catch (Exception ex){
-                Log.e("saveTimer", "Error calling saveTimer method");
-                Log.e("Message:", ex.getStackTrace().toString());
-            }
-
         }
 
         public void onFinish() {
@@ -279,11 +253,6 @@ public class fFastingStarted extends Fragment {
 
             txtHourMins.setText("00:00");
             txtSecs.setText(":00");
-
-        }
-
-        public int getPercentageComplete(){
-            return  mPercentCompleted;
         }
     }
 

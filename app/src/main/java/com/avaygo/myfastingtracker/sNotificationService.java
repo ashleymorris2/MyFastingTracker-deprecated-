@@ -21,7 +21,7 @@ public class sNotificationService extends Service {
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationManager mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        Intent myIntent = new Intent(this.getApplicationContext(), aFastingTracker.class);
+        Intent myIntent = new Intent(this.getApplicationContext(), FastingTrackerActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, myIntent, 0);
 
         Notification mNotify = new Notification.Builder(this)

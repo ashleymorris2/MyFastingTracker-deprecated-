@@ -1,9 +1,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar"></style>
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    </style>
 
+        <!-- Customize your theme here. -->
      <style name="CircularProgressBar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
@@ -15,16 +16,100 @@
         <item name="thumb_visible">true</item>
     </style>
 
-    <style name="CircularProgressBarLight">
+
+    <!--==============================================================================
+        Default Application Style
+    ===============================================================================-->
+
+    <style name="title_font_default">
+        <item name="android:textColor">@color/Clouds</item>
+    </style>
+
+    <style name="font_default" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Clouds</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="timer_font_default" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Clouds</item>
+    </style>
+
+    <style name="button_font_default" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Clouds</item>
+    </style>
+
+    <style name="background_default">
+        <item name="android:background">@color/Wet_Asphalt</item>
+    </style>
+
+    <style name="CircularProgressBar_default">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="stroke_width">5dp</item>
         <item name="progress" format="float">0.1</item>
-        <item name="progress_color">#c0392b</item>
-        <item name="progress_background_color">#bdc3c7</item>
+        <item name="progress_color">@color/Alizarin</item>
+        <item name="progress_background_color">@color/Silver</item>
         <item name="marker_visible">true</item>
         <item name="thumb_visible">true</item>
-
     </style>
+
+    <style name="CircularSeekBar_default">
+        <item name="circle_color">#bdc3c7</item>
+        <item name="circle_progress_color">#c0392b</item>
+
+        <item name="pointer_color">#b3c0392b</item>
+        <item name="pointer_halo_color">#e74c3c</item>
+
+        <item name="pointer_halo_color_ontouch">#b3e74c3c</item>
+        <item name="pointer_alpha_ontouch">255</item>
+    </style>
+
+    <!--==============================================================================
+      Light Application Style
+   ===============================================================================-->
+
+    <style name="title_font_light">
+        <item name="android:textColor">@color/Peter_River</item>
+    </style>
+
+    <style name="font_light" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Peter_River</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="timer_font_light" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Peter_River</item>
+    </style>
+
+    <style name="button_font_light" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/Peter_River</item>
+    </style>
+
+    <style name="background_light">
+        <item name="android:background">@color/Clouds</item>
+    </style>
+
+    <style name="CircularProgressBar_light">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="stroke_width">5dp</item>
+        <item name="progress" format="float">0.1</item>
+        <item name="progress_color">@color/Midnight_Blue</item>
+        <item name="progress_background_color">@color/Silver</item>
+        <item name="marker_visible">true</item>
+        <item name="thumb_visible">true</item>
+    </style>
+
+    <style name="CircularSeekBar_light">
+        <item name="circle_color">#bdc3c7</item>
+        <item name="circle_progress_color">#2980b9</item>
+
+        <item name="pointer_color">#34495e</item>
+        <item name="pointer_halo_color">#2980b9</item>
+
+        <item name="pointer_halo_color_ontouch">#b334495e</item>
+        <item name="pointer_alpha_ontouch">255</item>
+    </style>
+
 
 </resources>

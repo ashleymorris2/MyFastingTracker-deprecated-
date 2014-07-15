@@ -19,7 +19,7 @@ import com.devadvance.circularseekbar.CircularSeekBar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class fFastingSettings extends Fragment {
+public class TimerSettingFragment extends Fragment {
 
     //UI Elements:
     private Button BStartToggle;
@@ -31,18 +31,18 @@ public class fFastingSettings extends Fragment {
     Runnable myRunnableThread = new CountDownRunner();
     //Calendars and time formatting:
     Calendar currentCalendar, futureCalendar;
-   // Remove seconds
+
     SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
     SimpleDateFormat futureHourFormat2 = new SimpleDateFormat("EE HH:");//The hour for the future clock.
     SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
-    SimpleDateFormat dayFormat = new SimpleDateFormat(" EE");//
+
     //Fragment Class:
     FragmentTransaction fragmentChange;
     //Classes:
     cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
 
-    public fFastingSettings(){
+    public TimerSettingFragment(){
         //empty constructor, ok then.
     }
 
@@ -71,7 +71,6 @@ public class fFastingSettings extends Fragment {
 
         BStartToggle = (Button) getView().findViewById(R.id.start_toggle);
         BStartToggle.setOnClickListener(BStartToggle_OnClickListener);
-
 
         futureCalendar = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
@@ -118,13 +117,12 @@ public class fFastingSettings extends Fragment {
 
             //Launches a new fragment and replaces the current one.
             fragmentChange = getActivity().getFragmentManager().beginTransaction();
-            fragmentChange.replace(R.id.container, new fFastingStarted());
+            fragmentChange.replace(R.id.container, new TimerStartedFragment());
             fragmentChange.commit();
         }
     };
 
     //Seek bar listener for timeSeek
-
     final CircularSeekBar.OnCircularSeekBarChangeListener timeSeek_listener = new CircularSeekBar.OnCircularSeekBarChangeListener() {
         public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
 
@@ -172,6 +170,7 @@ public class fFastingSettings extends Fragment {
         }
     };
 
+//    Updates the time in the UI thread, changes the textviews to match.
     public void upDateTime() {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {

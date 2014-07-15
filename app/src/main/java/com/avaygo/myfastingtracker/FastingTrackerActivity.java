@@ -1,28 +1,20 @@
 package com.avaygo.myfastingtracker;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cengalabs.flatui.FlatUI;
 
-
-public class aFastingTracker extends Activity implements fFastingStarted.OnFragmentInteractionListener {
+public class FastingTrackerActivity extends Activity implements TimerStartedFragment.OnFragmentInteractionListener {
 
     boolean fastingState;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
-
-        FlatUI.initDefaultValues(this);
-        FlatUI.setDefaultTheme(FlatUI.SEA);
-
-
 
         if (savedInstanceState == null) {
             //Shared preferences to load the activity's session.
@@ -42,12 +34,12 @@ public class aFastingTracker extends Activity implements fFastingStarted.OnFragm
 
         if (mFastingState == false){
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new fFastingSettings())
+                    .add(R.id.container, new TimerSettingFragment())
                     .commit();
         }
         else{
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new fFastingStarted())
+                    .add(R.id.container, new TimerStartedFragment())
                     .commit();
         }
     }

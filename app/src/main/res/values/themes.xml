@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme" parent="android:Theme.DeviceDefault.Light.DarkActionBar">
+        </style>
+
+
+    <style name="Theme.default">
+        <item name="textTitle">@style/title_font_default</item>
+        <item name="textTimer">@style/timer_font_default</item>
+        <item name="textRegular">@style/font_default</item>
+        <item name="pageBackground">@style/background_default</item>
+       <item name="circleProgress">@style/CircularProgressBar_default</item>
+        <item name="circleSeek">@style/CircularSeekBar_default</item>
+    </style>
+    <style name="Theme.light">
+        <item name="textTitle">@style/title_font_light</item>
+        <item name="textTimer">@style/timer_font_light</item>
+        <item name="textRegular">@style/font_light</item>
+        <item name="pageBackground">@style/background_light</item>
+        <item name="circleProgress">@style/CircularProgressBar_light</item>
+        <item name="circleSeek">@style/CircularSeekBar_light</item>
+    </style>
+
+
+
+</resources>
