@@ -9,6 +9,7 @@
         <item name="textTitle">@style/title_font_default</item>
         <item name="textTimer">@style/timer_font_default</item>
         <item name="textRegular">@style/font_default</item>
+        <item name="textButton">@style/button_font_default</item>
         <item name="pageBackground">@style/background_default</item>
        <item name="circleProgress">@style/CircularProgressBar_default</item>
         <item name="circleSeek">@style/CircularSeekBar_default</item>
@@ -17,6 +18,7 @@
         <item name="textTitle">@style/title_font_light</item>
         <item name="textTimer">@style/timer_font_light</item>
         <item name="textRegular">@style/font_light</item>
+        <item name="textButton">@style/button_font_light</item>
         <item name="pageBackground">@style/background_light</item>
         <item name="circleProgress">@style/CircularProgressBar_light</item>
         <item name="circleSeek">@style/CircularSeekBar_light</item>

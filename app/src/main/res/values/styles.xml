@@ -36,6 +36,7 @@
 
     <style name="button_font_default" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/Clouds</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="background_default">
@@ -83,6 +84,7 @@
 
     <style name="button_font_light" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/Peter_River</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="background_light">

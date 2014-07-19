@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker;
+package com.avaygo.myfastingtracker.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,12 +9,13 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,22 +24,19 @@ import de.passy.holocircularprogressbar.HoloCircularProgressBar;
 
 
 public class TimerStartedFragment extends Fragment {
-
-    private OnFragmentInteractionListener mListener;
-
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
     private Button BtnBreakFast;
     private TextView txtStartTime, txtEndTime, txtHourMins, txtSecs, txtFastDuration, txtPercentComplete;
 
-    //Calendars and time formatting
+    //Calendars and time formatting:
     private Calendar startCalendar, endCalendar;
     SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
     SimpleDateFormat TimeDateFormat = new SimpleDateFormat("EE HH:mm");
     SimpleDateFormat TimeDateFormat2 = new SimpleDateFormat("HH:mm EE");
 
     //Fragment Class:
-    FragmentTransaction fragmentChange;
+    private FragmentTransaction fragmentChange;
 
     //CountDownTimer class, overwritten methods to save state.
     private static MyCounter counter;
@@ -62,8 +60,37 @@ public class TimerStartedFragment extends Fragment {
         txtSecs = (TextView) getView().findViewById(R.id.txt_time_seconds);
         txtFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
         txtPercentComplete = (TextView) getView().findViewById(R.id.txt_completed);
+
         BtnBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
-        BtnBreakFast.setOnClickListener(BtnBreakFast_OnClickListener);
+        BtnBreakFast.setOnClickListener(new View.OnClickListener() {
+            private View v;
+            public void onClick(View view) {
+                //Gives the user an alert dialog if they are over 5 percent into their fast.
+                if (counter.getPercentageComplete() < 5 || counter.getPercentageComplete() == 100) {
+                    changeFragment();
+                }
+                else{
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(TimerStartedFragment.this.getActivity());
+                    builder1.setMessage("Do you want to break your fast early?");
+                    builder1.setCancelable(true);
+                    builder1.setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    changeFragment();
+                                }
+                            });
+                    builder1.setNegativeButton("No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+
+            }
+        });
 
         holoCircularProgressBar = (HoloCircularProgressBar) getView().findViewById(R.id.holoCircularProgressBar1);
 
@@ -104,35 +131,9 @@ public class TimerStartedFragment extends Fragment {
         }
     }
 
-    final View.OnClickListener BtnBreakFast_OnClickListener = new View.OnClickListener() {
-        public void onClick(View view) {
-            //Gives the user an alert dialog if they are over 5 percent into their fast.
-            if (counter.getPercentageComplete() < 5 || counter.getPercentageComplete() == 100) {
-                changeFragment();
-            }
-            else{
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(TimerStartedFragment.this.getActivity());
-                builder1.setMessage("Do you want to break your fast early?");
-                builder1.setCancelable(true);
-                builder1.setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                changeFragment();
-                            }
-                        });
-                builder1.setNegativeButton("No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-            }
-        }
-    };
-
-    //Clears the shared preferences and changes the fragment.
+    /**
+    Clears the shared preferences and changes the fragment.
+    **/
     private void changeFragment() {
         //Shared preferences, stores the current state on the button press to save the activity's session.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
@@ -146,25 +147,6 @@ public class TimerStartedFragment extends Fragment {
         fragmentChange = getActivity().getFragmentManager().beginTransaction();
         fragmentChange.replace(R.id.container, new TimerSettingFragment());
         fragmentChange.commit();
-    }
-
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
     }
 
     private class MyCounter extends CountDownTimer {
@@ -186,10 +168,6 @@ public class TimerStartedFragment extends Fragment {
             editor.commit();
 
             super.start();
-        }
-
-        public int getPercentageComplete(){
-            return  mPercentCompleted;
         }
 
         public void onTick(long millisUntilFinished) {
@@ -254,6 +232,26 @@ public class TimerStartedFragment extends Fragment {
             txtHourMins.setText("00:00");
             txtSecs.setText(":00");
         }
+
+        public int getPercentageComplete(){
+            return  mPercentCompleted;
+        }
     }
 
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    public interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(Uri uri);
+    }
 }

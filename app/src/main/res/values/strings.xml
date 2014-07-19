@@ -11,5 +11,6 @@
     <string name="end_time">End</string>
     <string name="title_activity_fasting_tracker">Fasting tracker</string>
     <string name="btnStop">Breakfast</string>
+    <string name="title_activity_fasting_log">FastingLogActivity</string>
 
 </resources>

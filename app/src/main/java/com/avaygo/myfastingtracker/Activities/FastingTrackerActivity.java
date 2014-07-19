@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker;
+package com.avaygo.myfastingtracker.Activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -6,6 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.avaygo.myfastingtracker.R;
+import com.avaygo.myfastingtracker.Fragments.TimerSettingFragment;
+import com.avaygo.myfastingtracker.Fragments.TimerStartedFragment;
 
 
 public class FastingTrackerActivity extends Activity implements TimerStartedFragment.OnFragmentInteractionListener {
@@ -61,6 +65,11 @@ public class FastingTrackerActivity extends Activity implements TimerStartedFrag
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker;
+package com.avaygo.myfastingtracker.Notifications;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -12,18 +12,26 @@ import java.util.Calendar;
 
 /**
  * Created by Ash on 25/06/2014.
+ *
+ * Class to set up notifications for the fasting application
+ *
+ *
  */
 public class cNotificationSetup {
 
     Calendar reminderCalendar;
     SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("EEEE HH:mm");
 
-    public Calendar getReminderCalendar() {
-        return reminderCalendar;
+    public cNotificationSetup(){
+
     }
 
     public void setReminderCalendar(Calendar reminderCalendar) {
         this.reminderCalendar = reminderCalendar;
+    }
+
+    public Calendar getReminderCalendar() {
+        return reminderCalendar;
     }
 
     public void createAlarm(Activity activity) {
@@ -31,7 +39,7 @@ public class cNotificationSetup {
         //AlarmManager is used to set the time for when the intent is called.
         //Pending intent is an intent that will be called at a later time.
 
-        Intent myIntent = new Intent(activity, sNotificationService.class);
+        Intent myIntent = new Intent(activity, TimerNotificationService.class);
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getService(activity, 0 ,myIntent, 0);
 

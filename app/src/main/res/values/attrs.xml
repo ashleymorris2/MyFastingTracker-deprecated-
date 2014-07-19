@@ -43,6 +43,7 @@
     <attr name="textTitle" format="reference" />
     <attr name="textTimer" format="reference" />
     <attr name="textRegular" format="reference" />
+    <attr name="textButton" format="reference" />
 
     <attr name="circleSeek" format="reference"/>
     <attr name="circleProgress" format="reference" />

@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker;
+package com.avaygo.myfastingtracker.Notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,8 +9,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
 
-public class sNotificationService extends Service {
-    public sNotificationService() {
+import com.avaygo.myfastingtracker.Activities.FastingTrackerActivity;
+import com.avaygo.myfastingtracker.R;
+
+public class TimerNotificationService extends Service {
+    public TimerNotificationService() {
     }
 
     public IBinder onBind(Intent intent) {

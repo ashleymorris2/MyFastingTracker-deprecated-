@@ -39,6 +39,7 @@
         android:layout_alignRight="@+id/relative"
         android:layout_alignEnd="@+id/relative"
         android:background="@drawable/greenbutton"
+        style="?textButton"
         android:textColor="@color/Clouds"
         android:textSize="18dp" />
 

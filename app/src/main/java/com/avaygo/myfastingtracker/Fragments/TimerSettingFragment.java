@@ -1,6 +1,4 @@
-package com.avaygo.myfastingtracker;
-
-
+package com.avaygo.myfastingtracker.Fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -13,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.widget.TextView;
+
+import com.avaygo.myfastingtracker.R;
+import com.avaygo.myfastingtracker.Notifications.cNotificationSetup;
 import com.devadvance.circularseekbar.CircularSeekBar;
 
 
@@ -20,27 +21,24 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class TimerSettingFragment extends Fragment {
-
     //UI Elements:
     private Button BStartToggle;
-    private TextView TStatusText, TCurrentTime, TEndTime, TSeekVal, TCurrentClock, TEndClock, TEndHour;
+    private TextView TCurrentTime, TEndTime, TSeekVal, TCurrentClock, TEndClock, TEndHour;
     private CircularSeekBar timeSeekBar;
-
     //Threads and Runnables:
-    Thread myThread = null;
-    Runnable myRunnableThread = new CountDownRunner();
+    private Thread myThread = null;
+    private Runnable myRunnableThread = new CountDownRunner();
     //Calendars and time formatting:
-    Calendar currentCalendar, futureCalendar;
-
+    private Calendar currentCalendar, futureCalendar;
     SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
-    SimpleDateFormat futureHourFormat2 = new SimpleDateFormat("EE HH:");//The hour for the future clock.
+    SimpleDateFormat futureDayHourFormat = new SimpleDateFormat("EE HH:");//The hour for the future clock.
     SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
-
     //Fragment Class:
-    FragmentTransaction fragmentChange;
-    //Classes:
-    cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
+    private FragmentTransaction fragmentChange;
+    //Custom Classes:
+    private cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
+
 
     public TimerSettingFragment(){
         //empty constructor, ok then.
@@ -58,7 +56,6 @@ public class TimerSettingFragment extends Fragment {
         myThread.start();
 
         //Find View Elements
-        TStatusText = (TextView) getView().findViewById(R.id.status_text);
         TCurrentTime = (TextView) getView().findViewById(R.id.current_time);
         TCurrentClock = (TextView) getView().findViewById(R.id.clock_text);
         TEndClock = (TextView) getView().findViewById(R.id.endclock_text);
@@ -67,10 +64,80 @@ public class TimerSettingFragment extends Fragment {
         TSeekVal = (TextView) getView().findViewById(R.id.seekVal);
 
         timeSeekBar = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar1);
-        timeSeekBar.setOnSeekBarChangeListener(timeSeek_listener);
+        timeSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
+            public void onStartTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+            public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+                int seekValue = progress + 1;
+
+                if (seekValue < 10) {
+                    TSeekVal.setText("0" +seekValue+ ":00");
+                } else {
+                    TSeekVal.setText(seekValue + ":00");
+                }
+
+                futureCalendar = Calendar.getInstance();//Opens an instance of the future calendar.
+
+                //Adds seekValue to the current hour of the day and updates the text.
+                futureCalendar.add(Calendar.HOUR_OF_DAY, seekValue);
+                TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
+
+            /*Checks if today matches future date, if not then it must be tomorrow, sets the text to tomorrows
+            day.*/
+                if (currentCalendar.get(Calendar.DAY_OF_WEEK) != futureCalendar.get(Calendar.DAY_OF_WEEK)) {
+                    TEndHour.setText(futureDayHourFormat.format(futureCalendar.getTime()));
+                }
+
+            }
+            public void onStopTrackingTouch(CircularSeekBar seekBar) {
+                int seekValue = seekBar.getProgress();
+
+                seekValue += 1;
+
+                SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+                SharedPreferences.Editor editor = preferences.edit();
+
+                //3600000 is 1 hour in milliseconds.
+                long endMillies = seekValue * 3600000;
+
+                //@END_HOUR how many hours into the future the timer will run until
+                //@END_MILLISEC the number of hours broken down into milliseconds.
+                editor.putInt("END_HOUR", seekValue);
+                editor.putLong("END_MILLISEC", endMillies);
+                editor.commit();
+            }
+        });
 
         BStartToggle = (Button) getView().findViewById(R.id.start_toggle);
-        BStartToggle.setOnClickListener(BStartToggle_OnClickListener);
+        BStartToggle.setOnClickListener(new View.OnClickListener() {
+            private View v;
+            public void onClick(View v){
+                futureCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
+                futureCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
+
+                //Passes the future time to the notification class so that it can set a notification at that time.
+                myNotification.setReminderCalendar(futureCalendar);
+                myNotification.createAlarm(getActivity());
+
+                //Shared preferences, stores the current state on the button press to save the activity's session.
+                SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+                SharedPreferences.Editor editor = preferences.edit();
+
+                //IS_FASTING tag is used to describe the current state of the session.
+                editor.putBoolean("IS_FASTING", true);
+                editor.putLong("START_TIME", currentCalendar.getTimeInMillis());
+                editor.putLong("END_TIME", futureCalendar.getTimeInMillis());
+
+                // Commit the edits
+                editor.commit();
+
+                //Launches a new fragment and replaces the current one.
+                fragmentChange = getActivity().getFragmentManager().beginTransaction();
+                fragmentChange.replace(R.id.container, new TimerStartedFragment());
+                fragmentChange.commit();
+            }
+        });
 
         futureCalendar = Calendar.getInstance();
         currentCalendar = Calendar.getInstance();
@@ -92,85 +159,7 @@ public class TimerSettingFragment extends Fragment {
         editor.commit();
     }
 
-    //On click listener for BStartToggle
-    final View.OnClickListener BStartToggle_OnClickListener = new View.OnClickListener() {
-        public void onClick(View view) {
-
-            futureCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
-            futureCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
-
-            //Passes the future time to the notification class so that it can set a notification at that time.
-            myNotification.setReminderCalendar(futureCalendar);
-            myNotification.createAlarm(getActivity());
-
-           //Shared preferences, stores the current state on the button press to save the activity's session.
-            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
-            SharedPreferences.Editor editor = preferences.edit();
-
-            //IS_FASTING tag is used to describe the current state of the session.
-            editor.putBoolean("IS_FASTING", true);
-            editor.putLong("START_TIME", currentCalendar.getTimeInMillis());
-            editor.putLong("END_TIME", futureCalendar.getTimeInMillis());
-
-            // Commit the edits
-            editor.commit();
-
-            //Launches a new fragment and replaces the current one.
-            fragmentChange = getActivity().getFragmentManager().beginTransaction();
-            fragmentChange.replace(R.id.container, new TimerStartedFragment());
-            fragmentChange.commit();
-        }
-    };
-
-    //Seek bar listener for timeSeek
-    final CircularSeekBar.OnCircularSeekBarChangeListener timeSeek_listener = new CircularSeekBar.OnCircularSeekBarChangeListener() {
-        public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
-
-            int seekValue = progress + 1;
-
-            if (seekValue < 10) {
-                TSeekVal.setText("0" +seekValue+ ":00");
-            } else {
-                TSeekVal.setText(seekValue + ":00");
-            }
-
-            futureCalendar = Calendar.getInstance();//Opens an instance of the future calendar.
-
-            //Adds seekValue to the current hour of the day and updates the text.
-            futureCalendar.add(Calendar.HOUR_OF_DAY, seekValue);
-            TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
-
-            /*Checks if today matches future date, if not then it must be tomorrow, sets the text to tomorrows
-            day.*/
-            if (currentCalendar.get(Calendar.DAY_OF_WEEK) != futureCalendar.get(Calendar.DAY_OF_WEEK)) {
-                TEndHour.setText(futureHourFormat2.format(futureCalendar.getTime()));
-            }
-
-        }
-
-        public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-        }
-        public void onStopTrackingTouch(CircularSeekBar seekBar) {
-            int seekValue = seekBar.getProgress();
-
-            seekValue += 1;
-
-            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
-            SharedPreferences.Editor editor = preferences.edit();
-
-            //3600000 is 1 hour in milliseconds.
-            long endMillies = seekValue * 3600000;
-
-            //@END_HOUR how many hours into the future the timer will run until
-            //@END_MILLISEC the number of hours broken down into milliseconds.
-            editor.putInt("END_HOUR", seekValue);
-            editor.putLong("END_MILLISEC", endMillies);
-            editor.commit();
-        }
-    };
-
-//    Updates the time in the UI thread, changes the textviews to match.
+//    Updates the time in the UI thread, changes the textview to match.
     public void upDateTime() {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -211,12 +200,9 @@ public class TimerSettingFragment extends Fragment {
         }
     }
 
-
     public void onDestroyView() {
         super.onDestroyView();
         myThread.interrupt();
     }
-
-
 }
 
