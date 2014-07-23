@@ -1,12 +1,10 @@
 package com.avaygo.myfastingtracker.Notifications;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -20,7 +18,7 @@ import java.util.Calendar;
 public class cNotificationSetup {
 
     Calendar reminderCalendar;
-    SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("EEEE HH:mm");
+    SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("HH:mm EEEE");
 
     public cNotificationSetup(){
 
@@ -34,14 +32,14 @@ public class cNotificationSetup {
         return reminderCalendar;
     }
 
-    public void createAlarm(Activity activity) {
+    public void createAlarm(Context context) {
         //Creates an intent that will be called at a future time. Our intent here is the notification service.
         //AlarmManager is used to set the time for when the intent is called.
         //Pending intent is an intent that will be called at a later time.
 
-        Intent myIntent = new Intent(activity, TimerNotificationService.class);
-        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(activity, 0 ,myIntent, 0);
+        Intent myIntent = new Intent(context, TimerNotificationService.class);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0 ,myIntent, 0);
 
         Calendar alarmCalendar = Calendar.getInstance();
         alarmCalendar.set(Calendar.DATE,reminderCalendar.get(Calendar.DATE));
@@ -51,6 +49,6 @@ public class cNotificationSetup {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
 
-        Toast.makeText(activity,"Fasting started. End time: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"Ending fast at: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_SHORT).show();
     }
 }
