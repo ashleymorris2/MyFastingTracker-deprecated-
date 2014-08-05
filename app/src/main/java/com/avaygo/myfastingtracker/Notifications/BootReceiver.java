@@ -1,19 +1,14 @@
 package com.avaygo.myfastingtracker.Notifications;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-
-import com.avaygo.myfastingtracker.Activities.FastingLogActivity;
-
 import java.util.Calendar;
 
 /**
  * BootReceiver is called to reset the notifications when the phone has been reset.
- * It is registered in the android manifest to receive the BOOT_COMPLETED intent
+ * It is registered in the android manifest to receive the ON_BOOT_COMPLETED intent
  *
  *
 * Ashley Morris

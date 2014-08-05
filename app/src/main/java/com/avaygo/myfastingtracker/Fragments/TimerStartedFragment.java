@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.avaygo.myfastingtracker.Notifications.cNotificationSetup;
 import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
@@ -27,13 +28,16 @@ public class TimerStartedFragment extends Fragment {
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
     private Button BtnBreakFast;
-    private TextView txtStartTime, txtEndTime, txtHourMins, txtSecs, txtFastDuration, txtPercentComplete;
+    private TextView txtStartTime, txtEndTime, txtHourAndMins, txtSecs, txtFastDuration, txtPercentComplete,
+            txtStartDay, txtEndDay;
 
     //Calendars and time formatting:
     private Calendar startCalendar, endCalendar;
+
     SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat TimeDateFormat = new SimpleDateFormat("EE HH:mm");
-    SimpleDateFormat TimeDateFormat2 = new SimpleDateFormat("HH:mm EE");
+    SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");
+
+    cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
 
     //Fragment Class:
     private FragmentTransaction fragmentChange;
@@ -47,7 +51,7 @@ public class TimerStartedFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_f_fasting_started, container, false);
+        return inflater.inflate(R.layout.fragment_fasting_started, container, false);
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -56,17 +60,22 @@ public class TimerStartedFragment extends Fragment {
         //Find View Elements
         txtStartTime = (TextView) getView().findViewById(R.id.start_time);
         txtEndTime = (TextView) getView().findViewById(R.id.end_time);
-        txtHourMins = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
+        txtHourAndMins = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
         txtSecs = (TextView) getView().findViewById(R.id.txt_time_seconds);
         txtFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
         txtPercentComplete = (TextView) getView().findViewById(R.id.txt_completed);
 
+        txtStartDay = (TextView) getView().findViewById(R.id.txt_start_day);
+        txtEndDay = (TextView) getView().findViewById(R.id.txt_end_day);
+
         BtnBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
         BtnBreakFast.setOnClickListener(new View.OnClickListener() {
+
             private View v;
             public void onClick(View view) {
-                //Gives the user an alert dialog if they are over 5 percent into their fast.
-                if (counter.getPercentageComplete() < 5 || counter.getPercentageComplete() == 100) {
+                //Gives the user an alert dialog if they are over 1 percent into their fast.
+                if (counter.getPercentageComplete() < 1 || counter.getPercentageComplete() == 100) {
+                   myNotification.cancelAlarm(getActivity());
                     changeFragment();
                 }
                 else{
@@ -76,6 +85,7 @@ public class TimerStartedFragment extends Fragment {
                     builder1.setPositiveButton("Yes",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
+                                    myNotification.cancelAlarm(getActivity());
                                     changeFragment();
                                 }
                             });
@@ -97,33 +107,37 @@ public class TimerStartedFragment extends Fragment {
         //Shared preferences to retrieve the session data.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
 
-        long startMill = preferences.getLong("START_TIME", 0);//@Param startMill start time in milliseconds
-        long endMill = preferences.getLong("END_TIME", 0);// @Param endMill the end time in milliseconds
+        long startMillies = preferences.getLong("START_TIME", 0);//@Param startMillies start time in milliseconds
+        long endMillies = preferences.getLong("END_TIME", 0);// @Param endMillies the end time in milliseconds
         int endHour = preferences.getInt("END_HOUR", 1);// @Param endHour how many hours into the future the timer ends
-        long endHourInMills = preferences.getLong("END_MILLISEC", 0);// @Param endHourInMills the hours in milliseconds
+        long timeLeftInMillies = preferences.getLong("END_MILLISEC", 0);// @Param timeLeftInMillies the hours left in milliseconds
         boolean timerStarted = preferences.getBoolean("TIMER_START", false);
 
         //Calculates the difference in the current time and the end time.
         if (timerStarted == true) {
-             endHourInMills = endMill - System.currentTimeMillis();
+             timeLeftInMillies = endMillies - System.currentTimeMillis();
         }
 
-        counter = new MyCounter(endHourInMills, 1000);//
+        counter = new MyCounter(timeLeftInMillies, 1000);//
 
         //Starts and sets the clocks.
         startCalendar = Calendar.getInstance();
         endCalendar = Calendar.getInstance();
-        startCalendar.setTimeInMillis(startMill);
-        endCalendar.setTimeInMillis(endMill);
+        startCalendar.setTimeInMillis(startMillies);
+        endCalendar.setTimeInMillis(endMillies);
 
         txtStartTime.setText(TimeFormat.format(startCalendar.getTime()));
+        txtStartDay.setText("Today");
 
         //If end day is tomorrow then show tomorrows date for the user, if not then it isn't necessary.
         if (endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE)) {
-            txtEndTime.setText(TimeDateFormat.format(endCalendar.getTime()));
+            txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
+            txtEndDay.setText("Tomorrow");//If two aren't equal then end must be tomorrow.
         } else {
             txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
+            txtEndDay.setText("Today");
         }
+
         if (endHour == 1) {
             txtFastDuration.setText(endHour + " Hour");
         } else {
@@ -145,7 +159,7 @@ public class TimerStartedFragment extends Fragment {
 
         //Launches a new fragment and replaces the current one.
         fragmentChange = getActivity().getFragmentManager().beginTransaction();
-        fragmentChange.replace(R.id.container, new TimerSettingFragment());
+        fragmentChange.replace(R.id.mainContent, new TimerSettingFragment());
         fragmentChange.commit();
     }
 
@@ -196,7 +210,7 @@ public class TimerStartedFragment extends Fragment {
                 seconds = Integer.toString(iSeconds);
             }
 
-            txtHourMins.setText(hours + ":" + minutes);
+            txtHourAndMins.setText(hours + ":" + minutes);
             txtSecs.setText(":" + seconds);
 
             //Calculates the remaining time as a percentage for the progress bar.
@@ -207,15 +221,19 @@ public class TimerStartedFragment extends Fragment {
             //@percentageAsFloat is needed because the circular progress bar is set to a maximum of 1.
             percentAsFloat = mPercentCompleted / 100f;
             holoCircularProgressBar.setProgress(percentAsFloat);
-            holoCircularProgressBar.setMarkerProgress(percentAsFloat);
+            //holoCircularProgressBar.setMarkerProgress(percentAsFloat);
 
             txtPercentComplete.setText(mPercentCompleted + "%");
 
             if (dateChange == false) {
                 //Checks if today's date matches the end date and updates the texts appropriately.
                 if (startCalendar.get(Calendar.DATE) != Calendar.getInstance().get(Calendar.DATE)) {
-                    txtStartTime.setText(TimeDateFormat2.format(startCalendar.getTime()));
-                    txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
+
+               /*     txtStartTime.setText(TimeFormat.format(startCalendar.getTime()));
+                    txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));*/
+
+                    txtStartDay.setText("Yesterday");
+                    txtEndDay.setText("Today");
                     dateChange = true;
                 }
             }
@@ -226,10 +244,10 @@ public class TimerStartedFragment extends Fragment {
             mPercentCompleted = 100;
             percentAsFloat = 1;
             holoCircularProgressBar.setProgress(percentAsFloat);
-            holoCircularProgressBar.setMarkerProgress(percentAsFloat);
+            //holoCircularProgressBar.setMarkerProgress(percentAsFloat);
             txtPercentComplete.setText(mPercentCompleted + "%");
 
-            txtHourMins.setText("00:00");
+            txtHourAndMins.setText("00:00");
             txtSecs.setText(":00");
         }
 

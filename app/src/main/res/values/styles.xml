@@ -70,7 +70,8 @@
    ===============================================================================-->
 
     <style name="title_font_light">
-        <item name="android:textColor">@color/Peter_River</item>
+        <item name="android:textColor">#ff424242</item>
+            <item name="android:textSize">14sp</item>
     </style>
 
     <style name="font_light" parent="@android:style/TextAppearance.Medium">
@@ -79,7 +80,7 @@
     </style>
 
     <style name="timer_font_light" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Peter_River</item>
+        <item name="android:textColor">#ff424242</item>
     </style>
 
     <style name="button_font_light" parent="@android:style/TextAppearance.Medium">
@@ -88,7 +89,7 @@
     </style>
 
     <style name="background_light">
-        <item name="android:background">@color/Clouds</item>
+        <item name="android:background">#ffe0e0e0</item>
     </style>
 
     <style name="CircularProgressBar_light">
@@ -96,8 +97,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="stroke_width">5dp</item>
         <item name="progress" format="float">0.1</item>
-        <item name="progress_color">@color/Midnight_Blue</item>
-        <item name="progress_background_color">@color/Silver</item>
+        <item name="progress_color">@color/Peter_River</item>
+        <item name="progress_background_color">#bdc3c7</item>
         <item name="marker_visible">true</item>
         <item name="thumb_visible">true</item>
     </style>

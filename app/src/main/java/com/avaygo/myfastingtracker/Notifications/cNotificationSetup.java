@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -17,19 +18,15 @@ import java.util.Calendar;
  */
 public class cNotificationSetup {
 
-    Calendar reminderCalendar;
-    SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("HH:mm EEEE");
+   private Calendar reminderCalendar;
+   private SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("HH:mm EEEE");
 
-    public cNotificationSetup(){
-
+   public cNotificationSetup(){
+        
     }
 
     public void setReminderCalendar(Calendar reminderCalendar) {
         this.reminderCalendar = reminderCalendar;
-    }
-
-    public Calendar getReminderCalendar() {
-        return reminderCalendar;
     }
 
     public void createAlarm(Context context) {
@@ -42,13 +39,27 @@ public class cNotificationSetup {
         PendingIntent pendingIntent = PendingIntent.getService(context, 0 ,myIntent, 0);
 
         Calendar alarmCalendar = Calendar.getInstance();
-        alarmCalendar.set(Calendar.DATE,reminderCalendar.get(Calendar.DATE));
+        alarmCalendar.set(Calendar.DAY_OF_YEAR,reminderCalendar.get(Calendar.DAY_OF_YEAR));
         alarmCalendar.set(Calendar.HOUR_OF_DAY, reminderCalendar.get(Calendar.HOUR_OF_DAY));
         alarmCalendar.set(Calendar.MINUTE,reminderCalendar.get(Calendar.MINUTE) );
         alarmCalendar.set(Calendar.SECOND,reminderCalendar.get(Calendar.SECOND));
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
 
         Toast.makeText(context,"Ending fast at: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_SHORT).show();
+    }
+    public void cancelAlarm(Context context){
+        try {
+            //Re-calls and then cancels the future intent.
+            Intent myIntent = new Intent(context, TimerNotificationService.class);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getService(context,0, myIntent,0);
+
+            alarmManager.cancel(pendingIntent);
+            Toast.makeText(context, "Fast Cancelled", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            Log.e("cancelAlarm method error:" , e.toString() );
+        }
     }
 }

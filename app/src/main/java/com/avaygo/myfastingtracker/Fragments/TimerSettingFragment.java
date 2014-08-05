@@ -23,21 +23,26 @@ import java.util.Calendar;
 public class TimerSettingFragment extends Fragment {
     //UI Elements:
     private Button BStartToggle;
-    private TextView TCurrentTime, TEndTime, TSeekVal, TCurrentClock, TEndClock, TEndHour;
+    private TextView TCurrentTime, TEndTime, TSeekBarValue, TCurrentClock, TEndClock, TEndHour,
+            TStartDay,TEndDay;
+
     private CircularSeekBar timeSeekBar;
+
     //Threads and Runnables:
     private Thread myThread = null;
     private Runnable myRunnableThread = new CountDownRunner();
+
     //Calendars and time formatting:
     private Calendar currentCalendar, futureCalendar;
     SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
+    SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");//The hour for the future clock.
     SimpleDateFormat futureHourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
-    SimpleDateFormat futureDayHourFormat = new SimpleDateFormat("EE HH:");//The hour for the future clock.
     SimpleDateFormat futureMinuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
+
     //Fragment Class:
     private FragmentTransaction fragmentChange;
     //Custom Classes:
-    private cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
+    cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
 
 
     public TimerSettingFragment(){
@@ -61,7 +66,9 @@ public class TimerSettingFragment extends Fragment {
         TEndClock = (TextView) getView().findViewById(R.id.endclock_text);
         TEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
         TEndTime = (TextView) getView().findViewById(R.id.end_time);
-        TSeekVal = (TextView) getView().findViewById(R.id.seekVal);
+        TEndDay = (TextView) getView().findViewById(R.id.TXT_FUTURE);
+        TStartDay = (TextView) getView().findViewById(R.id.TXT_TODAY);
+        TSeekBarValue = (TextView) getView().findViewById(R.id.seekVal);
 
         timeSeekBar = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar1);
         timeSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
@@ -72,22 +79,20 @@ public class TimerSettingFragment extends Fragment {
                 int seekValue = progress + 1;
 
                 if (seekValue < 10) {
-                    TSeekVal.setText("0" +seekValue+ ":00");
+                    TSeekBarValue.setText("0" + seekValue + ":00");
                 } else {
-                    TSeekVal.setText(seekValue + ":00");
+                    TSeekBarValue.setText(seekValue + ":00");
                 }
 
                 futureCalendar = Calendar.getInstance();//Opens an instance of the future calendar.
 
                 //Adds seekValue to the current hour of the day and updates the text.
                 futureCalendar.add(Calendar.HOUR_OF_DAY, seekValue);
-                TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
 
-            /*Checks if today matches future date, if not then it must be tomorrow, sets the text to tomorrows
-            day.*/
-                if (currentCalendar.get(Calendar.DAY_OF_WEEK) != futureCalendar.get(Calendar.DAY_OF_WEEK)) {
-                    TEndHour.setText(futureDayHourFormat.format(futureCalendar.getTime()));
-                }
+                TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
+                TEndDay.setText(DayFormat.format(futureCalendar.getTime()));
+
+
 
             }
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
@@ -98,13 +103,10 @@ public class TimerSettingFragment extends Fragment {
                 SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
                 SharedPreferences.Editor editor = preferences.edit();
 
-                //3600000 is 1 hour in milliseconds.
-                long endMillies = seekValue * 3600000;
+                long endMillies = seekValue * 3600000;//3600000 is 1 hour in milliseconds.
 
-                //@END_HOUR how many hours into the future the timer will run until
-                //@END_MILLISEC the number of hours broken down into milliseconds.
-                editor.putInt("END_HOUR", seekValue);
-                editor.putLong("END_MILLISEC", endMillies);
+                editor.putInt("END_HOUR", seekValue);//@END_HOUR how many hours into the future the timer will run until
+                editor.putLong("END_MILLISEC", endMillies);//@END_MILLISEC the number of hours broken down into milliseconds.
                 editor.commit();
             }
         });
@@ -134,7 +136,7 @@ public class TimerSettingFragment extends Fragment {
 
                 //Launches a new fragment and replaces the current one.
                 fragmentChange = getActivity().getFragmentManager().beginTransaction();
-                fragmentChange.replace(R.id.container, new TimerStartedFragment());
+                fragmentChange.replace(R.id.mainContent, new TimerStartedFragment());
                 fragmentChange.commit();
             }
         });
@@ -149,6 +151,9 @@ public class TimerSettingFragment extends Fragment {
         //Starts the clocks
         TCurrentClock.setText(currentTimeFormat.format(currentCalendar.getTime()));
         TEndClock.setText(futureMinuteFormat.format(currentCalendar.getTime()));
+
+        TStartDay.setText(DayFormat.format(currentCalendar.getTime()));
+        TEndDay.setText(DayFormat.format(futureCalendar.getTime()));
 
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
         SharedPreferences.Editor editor = preferences.edit();
@@ -173,6 +178,9 @@ public class TimerSettingFragment extends Fragment {
                     if (previousHour != currentCalendar.get(Calendar.HOUR_OF_DAY)) {
                         futureCalendar.add(Calendar.HOUR_OF_DAY, 1);
                         TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
+
+                        TStartDay.setText(DayFormat.format(currentCalendar.getTime()));
+                        TEndDay.setText(DayFormat.format(futureCalendar.getTime()));
                     }
 
                     TCurrentClock.setText(currentTimeFormat.format(currentCalendar.getTime()));

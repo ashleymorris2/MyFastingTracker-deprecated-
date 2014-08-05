@@ -31,6 +31,7 @@ public class TimerNotificationService extends Service {
                 .setContentTitle("Fast completed")
                 .setContentText("It's time to get something to eat.")
                 .setSmallIcon(R.drawable.ic_launcher)
+                .setVibrate(new long[] { 1000, 500, 1000 })
                 .setContentIntent(pIntent)
                 .setSound(sound)
                 .build();
@@ -38,6 +39,7 @@ public class TimerNotificationService extends Service {
         mNotify.flags = Notification.FLAG_AUTO_CANCEL;
 
         mNM.notify(2, mNotify);
+
 
         stopSelf();
 
