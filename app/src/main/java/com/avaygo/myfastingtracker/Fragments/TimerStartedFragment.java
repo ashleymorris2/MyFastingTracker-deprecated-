@@ -221,7 +221,7 @@ public class TimerStartedFragment extends Fragment {
             //@percentageAsFloat is needed because the circular progress bar is set to a maximum of 1.
             percentAsFloat = mPercentCompleted / 100f;
             holoCircularProgressBar.setProgress(percentAsFloat);
-            //holoCircularProgressBar.setMarkerProgress(percentAsFloat);
+
 
             txtPercentComplete.setText(mPercentCompleted + "%");
 
@@ -244,7 +244,6 @@ public class TimerStartedFragment extends Fragment {
             mPercentCompleted = 100;
             percentAsFloat = 1;
             holoCircularProgressBar.setProgress(percentAsFloat);
-            //holoCircularProgressBar.setMarkerProgress(percentAsFloat);
             txtPercentComplete.setText(mPercentCompleted + "%");
 
             txtHourAndMins.setText("00:00");

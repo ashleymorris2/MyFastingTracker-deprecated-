@@ -75,6 +75,11 @@
     </style>
 
     <style name="font_light" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#ff424242</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="font_light_coloured" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/Peter_River</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -90,6 +95,12 @@
 
     <style name="background_light">
         <item name="android:background">#ffe0e0e0</item>
+    </style>
+
+    <style name="divider_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/Peter_River</item>
     </style>
 
     <style name="CircularProgressBar_light">

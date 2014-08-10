@@ -39,14 +39,18 @@
     </declare-styleable>
 
     <!-- Timer view Styles -->
+    <attr name="circleSeek" format="reference"/>
+    <attr name="circleProgress" format="reference" />
+
+    <!--Global view styles-->
+    <attr name="dividerStyle" format="reference"/>
     <attr name="pageBackground" format="reference" />
     <attr name="textTitle" format="reference" />
     <attr name="textTimer" format="reference" />
-    <attr name="textRegular" format="reference" />
-    <attr name="textButton" format="reference" />
 
-    <attr name="circleSeek" format="reference"/>
-    <attr name="circleProgress" format="reference" />
+    <attr name="textRegular" format="reference" />
+    <attr name="textColoured" format="reference"/>
+    <attr name="textButton" format="reference" />
 
 
 </resources>

@@ -44,7 +44,7 @@ public class FastingTrackerActivity extends Activity implements TimerStartedFrag
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.container);
         mDrawerListView = (ListView) findViewById(R.id.drawerList);
-        menu = getResources().getStringArray(R.array.menu_array);
+        menu = getResources().getStringArray(R.array.array_menu);
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
