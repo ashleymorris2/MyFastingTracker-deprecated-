@@ -23,5 +23,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:divider="@android:color/transparent"
-        android:dividerHeight="12dp"/>
+        android:dividerHeight="12dp"
+        android:clickable="false" />
 </RelativeLayout>

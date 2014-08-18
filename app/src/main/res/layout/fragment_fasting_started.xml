@@ -3,7 +3,7 @@
 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.avaygo.myfastingtracker.Fragments.TimerStartedFragment"
+    tools:context="com.avaygo.myfastingtracker.Fragments.TimerStartedScreenFragment"
     android:id="@+id/main2"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="END"
+                    android:text="FINISH"
                     android:id="@+id/end"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -183,7 +183,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignWithParentIfMissing="false"
-
                     android:id="@+id/completed_linear"
                     android:layout_alignBottom="@+id/holoCircularProgressBar1"
                     android:layout_alignParentLeft="true"
@@ -240,7 +239,7 @@
         style="?textButton"
         android:singleLine="false"
         android:layout_alignWithParentIfMissing="false"
-        android:background="@drawable/redbutton"
+        android:background="@drawable/cancel_button"
         android:textColor="@color/Clouds"
         android:textSize="18sp"
         android:typeface="normal"

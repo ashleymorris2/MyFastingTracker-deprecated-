@@ -24,7 +24,7 @@ import java.util.Calendar;
 import de.passy.holocircularprogressbar.HoloCircularProgressBar;
 
 
-public class TimerStartedFragment extends Fragment {
+public class TimerStartedScreenFragment extends Fragment {
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
     private Button BtnBreakFast;
@@ -45,7 +45,7 @@ public class TimerStartedFragment extends Fragment {
     //CountDownTimer class, overwritten methods to save state.
     private static MyCounter counter;
 
-    public TimerStartedFragment() {
+    public TimerStartedScreenFragment() {
         // Required empty public constructor
     }
 
@@ -75,11 +75,11 @@ public class TimerStartedFragment extends Fragment {
             public void onClick(View view) {
                 //Gives the user an alert dialog if they are over 1 percent into their fast.
                 if (counter.getPercentageComplete() < 1 || counter.getPercentageComplete() == 100) {
-                   myNotification.cancelAlarm(getActivity());
+                    myNotification.cancelAlarm(getActivity());
                     changeFragment();
                 }
                 else{
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(TimerStartedFragment.this.getActivity());
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(TimerStartedScreenFragment.this.getActivity());
                     builder1.setMessage("Do you want to break your fast early?");
                     builder1.setCancelable(true);
                     builder1.setPositiveButton("Yes",
@@ -159,7 +159,7 @@ public class TimerStartedFragment extends Fragment {
 
         //Launches a new fragment and replaces the current one.
         fragmentChange = getActivity().getFragmentManager().beginTransaction();
-        fragmentChange.replace(R.id.mainContent, new TimerSettingFragment());
+        fragmentChange.replace(R.id.mainContent, new TimerSettingScreenFragment());
         fragmentChange.commit();
     }
 
@@ -229,12 +229,10 @@ public class TimerStartedFragment extends Fragment {
                 //Checks if today's date matches the end date and updates the texts appropriately.
                 if (startCalendar.get(Calendar.DATE) != Calendar.getInstance().get(Calendar.DATE)) {
 
-               /*     txtStartTime.setText(TimeFormat.format(startCalendar.getTime()));
-                    txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));*/
-
                     txtStartDay.setText("Yesterday");
                     txtEndDay.setText("Today");
                     dateChange = true;
+
                 }
             }
         }

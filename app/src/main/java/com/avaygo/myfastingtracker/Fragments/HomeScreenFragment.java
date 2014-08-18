@@ -14,10 +14,10 @@ import com.avaygo.myfastingtracker.R;
  * A simple {@link Fragment} subclass.
  *
  */
-public class HomeFragment extends Fragment {
+public class HomeScreenFragment extends Fragment {
 
 
-    public HomeFragment() {
+    public HomeScreenFragment() {
         // Required empty public constructor
     }
 

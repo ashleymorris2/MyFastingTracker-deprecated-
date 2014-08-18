@@ -194,7 +194,7 @@
         android:id="@+id/start_toggle"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/greenbutton"
+        android:background="@drawable/start_fast_button"
         style="?textButton"
         android:textColor="@color/Clouds"
         android:textSize="18dp"

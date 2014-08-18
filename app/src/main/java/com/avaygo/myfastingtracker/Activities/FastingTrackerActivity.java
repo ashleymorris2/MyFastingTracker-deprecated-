@@ -17,14 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.avaygo.myfastingtracker.Fragments.HomeFragment;
-import com.avaygo.myfastingtracker.Fragments.ReminderSettingFragment;
+import com.avaygo.myfastingtracker.Fragments.HomeScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.ReminderListScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.TimerSettingScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.TimerStartedScreenFragment;
 import com.avaygo.myfastingtracker.R;
-import com.avaygo.myfastingtracker.Fragments.TimerSettingFragment;
-import com.avaygo.myfastingtracker.Fragments.TimerStartedFragment;
 
 
-public class FastingTrackerActivity extends Activity implements TimerStartedFragment.OnFragmentInteractionListener {
+public class FastingTrackerActivity extends Activity implements TimerStartedScreenFragment.OnFragmentInteractionListener {
 
     boolean fastingState;
     private DrawerLayout mDrawerLayout;
@@ -111,17 +111,17 @@ public class FastingTrackerActivity extends Activity implements TimerStartedFrag
 
         switch (position){
             case 0:
-                fragment = new HomeFragment();
+                fragment = new HomeScreenFragment();
                 break;
             case 1:
                 if (fastingState == false) {
-                    fragment = new TimerSettingFragment();
+                    fragment = new TimerSettingScreenFragment();
                 } else {
-                    fragment = new TimerStartedFragment();
+                    fragment = new TimerStartedScreenFragment();
                 }
                 break;
             case 2:
-                fragment = new ReminderSettingFragment();
+                fragment = new ReminderListScreenFragment();
                 break;
             default:
                 break;
@@ -203,12 +203,12 @@ public class FastingTrackerActivity extends Activity implements TimerStartedFrag
 
         if (mFastingState == false){
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new TimerSettingFragment())
+                    .add(R.id.container, new TimerSettingScreenFragment())
                     .commit();
         }
         else{
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new TimerStartedFragment())
+                    .add(R.id.container, new TimerStartedScreenFragment())
                     .commit();
         }
     }

@@ -20,10 +20,11 @@ import com.devadvance.circularseekbar.CircularSeekBar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class TimerSettingFragment extends Fragment {
+public class TimerSettingScreenFragment extends Fragment {
+
     //UI Elements:
     private Button BStartToggle;
-    private TextView TCurrentTime, TEndTime, TSeekBarValue, TCurrentClock, TEndClock, TEndHour,
+    private TextView TSeekBarValue, TCurrentClock, TEndClock, TEndHour,
             TStartDay,TEndDay;
 
     private CircularSeekBar timeSeekBar;
@@ -41,11 +42,11 @@ public class TimerSettingFragment extends Fragment {
 
     //Fragment Class:
     private FragmentTransaction fragmentChange;
+
     //Custom Classes:
     cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
 
-
-    public TimerSettingFragment(){
+    public TimerSettingScreenFragment(){
         //empty constructor, ok then.
     }
 
@@ -61,11 +62,11 @@ public class TimerSettingFragment extends Fragment {
         myThread.start();
 
         //Find View Elements
-        TCurrentTime = (TextView) getView().findViewById(R.id.current_time);
+
         TCurrentClock = (TextView) getView().findViewById(R.id.clock_text);
         TEndClock = (TextView) getView().findViewById(R.id.endclock_text);
         TEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
-        TEndTime = (TextView) getView().findViewById(R.id.end_time);
+
         TEndDay = (TextView) getView().findViewById(R.id.TXT_FUTURE);
         TStartDay = (TextView) getView().findViewById(R.id.TXT_TODAY);
         TSeekBarValue = (TextView) getView().findViewById(R.id.seekVal);
@@ -91,9 +92,6 @@ public class TimerSettingFragment extends Fragment {
 
                 TEndHour.setText(futureHourFormat.format(futureCalendar.getTime()));
                 TEndDay.setText(DayFormat.format(futureCalendar.getTime()));
-
-
-
             }
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
                 int seekValue = seekBar.getProgress();
@@ -115,6 +113,7 @@ public class TimerSettingFragment extends Fragment {
         BStartToggle.setOnClickListener(new View.OnClickListener() {
             private View v;
             public void onClick(View v){
+
                 futureCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
                 futureCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
 
@@ -136,7 +135,7 @@ public class TimerSettingFragment extends Fragment {
 
                 //Launches a new fragment and replaces the current one.
                 fragmentChange = getActivity().getFragmentManager().beginTransaction();
-                fragmentChange.replace(R.id.mainContent, new TimerStartedFragment());
+                fragmentChange.replace(R.id.mainContent, new TimerStartedScreenFragment());
                 fragmentChange.commit();
             }
         });
