@@ -21,7 +21,6 @@ public class cReminder {
     }
 
 
-
     public void set_id(int _id) {
         this._id = _id;
     }

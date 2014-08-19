@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -23,6 +24,9 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
 
     private  Context context;
     private List <cReminder> mReminderDaysCard;
+
+    SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:MM");
+    SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:MM EEEE");
 
     public DaysListAdapter(Context context, List <cReminder> reminderDaysCard) {
         super(context, R.layout.listview_reminder_day, reminderDaysCard);
@@ -44,9 +48,16 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
         cReminder currentCard = mReminderDaysCard.get(position);
 
         //Fill the view.
-        TextView textView = (TextView) itemView.findViewById(R.id.item_text_reminderday);
-        textView.setText(currentCard.getDayName());
+        TextView dayText = (TextView) itemView.findViewById(R.id.item_text_reminderday);
+        TextView startText = (TextView) itemView.findViewById(R.id.item_text_start_datetime);
+        TextView endText = (TextView) itemView.findViewById(R.id.item_text_end_datetime);
+        TextView durationText = (TextView) itemView.findViewById(R.id.item_text_fasting_duration);
 
+
+        dayText.setText(currentCard.getDayName());
+       // startText.setText(hourMinuteFormat.format(currentCard.getStartTime()));
+       // endText.setText(hourMinuteFormat.format(currentCard.getEndTime()));
+        durationText.setText(Integer.toString(currentCard.getFastLength()));
 
         return itemView;
     }

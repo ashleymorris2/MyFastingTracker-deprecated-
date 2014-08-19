@@ -36,9 +36,8 @@ public class ReminderListScreenFragment extends Fragment {
     private Calendar now;
 
     //An array list to hold cReminder objects for the listview.
-    private List <cReminder> mReminderCardsList = new ArrayList<cReminder>();
+    private List <cReminder> mReminderCardsList;
 
-    public final static String CARD_DAY = "com.avaygo.myfastingtracker.DAY";
 
     public ReminderListScreenFragment() {
         // Required empty public constructor
@@ -62,7 +61,7 @@ public class ReminderListScreenFragment extends Fragment {
         now = Calendar.getInstance();
 
         //Checks to see if the initial setup of the database has been performed
-        if(mAlarmsDataSource.getAlarmsCount() < 7) {
+        if(mAlarmsDataSource.getAlarmsCount() != 7) {
             for (int i = 0; i < 7; i++) {
                 mAlarmsDataSource.initialiseAlarms(mDaysOfTheWeek[i], now, 1, now);
             }
@@ -74,7 +73,9 @@ public class ReminderListScreenFragment extends Fragment {
 
     //Calls the constructor for cReminder and populates a list of objects.
     private void populateReminderCardsList() {
-       mReminderCardsList = mAlarmsDataSource.getAllReminders();
+
+        mReminderCardsList = mAlarmsDataSource.getAllReminders();
+
     }
 
     private void populateListView() {
@@ -88,7 +89,8 @@ public class ReminderListScreenFragment extends Fragment {
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+            View v;
+          @Override
             public void onItemClick(AdapterView<?> adapterView,
                                     View viewClicker, int position, long id) {
 

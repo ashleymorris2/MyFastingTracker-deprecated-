@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?textRegular"
                 android:text="16"
-                android:id="@+id/item_text_fasting_hours"
+                android:id="@+id/item_text_fasting_duration"
                 android:textSize="14dp"
                 android:gravity="center_horizontal"
                 android:focusableInTouchMode="false" />

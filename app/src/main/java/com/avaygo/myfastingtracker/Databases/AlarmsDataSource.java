@@ -51,7 +51,6 @@ public class AlarmsDataSource {
         database.insert(ReminderAlarmsHelper.TABLE_NAME, null, values);
     }
 
-
     //CRUD Operations:
     public cReminder getReminder(int id){
 
@@ -72,24 +71,25 @@ public class AlarmsDataSource {
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 
-        while(!cursor.isAfterLast()){
-        cReminder reminder = new cReminder();
+        if (cursor.moveToFirst()) {
+            do {
+                cReminder reminder = new cReminder();
 
-            reminder.set_id(cursor.getInt(0));
-            reminder.setDayName(cursor.getString(1));
+                reminder.set_id(cursor.getInt(0));
+                reminder.setDayName(cursor.getString(1));
 
-            calendar.setTimeInMillis(cursor.getLong(2));
-            reminder.setStartTime(calendar);
+                calendar.setTimeInMillis(cursor.getLong(2));
+                reminder.setStartTime(calendar);
 
-            reminder.setFastLength(cursor.getInt(3));
-            calendar.setTimeInMillis(cursor.getLong(4));
-            reminder.setEndTime(calendar);
+                calendar.setTimeInMillis(cursor.getLong(3));
+                reminder.setEndTime(calendar);
 
-            reminder.setEnabled(cursor.getInt(5));
+                reminder.setFastLength(cursor.getInt(4));
+                reminder.setEnabled(cursor.getInt(5));
 
-            reminderList.add(reminder);
+                reminderList.add(reminder);
 
-            cursor.moveToNext();
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -98,12 +98,14 @@ public class AlarmsDataSource {
 
     public int getAlarmsCount(){
 
+        int count;
         String countQuery = "SELECT  * FROM " + ReminderAlarmsHelper.TABLE_NAME;
         Cursor cursor = database.rawQuery(countQuery, null);
+        count = cursor.getCount();
         cursor.close();
 
         // return count
-        return cursor.getCount();
+        return count;
 
     }
 
