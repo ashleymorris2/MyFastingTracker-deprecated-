@@ -36,13 +36,13 @@
         <item>About</item>
     </string-array>
 
-    <!--reminder setting activity strings-->
-
+    <!-- reminder setting activity strings -->
 
     <string name="navdrawer_open">Open navigation drawer</string>
     <string name="navdrawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="title_activity_reminder_setting">ReminderSettingActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_duration_picker_dialogue">DurationPickerDialogue</string>
 
 </resources>

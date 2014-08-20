@@ -106,9 +106,9 @@
                     android:id="@+id/current_time"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_alignTop="@+id/circularSeekBar1"
-                    android:layout_alignRight="@+id/circularSeekBar1"
-                    android:layout_alignEnd="@+id/circularSeekBar1"
+                    android:layout_alignTop="@+id/circularSeekBar2"
+                    android:layout_alignRight="@+id/circularSeekBar2"
+                    android:layout_alignEnd="@+id/circularSeekBar2"
                     style="?textTitle"
                     android:layout_marginBottom="1dp" />
 
@@ -171,13 +171,11 @@
             </LinearLayout>
 
             <com.devadvance.circularseekbar.CircularSeekBar
-                android:id="@+id/circularSeekBar1"
+                android:id="@+id/circularSeekBar2"
                 android:layout_width="fill_parent"
                 android:layout_height="280dp"
                 style="?circleSeek"
                 app:max="23"
-                app:pointer_radius="6"
-                app:pointer_halo_width="4"
                 android:layout_alignParentTop="false"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="false"

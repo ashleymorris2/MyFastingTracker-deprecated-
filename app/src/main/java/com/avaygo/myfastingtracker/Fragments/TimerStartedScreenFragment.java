@@ -27,8 +27,8 @@ import de.passy.holocircularprogressbar.HoloCircularProgressBar;
 public class TimerStartedScreenFragment extends Fragment {
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
-    private Button BtnBreakFast;
-    private TextView txtStartTime, txtEndTime, txtHourAndMins, txtSecs, txtFastDuration, txtPercentComplete,
+    private Button buttonBreakFast;
+    private TextView txtStartTime, txtEndTime, textHourAndMinutes, textSeconds, txtFastDuration, textPercentComplete,
             txtStartDay, txtEndDay;
 
     //Calendars and time formatting:
@@ -60,25 +60,25 @@ public class TimerStartedScreenFragment extends Fragment {
         //Find View Elements
         txtStartTime = (TextView) getView().findViewById(R.id.start_time);
         txtEndTime = (TextView) getView().findViewById(R.id.end_time);
-        txtHourAndMins = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
-        txtSecs = (TextView) getView().findViewById(R.id.txt_time_seconds);
+        textHourAndMinutes = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
+        textSeconds = (TextView) getView().findViewById(R.id.txt_time_seconds);
         txtFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
-        txtPercentComplete = (TextView) getView().findViewById(R.id.txt_completed);
+        textPercentComplete = (TextView) getView().findViewById(R.id.txt_completed);
 
         txtStartDay = (TextView) getView().findViewById(R.id.txt_start_day);
         txtEndDay = (TextView) getView().findViewById(R.id.txt_end_day);
 
-        BtnBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
-        BtnBreakFast.setOnClickListener(new View.OnClickListener() {
+        buttonBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
+        buttonBreakFast.setOnClickListener(new View.OnClickListener() {
 
             private View v;
+
             public void onClick(View view) {
                 //Gives the user an alert dialog if they are over 1 percent into their fast.
                 if (counter.getPercentageComplete() < 1 || counter.getPercentageComplete() == 100) {
                     myNotification.cancelAlarm(getActivity());
                     changeFragment();
-                }
-                else{
+                } else {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(TimerStartedScreenFragment.this.getActivity());
                     builder1.setMessage("Do you want to break your fast early?");
                     builder1.setCancelable(true);
@@ -88,13 +88,15 @@ public class TimerStartedScreenFragment extends Fragment {
                                     myNotification.cancelAlarm(getActivity());
                                     changeFragment();
                                 }
-                            });
+                            }
+                    );
                     builder1.setNegativeButton("No",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }
-                            });
+                            }
+                    );
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                 }
@@ -210,8 +212,8 @@ public class TimerStartedScreenFragment extends Fragment {
                 seconds = Integer.toString(iSeconds);
             }
 
-            txtHourAndMins.setText(hours + ":" + minutes);
-            txtSecs.setText(":" + seconds);
+            textHourAndMinutes.setText(hours + ":" + minutes);
+            textSeconds.setText(":" + seconds);
 
             //Calculates the remaining time as a percentage for the progress bar.
             // Seconds for high accuracy and minutes for low accuracy.
@@ -223,7 +225,7 @@ public class TimerStartedScreenFragment extends Fragment {
             holoCircularProgressBar.setProgress(percentAsFloat);
 
 
-            txtPercentComplete.setText(mPercentCompleted + "%");
+            textPercentComplete.setText(mPercentCompleted + "%");
 
             if (dateChange == false) {
                 //Checks if today's date matches the end date and updates the texts appropriately.
@@ -242,10 +244,10 @@ public class TimerStartedScreenFragment extends Fragment {
             mPercentCompleted = 100;
             percentAsFloat = 1;
             holoCircularProgressBar.setProgress(percentAsFloat);
-            txtPercentComplete.setText(mPercentCompleted + "%");
+            textPercentComplete.setText(mPercentCompleted + "%");
 
-            txtHourAndMins.setText("00:00");
-            txtSecs.setText(":00");
+            textHourAndMinutes.setText("00:00");
+            textSeconds.setText(":00");
         }
 
         public int getPercentageComplete(){

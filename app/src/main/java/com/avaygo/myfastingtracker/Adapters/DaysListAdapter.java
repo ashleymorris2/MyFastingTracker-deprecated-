@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -25,8 +26,8 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
     private  Context context;
     private List <cReminder> mReminderDaysCard;
 
-    SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:MM");
-    SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:MM EEEE");
+    SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm");
+    SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:mm EEEE");
 
     public DaysListAdapter(Context context, List <cReminder> reminderDaysCard) {
         super(context, R.layout.listview_reminder_day, reminderDaysCard);
@@ -44,19 +45,19 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
             itemView = inflater.inflate(R.layout.listview_reminder_day, parent, false);
         }
 
-        //Find the current cardview to work with.
+        //Find the current cardView to work with.
         cReminder currentCard = mReminderDaysCard.get(position);
 
-        //Fill the view.
         TextView dayText = (TextView) itemView.findViewById(R.id.item_text_reminderday);
         TextView startText = (TextView) itemView.findViewById(R.id.item_text_start_datetime);
         TextView endText = (TextView) itemView.findViewById(R.id.item_text_end_datetime);
         TextView durationText = (TextView) itemView.findViewById(R.id.item_text_fasting_duration);
 
-
+        //Fill the view
         dayText.setText(currentCard.getDayName());
-       // startText.setText(hourMinuteFormat.format(currentCard.getStartTime()));
-       // endText.setText(hourMinuteFormat.format(currentCard.getEndTime()));
+        startText.setText(hourMinuteFormat.format(currentCard.getStartTime().getTime()));
+        endText.setText(hourMinuteFormat.format(currentCard.getEndTime().getTime()));
+
         durationText.setText(Integer.toString(currentCard.getFastLength()));
 
         return itemView;

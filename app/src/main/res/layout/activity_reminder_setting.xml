@@ -61,14 +61,14 @@
                 android:layout_marginBottom="4dp"
                 android:clickable="true"
                 android:gravity="center_horizontal"
-                android:id="@+id/time_set_button"
+                android:id="@+id/button_time_set"
                 android:focusableInTouchMode="false">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:id="@+id/textView"
-                    android:text="Start:"
+                    android:text="Start: "
                     android:textSize="14dp"
                     android:gravity="center_vertical"
                     android:textColor="@android:color/darker_gray"
@@ -102,12 +102,14 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="4dp"
                 android:gravity="center_horizontal"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="4dp"
+                android:clickable="true"
+                android:id="@+id/button_duration_set">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Duration:"
+                    android:text="Duration: "
                     android:id="@+id/textView2"
                     android:textSize="14sp"
                     android:gravity="center_vertical"
@@ -143,7 +145,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="End:"
+                    android:text="End: "
                     android:id="@+id/textView3"
                     android:textSize="14dp"
                     android:layout_marginLeft="8dp"

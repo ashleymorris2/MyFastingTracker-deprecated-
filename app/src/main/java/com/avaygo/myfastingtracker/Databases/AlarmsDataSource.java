@@ -44,8 +44,8 @@ public class AlarmsDataSource {
         ContentValues values = new ContentValues();
         values.put(ReminderAlarmsHelper.COLUMN_DAY, day);
         values.put(ReminderAlarmsHelper.COLUMN_START, start.getTimeInMillis());
-        values.put(ReminderAlarmsHelper.COLUMN_LENGTH, duration);
         values.put(ReminderAlarmsHelper.COLUMN_END, end.getTimeInMillis());
+        values.put(ReminderAlarmsHelper.COLUMN_LENGTH, duration);
         values.put(ReminderAlarmsHelper.COLUMN_ENABLED, 0);
 
         database.insert(ReminderAlarmsHelper.TABLE_NAME, null, values);
@@ -53,10 +53,6 @@ public class AlarmsDataSource {
 
     //CRUD Operations:
     public cReminder getReminder(int id){
-
-        return null;
-    }
-    public cReminder getReminder(String day){
 
         return null;
     }
@@ -99,14 +95,15 @@ public class AlarmsDataSource {
     public int getAlarmsCount(){
 
         int count;
+
         String countQuery = "SELECT  * FROM " + ReminderAlarmsHelper.TABLE_NAME;
         Cursor cursor = database.rawQuery(countQuery, null);
         count = cursor.getCount();
         cursor.close();
 
-        // return count
         return count;
-
     }
+
+
 
 }
