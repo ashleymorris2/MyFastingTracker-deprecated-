@@ -32,8 +32,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="14"
                 android:id="@+id/text_picker_hour"
-                android:textColor="@color/Peter_River"
-                android:textSize="60sp" />
+                android:textColor="@android:color/holo_blue_light"
+                android:textSize="60sp"
+                android:layout_marginRight="2dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,7 +54,8 @@
             android:id="@+id/text_picker_day"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/numbers_text_color" />
     </LinearLayout>
 
     <RelativeLayout
@@ -70,6 +72,11 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             style="@style/CircularSeekBar_light"
+
+            app:circle_progress_color="#ff33b5e5"
+            app:pointer_halo_color="#6e33b5e5"
+            app:pointer_color="#ff33b5e5"
+
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp" />
 
@@ -81,7 +88,7 @@
             android:id="@+id/text_seek_value"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/Midnight_Blue"
+            android:textColor="@android:color/darker_gray"
             android:textSize="40sp" />
     </RelativeLayout>
 
@@ -105,7 +112,7 @@
             android:text="Done"
             android:id="@+id/button_done"
             android:background="#f2f2f2"
-            android:textColor="@android:color/black"
+            android:textColor="@color/done_text_color"
             android:layout_below="@+id/view"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"

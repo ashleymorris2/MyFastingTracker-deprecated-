@@ -9,6 +9,9 @@ import java.sql.SQLException;
 
 /**
  * Created by Ash on 16/08/2014.
+ *
+ * Constructs a database to our described schema
+ *
  */
 public class ReminderAlarmsHelper extends SQLiteOpenHelper {
 

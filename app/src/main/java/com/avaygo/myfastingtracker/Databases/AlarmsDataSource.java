@@ -13,6 +13,9 @@ import java.util.List;
 
 /**
  * Created by Ash on 18/08/2014.
+ *
+ * Class modifies data in the database and queries the database to return the results to the UI
+ *
  */
 public class AlarmsDataSource {
 

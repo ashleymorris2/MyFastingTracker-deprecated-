@@ -95,7 +95,7 @@ public class ReminderListScreenFragment extends Fragment {
                                     View viewClicker, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), ReminderSettingActivity.class);
-                cReminder currentCard = mReminderCardsList.get(position - 1);
+                cReminder currentCard = mReminderCardsList.get(position -1);
 
               intent.putExtra("day", currentCard.getDayName());
               intent.putExtra("startTime", currentCard.getStartTime().getTimeInMillis());
