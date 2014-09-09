@@ -23,11 +23,11 @@ import java.util.Calendar;
 public class TimerSettingScreenFragment extends Fragment {
 
     //UI Elements:
-    private Button BStartToggle;
-    private TextView textSeekBarValue, textCurrentClock, textEndClock, TEndHour,
+    private Button buttonStart;
+    private TextView textSeekBarValue, textCurrentClock, textEndClock, textEndHour,
             textStartDay, textEndDay;
 
-    private CircularSeekBar timeSeekBar;
+    private CircularSeekBar seekbarTime;
 
     //Threads and Runnables:
     private Thread myThread = null;
@@ -36,7 +36,7 @@ public class TimerSettingScreenFragment extends Fragment {
     //Calendars and time formatting:
     private Calendar currentCalendar, futureCalendar;
     private SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
-    private SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");//The hour for the future clock.
+    private SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");//The day for the future clock.
     private SimpleDateFormat hourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
     private SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
 
@@ -61,21 +61,25 @@ public class TimerSettingScreenFragment extends Fragment {
         myThread = new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
         myThread.start();
 
+        //===================================================================
         //Find View Elements
-
+        //===================================================================
         textCurrentClock = (TextView) getView().findViewById(R.id.clock_text);
         textEndClock = (TextView) getView().findViewById(R.id.endclock_text);
-        TEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
+        textEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
 
         textEndDay = (TextView) getView().findViewById(R.id.TXT_FUTURE);
         textStartDay = (TextView) getView().findViewById(R.id.TXT_TODAY);
         textSeekBarValue = (TextView) getView().findViewById(R.id.seekVal);
 
-        timeSeekBar = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar2);
-        timeSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
+        //====================================================================
+
+        seekbarTime = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar2);
+        seekbarTime.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             public void onStartTrackingTouch(CircularSeekBar seekBar) {
 
             }
+
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
                 int seekValue = progress + 1;
 
@@ -90,9 +94,10 @@ public class TimerSettingScreenFragment extends Fragment {
                 //Adds seekValue to the current hour of the day and updates the text.
                 futureCalendar.add(Calendar.HOUR_OF_DAY, seekValue);
 
-                TEndHour.setText(hourFormat.format(futureCalendar.getTime()));
+                textEndHour.setText(hourFormat.format(futureCalendar.getTime()));
                 textEndDay.setText(DayFormat.format(futureCalendar.getTime()));
             }
+
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
                 int seekValue = seekBar.getProgress();
 
@@ -110,10 +115,12 @@ public class TimerSettingScreenFragment extends Fragment {
             }
         });
 
-        BStartToggle = (Button) getView().findViewById(R.id.start_toggle);
-        BStartToggle.setOnClickListener(new View.OnClickListener() {
+        //START BUTTON
+        buttonStart = (Button) getView().findViewById(R.id.start_toggle);
+        buttonStart.setOnClickListener(new View.OnClickListener() {
             private View v;
-            public void onClick(View v){
+
+            public void onClick(View v) {
 
                 futureCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
                 futureCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
@@ -146,7 +153,7 @@ public class TimerSettingScreenFragment extends Fragment {
 
         //Sets the future clock to be at least an hour ahead and updates the text.
         futureCalendar.add(Calendar.HOUR_OF_DAY, 1);
-        TEndHour.setText(hourFormat.format(futureCalendar.getTime()));
+        textEndHour.setText(hourFormat.format(futureCalendar.getTime()));
 
         //Starts the clocks
         textCurrentClock.setText(currentTimeFormat.format(currentCalendar.getTime()));
@@ -177,7 +184,7 @@ public class TimerSettingScreenFragment extends Fragment {
                     to keep the two clocks in sync with each other.*/
                     if (previousHour != currentCalendar.get(Calendar.HOUR_OF_DAY)) {
                         futureCalendar.add(Calendar.HOUR_OF_DAY, 1);
-                        TEndHour.setText(hourFormat.format(futureCalendar.getTime()));
+                        textEndHour.setText(hourFormat.format(futureCalendar.getTime()));
 
                         textStartDay.setText(DayFormat.format(currentCalendar.getTime()));
                         textEndDay.setText(DayFormat.format(futureCalendar.getTime()));

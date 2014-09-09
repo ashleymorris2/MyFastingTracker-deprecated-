@@ -37,9 +37,9 @@
                 android:baselineAligned="false"
                 android:measureWithLargestChild="false"
                 android:weightSum="2"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp">
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -69,12 +69,10 @@
             </LinearLayout>
             <View
                 style="?dividerStyle"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:layout_marginBottom="24dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginLeft="4dp" />
+                android:layout_marginBottom="16dp" />
 
 
         </LinearLayout>
@@ -88,7 +86,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp">
+            android:gravity="bottom|left">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -98,7 +96,8 @@
                 android:id="@+id/item_text_fasting_duration"
                 android:textSize="14dp"
                 android:gravity="center_horizontal"
-                android:focusableInTouchMode="false" />
+                android:focusableInTouchMode="false"
+                android:textColor="@android:color/darker_gray" />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -108,7 +107,8 @@
                 android:id="@+id/text_hours"
                 android:textSize="14dp"
                 android:focusableInTouchMode="false"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@color/transparent_black"
+                android:layout_marginBottom="8dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout4"
-            android:gravity="right"
+            android:gravity="bottom|right"
             android:layout_below="@+id/linearLayout"
             android:layout_toRightOf="@+id/linearLayout3"
             android:layout_alignRight="@+id/linearLayout"
@@ -140,7 +140,7 @@
                     android:autoText="false"
                     android:focusableInTouchMode="false"
                     android:textIsSelectable="false"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@color/transparent_black"
                     android:gravity="right" />
 
                 <TextView
@@ -154,7 +154,8 @@
                     android:textAppearance="?textRegular"
                     android:autoText="false"
                     android:focusableInTouchMode="false"
-                    android:gravity="right" />
+                    android:gravity="right"
+                    android:textColor="@android:color/darker_gray" />
 
             </LinearLayout>
 
@@ -173,8 +174,9 @@
                     android:singleLine="true"
                     android:autoText="false"
                     android:focusableInTouchMode="false"
-                    android:textColor="@android:color/darker_gray"
-                    android:gravity="right" />
+                    android:textColor="@color/transparent_black"
+                    android:gravity="right"
+                    android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -186,7 +188,9 @@
                     android:singleLine="true"
                     android:autoText="false"
                     android:focusableInTouchMode="false"
-                    android:gravity="right" />
+                    android:gravity="right"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginBottom="8dp" />
             </LinearLayout>
 
         </LinearLayout>

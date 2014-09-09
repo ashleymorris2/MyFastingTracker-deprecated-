@@ -10,7 +10,6 @@ import java.util.Calendar;
  * BootReceiver is called to reset the notifications when the phone has been reset.
  * It is registered in the android manifest to receive the ON_BOOT_COMPLETED intent
  *
- *
 * Ashley Morris
 **/
 public class BootReceiver extends BroadcastReceiver {

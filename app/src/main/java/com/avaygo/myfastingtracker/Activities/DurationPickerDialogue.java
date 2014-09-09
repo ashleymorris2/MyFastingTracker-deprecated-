@@ -3,8 +3,6 @@ package com.avaygo.myfastingtracker.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -25,7 +23,7 @@ public class DurationPickerDialogue extends Activity {
 
     private int mDuration;
 
-    private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");//The hour for the future clock.
+    private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");//The day for the future clock.
     private SimpleDateFormat hourFormat = new SimpleDateFormat("HH");//The hour for the future clock.
     private SimpleDateFormat minuteFormat = new SimpleDateFormat(":mm");//The minutes for the future clock
 
@@ -33,6 +31,7 @@ public class DurationPickerDialogue extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Sets the layout to be similar to a dialog box
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.dialogue_duration_picker);
@@ -42,7 +41,7 @@ public class DurationPickerDialogue extends Activity {
 
         timeEnd = Calendar.getInstance();
         timeEnd.setTimeInMillis(intent.getLongExtra("TIME", 0));
-        timeEnd.add(timeEnd.HOUR_OF_DAY, mDuration);
+        timeEnd.add(Calendar.HOUR_OF_DAY, mDuration);
 
         textHour = (TextView) findViewById(R.id.text_picker_hour);
         textHour.setText(hourFormat.format(timeEnd.getTimeInMillis()));
@@ -111,5 +110,4 @@ public class DurationPickerDialogue extends Activity {
             }
         });
     }
-
 }

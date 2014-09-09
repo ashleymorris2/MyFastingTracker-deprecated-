@@ -46,10 +46,7 @@
                     android:textColor="@color/Peter_River" />
             </LinearLayout>
 
-            <View
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                style="?dividerStyle"/>
+            <View style="?dividerStyle" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -62,28 +59,32 @@
                 android:clickable="true"
                 android:gravity="center_horizontal"
                 android:id="@+id/button_time_set"
-                android:focusableInTouchMode="false">
+                android:focusableInTouchMode="false"
+                android:weightSum="2">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/textView"
                     android:text="Start: "
                     android:textSize="14dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@android:color/darker_gray"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/transparent_black"
                     android:focusableInTouchMode="false"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="20:00"
                     android:id="@+id/text_reminder_time"
                     android:textSize="14sp"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical|left"
                     android:focusableInTouchMode="false"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <View
@@ -91,8 +92,7 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:background="?android:attr/listDivider"
-            />
+                android:background="?android:attr/listDivider" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -104,24 +104,28 @@
                 android:gravity="center_horizontal"
                 android:layout_marginTop="4dp"
                 android:clickable="true"
-                android:id="@+id/button_duration_set">
+                android:id="@+id/button_duration_set"
+                android:weightSum="2">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Duration: "
                     android:id="@+id/textView2"
                     android:textSize="14sp"
-                    android:gravity="center_vertical"
-                    android:textColor="@android:color/darker_gray" />
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/transparent_black"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="18 Hours"
                     android:id="@+id/text_duration"
                     android:textSize="14dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <View
@@ -129,8 +133,7 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:background="?android:attr/listDivider"
-                />
+                android:background="?android:attr/listDivider" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -140,27 +143,31 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="4dp"
+                android:weightSum="2">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="End: "
                     android:id="@+id/textView3"
                     android:textSize="14dp"
                     android:layout_marginLeft="8dp"
-                    android:gravity="center"
-                    android:textColor="@android:color/darker_gray"
-                    android:textIsSelectable="false" />
+                    android:gravity="center|right"
+                    android:textColor="@color/transparent_black"
+                    android:textIsSelectable="false"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="13:00 Tuesday"
+                    android:text="13:00, Tuesday"
                     android:id="@+id/text_reminder_end"
                     android:textSize="14sp"
-                    android:gravity="center" />
+                    android:gravity="center|left"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_weight="1" />
             </LinearLayout>
 
         </LinearLayout>
@@ -180,24 +187,26 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="Discard"
             android:id="@+id/button_cancel2"
             android:layout_weight="1"
             android:layout_marginRight="4dp"
             android:layout_gravity="left"
             android:background="@drawable/cancel_button2"
-            android:textColor="@color/Clouds" />
+            android:textColor="@color/Clouds"
+            android:visibility="invisible" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Save"
-            android:id="@+id/button2"
+            android:text="Done"
+            android:id="@+id/buton_save"
             android:layout_marginLeft="4dp"
             android:background="@drawable/light_theme_button"
             android:layout_weight="1"
             android:layout_gravity="right"
-            android:textColor="@color/Clouds" />
+            android:textColor="@color/Clouds"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </RelativeLayout>

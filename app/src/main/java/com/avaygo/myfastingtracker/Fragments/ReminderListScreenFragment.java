@@ -2,6 +2,7 @@ package com.avaygo.myfastingtracker.Fragments;
 
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -9,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.Toast;
 
 
 import com.avaygo.myfastingtracker.Activities.ReminderSettingActivity;
@@ -18,7 +22,6 @@ import com.avaygo.myfastingtracker.Adapters.cReminder;
 import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
 import com.avaygo.myfastingtracker.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -66,15 +69,19 @@ public class ReminderListScreenFragment extends Fragment {
                 mAlarmsDataSource.initialiseAlarms(mDaysOfTheWeek[i], now, 1, now);
             }
         }
+
+
+        mListView  = (ListView) getActivity().findViewById(R.id.listview_days);
         populateReminderCardsList();
         populateListView();
+
 
     }
 
     //Calls the constructor for cReminder and populates a list of objects.
     private void populateReminderCardsList() {
 
-        mReminderCardsList = mAlarmsDataSource.getAllReminders();
+        mReminderCardsList = mAlarmsDataSource.getAllAlarms();
 
     }
 
@@ -82,31 +89,53 @@ public class ReminderListScreenFragment extends Fragment {
 
         DaysListAdapter adapter = new DaysListAdapter (getActivity(), mReminderCardsList);
 
-        mListView  = (ListView) getActivity().findViewById(R.id.listview_days);
-
         mListView.addFooterView(new View(getActivity()), null, false);
         mListView.addHeaderView(new View(getActivity()), null, false);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             View v;
-          @Override
+            @Override
             public void onItemClick(AdapterView<?> adapterView,
                                     View viewClicker, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), ReminderSettingActivity.class);
-                cReminder currentCard = mReminderCardsList.get(position -1);
+                cReminder currentCard = mReminderCardsList.get(position - 1);
 
-              intent.putExtra("day", currentCard.getDayName());
-              intent.putExtra("startTime", currentCard.getStartTime().getTimeInMillis());
-              intent.putExtra("duration", currentCard.getFastLength());
-              startActivity(intent);
+                intent.putExtra("day", currentCard.getDayName());
+                intent.putExtra("startTime", currentCard.getStartTime().getTimeInMillis());
+                intent.putExtra("duration", currentCard.getFastLength());
+                intent.putExtra("_id", currentCard.get_id());
+
+                startActivityForResult(intent, 1);
 
             }
         });
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+
+                mReminderCardsList = mAlarmsDataSource.getAllAlarms();
+
+                DaysListAdapter adapter = new DaysListAdapter (getActivity(), mReminderCardsList);
+
+                mListView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                mListView.invalidate();
+            }
+
+        }
+
 
     }
-}
+
+  }
+
+
 
 
 

@@ -17,9 +17,9 @@ public class cReminder {
     private int mEnabled;
 
     public cReminder() {
-
+        mStartTime = Calendar.getInstance();
+        mEndTime = Calendar.getInstance();
     }
-
 
     public void set_id(int _id) {
         this._id = _id;
@@ -45,6 +45,7 @@ public class cReminder {
         this.mEnabled = mEnabled;
     }
 
+    //===============================================================================
 
     public int get_id() {
         return _id;
@@ -66,7 +67,13 @@ public class cReminder {
         return mFastLength;
     }
 
-    public int isEnabled() {
-        return mEnabled;
+    public boolean isEnabled() {
+
+        if(mEnabled == 1){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

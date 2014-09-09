@@ -14,7 +14,6 @@ import java.util.Calendar;
  *
  * Class to set up notifications for the fasting application
  *
- *
  */
 public class cNotificationSetup {
 
@@ -29,10 +28,15 @@ public class cNotificationSetup {
         this.reminderCalendar = reminderCalendar;
     }
 
+    /**
+     * Creates an intent that will be called at a future time. Our intent here is the notification service.
+     * AlarmManager is used to set the time for when the intent is called.
+     * Pending intent is an intent that will be called at a later time.
+     *
+     * @param context the context of the calling activity
+     */
+
     public void createAlarm(Context context) {
-        //Creates an intent that will be called at a future time. Our intent here is the notification service.
-        //AlarmManager is used to set the time for when the intent is called.
-        //Pending intent is an intent that will be called at a later time.
 
         Intent myIntent = new Intent(context, TimerNotificationService.class);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -44,7 +48,13 @@ public class cNotificationSetup {
         alarmCalendar.set(Calendar.MINUTE,reminderCalendar.get(Calendar.MINUTE) );
         alarmCalendar.set(Calendar.SECOND,reminderCalendar.get(Calendar.SECOND));
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
+        try {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
+        }
+        catch (NoSuchMethodError e){
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
+        }
+
 
         //Toast.makeText(context,"Ending fast at: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_SHORT).show();
     }

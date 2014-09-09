@@ -1,12 +1,17 @@
 package com.avaygo.myfastingtracker.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
 import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
@@ -19,15 +24,16 @@ import java.util.List;
  *
  * The Constructor takes two parameters. The context of the calling application and a list of cReminder objects.
  *
- *
  */
 public class DaysListAdapter extends ArrayAdapter<cReminder> {
 
     private  Context context;
     private List <cReminder> mReminderDaysCard;
 
+    private AlarmsDataSource mAlarmsDataSource = new AlarmsDataSource(getContext());
+
     SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:mm EEEE");
+    SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:mm, EEEE");
 
     public DaysListAdapter(Context context, List <cReminder> reminderDaysCard) {
         super(context, R.layout.listview_reminder_day, reminderDaysCard);
@@ -36,7 +42,7 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = convertView;
 
@@ -46,19 +52,47 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
         }
 
         //Find the current cardView to work with.
-        cReminder currentCard = mReminderDaysCard.get(position);
+        final cReminder currentCard = mReminderDaysCard.get(position);
 
-        TextView dayText = (TextView) itemView.findViewById(R.id.item_text_reminderday);
-        TextView startText = (TextView) itemView.findViewById(R.id.item_text_start_datetime);
-        TextView endText = (TextView) itemView.findViewById(R.id.item_text_end_datetime);
-        TextView durationText = (TextView) itemView.findViewById(R.id.item_text_fasting_duration);
+        TextView textDay = (TextView) itemView.findViewById(R.id.item_text_reminderday);
+        TextView textStart = (TextView) itemView.findViewById(R.id.item_text_start_datetime);
+        TextView textEnd = (TextView) itemView.findViewById(R.id.item_text_end_datetime);
+        TextView textDuration = (TextView) itemView.findViewById(R.id.item_text_fasting_duration);
+        Switch switchReminderToggle = (Switch) itemView.findViewById(R.id.switch_reminder_toggle);
 
         //Fill the view
-        dayText.setText(currentCard.getDayName());
-        startText.setText(hourMinuteFormat.format(currentCard.getStartTime().getTime()));
-        endText.setText(hourMinuteFormat.format(currentCard.getEndTime().getTime()));
+        textDay.setText(currentCard.getDayName());
+        textStart.setText(hourMinuteFormat.format(currentCard.getStartTime().getTime()));
 
-        durationText.setText(Integer.toString(currentCard.getFastLength()));
+
+        //If the start day doesn't match the end day then show some more info for the user.
+        if(currentCard.getStartTime().get(Calendar.DAY_OF_WEEK) !=
+                currentCard.getEndTime().get(Calendar.DAY_OF_WEEK)){
+            textEnd.setText(hourMinuteDayFormat.format(currentCard.getEndTime().getTime()));
+        }
+        else{
+            textEnd.setText(hourMinuteFormat.format(currentCard.getEndTime().getTime()));
+        }
+
+        switchReminderToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                //Save into the database whether the reminder has been enabled or not.
+                mAlarmsDataSource.open();
+                mAlarmsDataSource.setIsEnabled(currentCard.get_id(), isChecked);
+                mAlarmsDataSource.close();
+
+            }
+
+        });
+
+        mAlarmsDataSource.open();
+        currentCard.setEnabled(mAlarmsDataSource.getIsEnabled(currentCard.get_id()));
+        switchReminderToggle.setChecked(currentCard.isEnabled());
+        mAlarmsDataSource.close();
+
+        textDuration.setText(Integer.toString(currentCard.getFastLength()));
 
         return itemView;
     }

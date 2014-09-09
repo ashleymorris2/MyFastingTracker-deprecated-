@@ -5,8 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.sql.SQLException;
-
 /**
  * Created by Ash on 16/08/2014.
  *
@@ -25,7 +23,6 @@ public class ReminderAlarmsHelper extends SQLiteOpenHelper {
     public static final String COLUMN_END = "end_time";
     public static final String COLUMN_LENGTH = "length";
     public static final String COLUMN_ENABLED = "enabled";
-
 
     //SQL statement to create the database.
     private static final String DATABASE_CREATE = "CREATE TABLE " +

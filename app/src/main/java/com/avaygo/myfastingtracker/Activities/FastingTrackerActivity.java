@@ -27,6 +27,7 @@ import com.avaygo.myfastingtracker.R;
 public class FastingTrackerActivity extends Activity implements TimerStartedScreenFragment.OnFragmentInteractionListener {
 
     boolean fastingState;
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
 
@@ -55,7 +56,7 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
             View v;
 
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Toast.makeText(getApplication(), menu[position], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplication(), menu[position], Toast.LENGTH_SHORT).show();
                 selectItem(position);
             }
         });
