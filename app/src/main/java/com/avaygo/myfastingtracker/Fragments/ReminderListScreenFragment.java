@@ -70,12 +70,9 @@ public class ReminderListScreenFragment extends Fragment {
             }
         }
 
-
         mListView  = (ListView) getActivity().findViewById(R.id.listview_days);
         populateReminderCardsList();
         populateListView();
-
-
     }
 
     //Calls the constructor for cReminder and populates a list of objects.
@@ -108,7 +105,6 @@ public class ReminderListScreenFragment extends Fragment {
                 intent.putExtra("_id", currentCard.get_id());
 
                 startActivityForResult(intent, 1);
-
             }
         });
     }
@@ -116,6 +112,7 @@ public class ReminderListScreenFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //Redraws the list view after receiving a result from the ReminderSettingActivity
         if (requestCode == 1){
             if (resultCode == Activity.RESULT_OK){
 
@@ -126,13 +123,10 @@ public class ReminderListScreenFragment extends Fragment {
                 mListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 mListView.invalidate();
+
             }
-
         }
-
-
     }
-
   }
 
 

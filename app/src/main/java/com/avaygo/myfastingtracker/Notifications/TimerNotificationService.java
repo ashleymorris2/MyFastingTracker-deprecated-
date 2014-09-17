@@ -13,7 +13,9 @@ import com.avaygo.myfastingtracker.Activities.FastingTrackerActivity;
 import com.avaygo.myfastingtracker.R;
 
 public class TimerNotificationService extends Service {
+
     public TimerNotificationService() {
+
     }
 
     public IBinder onBind(Intent intent) {
@@ -24,6 +26,8 @@ public class TimerNotificationService extends Service {
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationManager mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        //Sets a pending intent that is called when the notification is selected
         Intent myIntent = new Intent(this.getApplicationContext(), FastingTrackerActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, myIntent, 0);
 
@@ -40,8 +44,6 @@ public class TimerNotificationService extends Service {
 
         mNM.notify(2, mNotify);
 
-
         stopSelf();
-
     }
 }

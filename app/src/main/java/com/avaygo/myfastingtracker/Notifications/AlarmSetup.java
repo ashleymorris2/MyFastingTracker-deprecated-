@@ -12,20 +12,20 @@ import java.util.Calendar;
 /**
  * Created by Ash on 25/06/2014.
  *
- * Class to set up notifications for the fasting application
+ * Class to set up alarms to fire off the notifications for the fasting application
  *
  */
-public class cNotificationSetup {
+public class AlarmSetup {
 
-   private Calendar reminderCalendar;
+   private Calendar mAlarmTime;
    private SimpleDateFormat reminderTimeFormat = new SimpleDateFormat("HH:mm EEEE");
 
-   public cNotificationSetup(){
+   public AlarmSetup(){
         
     }
 
-    public void setReminderCalendar(Calendar reminderCalendar) {
-        this.reminderCalendar = reminderCalendar;
+    public void setAlarmTime(Calendar reminderCalendar) {
+        this.mAlarmTime = reminderCalendar;
     }
 
     /**
@@ -35,18 +35,18 @@ public class cNotificationSetup {
      *
      * @param context the context of the calling activity
      */
-
     public void createAlarm(Context context) {
+
+        Calendar alarmCalendar = Calendar.getInstance();
 
         Intent myIntent = new Intent(context, TimerNotificationService.class);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0 ,myIntent, 0);
 
-        Calendar alarmCalendar = Calendar.getInstance();
-        alarmCalendar.set(Calendar.DAY_OF_YEAR,reminderCalendar.get(Calendar.DAY_OF_YEAR));
-        alarmCalendar.set(Calendar.HOUR_OF_DAY, reminderCalendar.get(Calendar.HOUR_OF_DAY));
-        alarmCalendar.set(Calendar.MINUTE,reminderCalendar.get(Calendar.MINUTE) );
-        alarmCalendar.set(Calendar.SECOND,reminderCalendar.get(Calendar.SECOND));
+        alarmCalendar.set(Calendar.DAY_OF_YEAR, mAlarmTime.get(Calendar.DAY_OF_YEAR));
+        alarmCalendar.set(Calendar.HOUR_OF_DAY, mAlarmTime.get(Calendar.HOUR_OF_DAY));
+        alarmCalendar.set(Calendar.MINUTE, mAlarmTime.get(Calendar.MINUTE));
+        alarmCalendar.set(Calendar.SECOND, mAlarmTime.get(Calendar.SECOND));
 
         try {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
@@ -54,10 +54,8 @@ public class cNotificationSetup {
         catch (NoSuchMethodError e){
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
         }
-
-
-        //Toast.makeText(context,"Ending fast at: " + reminderTimeFormat.format(alarmCalendar.getTime()).toString(), Toast.LENGTH_SHORT).show();
     }
+
     public void cancelAlarm(Context context){
         try {
             //Re-calls and then cancels the future intent.

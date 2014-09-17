@@ -57,9 +57,34 @@ public class AlarmsDataSource {
     }
 
     //CRUD Operations:
-    public cReminder getAlarm(int id){
+    public cReminder getAlarm(int _id){
 
-        return null;
+        cReminder reminder = new cReminder();
+
+        String selectQuery = "SELECT * FROM " + ReminderAlarmsHelper.TABLE_NAME + " WHERE "
+                + ReminderAlarmsHelper.COLUMN_ID + "=" + _id;
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            Calendar calendar1 = Calendar.getInstance();
+            Calendar calendar2 = Calendar.getInstance();
+
+            reminder.set_id(cursor.getInt(0));
+            reminder.setDayName(cursor.getString(1));
+
+            calendar1.setTimeInMillis(cursor.getLong(2));
+            reminder.setStartTime(calendar1);
+
+            calendar2.setTimeInMillis(cursor.getLong(3));
+            reminder.setEndTime(calendar2);
+
+            reminder.setFastLength(cursor.getInt(4));
+            reminder.setEnabled(cursor.getInt(5));
+        }
+
+        return reminder;
     }
 
     /**
@@ -142,6 +167,12 @@ public class AlarmsDataSource {
                  ReminderAlarmsHelper.COLUMN_ID + " =" + _id, null);
     }
 
+    /**
+     * Queries the database whether an alarm is enabled or not
+     *
+     * @param _id is the id of the alarm tobe queried
+     * @return an integer 1 for true or 0 for false
+     */
     public int getIsEnabled (int _id){
 
         int isEnabled = 0;

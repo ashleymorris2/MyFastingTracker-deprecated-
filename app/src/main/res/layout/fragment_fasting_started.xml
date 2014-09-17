@@ -106,9 +106,9 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:textSize="14sp"
-                        android:textStyle="bold"
                         android:gravity="left"
-                        android:layout_marginBottom="1dp" />
+                        android:layout_marginBottom="1dp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -253,7 +253,8 @@
         android:layout_alignLeft="@+id/linearLayout5"
         android:layout_alignStart="@+id/linearLayout5"
         android:layout_alignRight="@+id/linearLayout5"
-        android:layout_alignEnd="@+id/linearLayout5" />
+        android:layout_alignEnd="@+id/linearLayout5"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

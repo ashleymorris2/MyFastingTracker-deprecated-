@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingRight="20dp"
-        android:drawableLeft="@drawable/ic_clear_search_holo_light"
+        android:drawableLeft="@drawable/ic_action_cancel"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:text="DISCARD" />

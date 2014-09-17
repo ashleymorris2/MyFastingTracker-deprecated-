@@ -29,6 +29,12 @@
         </service>
 
         <receiver
+            android:name=".Notifications.RecurringNotificationReciever"
+            android:enabled="true">
+
+            </receiver>
+
+        <receiver
             android:name=".Notifications.BootReceiver"
             android:enabled="true"
             android:exported="true" >

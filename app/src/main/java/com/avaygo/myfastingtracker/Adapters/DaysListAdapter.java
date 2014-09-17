@@ -1,7 +1,6 @@
 package com.avaygo.myfastingtracker.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
+import com.avaygo.myfastingtracker.Notifications.RecurringAlarmSetup;
 import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +28,7 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
 
     private  Context context;
     private List <cReminder> mReminderDaysCard;
+    private RecurringAlarmSetup mRecuringAlarmSetup = new RecurringAlarmSetup();
 
     private AlarmsDataSource mAlarmsDataSource = new AlarmsDataSource(getContext());
 
@@ -43,6 +43,7 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = convertView;
 
@@ -58,12 +59,11 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
         TextView textStart = (TextView) itemView.findViewById(R.id.item_text_start_datetime);
         TextView textEnd = (TextView) itemView.findViewById(R.id.item_text_end_datetime);
         TextView textDuration = (TextView) itemView.findViewById(R.id.item_text_fasting_duration);
-        Switch switchReminderToggle = (Switch) itemView.findViewById(R.id.switch_reminder_toggle);
+        final Switch switchReminderToggle = (Switch) itemView.findViewById(R.id.switch_reminder_toggle);
 
         //Fill the view
         textDay.setText(currentCard.getDayName());
         textStart.setText(hourMinuteFormat.format(currentCard.getStartTime().getTime()));
-
 
         //If the start day doesn't match the end day then show some more info for the user.
         if(currentCard.getStartTime().get(Calendar.DAY_OF_WEEK) !=
@@ -74,7 +74,8 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
             textEnd.setText(hourMinuteFormat.format(currentCard.getEndTime().getTime()));
         }
 
-        switchReminderToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+     /*   switchReminderToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            View v;
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -83,9 +84,39 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
                 mAlarmsDataSource.setIsEnabled(currentCard.get_id(), isChecked);
                 mAlarmsDataSource.close();
 
-            }
+                //If is checked then a recurring alarm is set-up.
+                if (isChecked) {
+                    mRecuringAlarmSetup.createRecurringAlarm(getContext(), currentCard.getStartTime(),
+                            currentCard.get_id());
 
+                } else {
+                    //TODO  Cancel a reoccurring alarm that takes the current cards start time.
+                }
+
+            }
+        });*/
+
+        switchReminderToggle.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isChecked = ((Switch)view).isChecked();
+
+                //Save into the database whether the reminder has been enabled or not.
+                mAlarmsDataSource.open();
+                mAlarmsDataSource.setIsEnabled(currentCard.get_id(), isChecked);
+                mAlarmsDataSource.close();
+
+                if(isChecked){
+                    mRecuringAlarmSetup.createRecurringAlarm(getContext(), currentCard.getStartTime(),
+                            currentCard.get_id());
+
+                }
+                else {
+                    mRecuringAlarmSetup.cancelRecurringAlarm(getContext(), currentCard.get_id());
+                }
+            }
         });
+
 
         mAlarmsDataSource.open();
         currentCard.setEnabled(mAlarmsDataSource.getIsEnabled(currentCard.get_id()));
@@ -93,6 +124,14 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
         mAlarmsDataSource.close();
 
         textDuration.setText(Integer.toString(currentCard.getFastLength()));
+
+        TextView textHours = (TextView) itemView.findViewById(R.id.text_hours);
+        if(currentCard.getFastLength() == 1){
+            textHours.setText("Hour");
+        }
+        else {
+            textHours.setText("Hours");
+        }
 
         return itemView;
     }

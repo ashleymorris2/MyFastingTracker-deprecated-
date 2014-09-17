@@ -206,7 +206,8 @@
         android:layout_alignRight="@+id/mainLinear"
         android:layout_alignEnd="@+id/mainLinear"
         android:layout_alignLeft="@+id/mainLinear"
-        android:layout_alignStart="@+id/mainLinear" />
+        android:layout_alignStart="@+id/mainLinear"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

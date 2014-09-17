@@ -66,7 +66,7 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                             //Host activity
                 mDrawerLayout,                    //DrawerLayout object
-                R.drawable.ic_drawer,              //nav drawer image
+                R.drawable.ic_navigation_drawer,              //nav drawer image
                 R.string.navdrawer_open,  //Description for accessibility.
                 R.string.navdrawer_close){
 

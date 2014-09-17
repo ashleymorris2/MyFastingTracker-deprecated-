@@ -21,16 +21,16 @@ public class BootReceiver extends BroadcastReceiver {
 
     public void onReceive(Context context, Intent intent) {
 
-        cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
+        AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
 
         //Open a shared preferences session to retrieve the alarm end time.
         SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("appData", 0); // 0 - for private mode
         long endMill = preferences.getLong("END_TIME", 0);// @Param endMill the end time in milliseconds
 
-        //Checks that the shared preferences has actually been set.
+       //Checks that the shared preferences has actually been set.
        if(endMill > 0) {
            alarmCalendar.setTimeInMillis(endMill);
-           myNotification.setReminderCalendar(alarmCalendar);
+           myNotification.setAlarmTime(alarmCalendar);
            myNotification.createAlarm(context.getApplicationContext());
        }
     }

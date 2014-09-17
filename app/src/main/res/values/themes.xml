@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme" parent="android:Theme.DeviceDefault.Light.DarkActionBar">
+        <item name="android:windowContentOverlay">@drawable/ab_transparent_example</item>
         </style>
 
 
@@ -15,6 +16,7 @@
         <item name="circleSeek">@style/CircularSeekBar_default</item>
     </style>
     <style name="Theme.light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="textTitle">@style/title_font_light</item>
         <item name="textTimer">@style/timer_font_light</item>
         <item name="textRegular">@style/font_light</item>

@@ -2,6 +2,7 @@ package com.avaygo.myfastingtracker.Fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +13,8 @@ import android.widget.Button;
 
 import android.widget.TextView;
 
+import com.avaygo.myfastingtracker.Notifications.AlarmSetup;
 import com.avaygo.myfastingtracker.R;
-import com.avaygo.myfastingtracker.Notifications.cNotificationSetup;
 import com.devadvance.circularseekbar.CircularSeekBar;
 
 
@@ -44,7 +45,7 @@ public class TimerSettingScreenFragment extends Fragment {
     private FragmentTransaction fragmentChange;
 
     //Custom Classes:
-    cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
+    AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
 
     public TimerSettingScreenFragment(){
         //empty constructor, ok then.
@@ -75,6 +76,7 @@ public class TimerSettingScreenFragment extends Fragment {
         //====================================================================
 
         seekbarTime = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar2);
+
         seekbarTime.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             public void onStartTrackingTouch(CircularSeekBar seekBar) {
 
@@ -126,7 +128,7 @@ public class TimerSettingScreenFragment extends Fragment {
                 futureCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
 
                 //Passes the future time to the notification class so that it can set a notification at that time.
-                myNotification.setReminderCalendar(futureCalendar);
+                myNotification.setAlarmTime(futureCalendar);
                 myNotification.createAlarm(getActivity());
 
                 //Shared preferences, stores the current state on the button press to save the activity's session.

@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.avaygo.myfastingtracker.Notifications.cNotificationSetup;
+import com.avaygo.myfastingtracker.Notifications.AlarmSetup;
 import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
@@ -28,8 +28,8 @@ public class TimerStartedScreenFragment extends Fragment {
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
     private Button buttonBreakFast;
-    private TextView txtStartTime, txtEndTime, textHourAndMinutes, textSeconds, txtFastDuration, textPercentComplete,
-            txtStartDay, txtEndDay;
+    private TextView textStartTime, textEndTime, textHourAndMinutes, textSeconds, txtFastDuration, textPercentComplete,
+            textStartDay, textEndDay;
 
     //Calendars and time formatting:
     private Calendar startCalendar, endCalendar;
@@ -37,7 +37,7 @@ public class TimerStartedScreenFragment extends Fragment {
     SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
     SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");
 
-    cNotificationSetup myNotification = new cNotificationSetup();//Used to set the notification reminder.
+    AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
 
     //Fragment Class:
     private FragmentTransaction fragmentChange;
@@ -58,15 +58,15 @@ public class TimerStartedScreenFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //Find View Elements
-        txtStartTime = (TextView) getView().findViewById(R.id.start_time);
-        txtEndTime = (TextView) getView().findViewById(R.id.end_time);
+        textStartTime = (TextView) getView().findViewById(R.id.start_time);
+        textEndTime = (TextView) getView().findViewById(R.id.end_time);
         textHourAndMinutes = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
         textSeconds = (TextView) getView().findViewById(R.id.txt_time_seconds);
         txtFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
         textPercentComplete = (TextView) getView().findViewById(R.id.txt_completed);
 
-        txtStartDay = (TextView) getView().findViewById(R.id.txt_start_day);
-        txtEndDay = (TextView) getView().findViewById(R.id.txt_end_day);
+        textStartDay = (TextView) getView().findViewById(R.id.txt_start_day);
+        textEndDay = (TextView) getView().findViewById(R.id.txt_end_day);
 
         buttonBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
         buttonBreakFast.setOnClickListener(new View.OnClickListener() {
@@ -128,16 +128,16 @@ public class TimerStartedScreenFragment extends Fragment {
         startCalendar.setTimeInMillis(startMillies);
         endCalendar.setTimeInMillis(endMillies);
 
-        txtStartTime.setText(TimeFormat.format(startCalendar.getTime()));
-        txtStartDay.setText("Today");
+        textStartTime.setText(TimeFormat.format(startCalendar.getTime()));
+        textStartDay.setText("Today");
 
         //If end day is tomorrow then show tomorrows date for the user, if not then it isn't necessary.
         if (endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE)) {
-            txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
-            txtEndDay.setText("Tomorrow");//If two aren't equal then end must be tomorrow.
+            textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
+            textEndDay.setText("Tomorrow");//If two aren't equal then end must be tomorrow.
         } else {
-            txtEndTime.setText(TimeFormat.format(endCalendar.getTime()));
-            txtEndDay.setText("Today");
+            textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
+            textEndDay.setText("Today");
         }
 
         if (endHour == 1) {
@@ -147,10 +147,10 @@ public class TimerStartedScreenFragment extends Fragment {
         }
     }
 
-    /**
-    Clears the shared preferences and changes the fragment.
-    **/
+
+    //Clears the shared preferences and changes the fragment.
     private void changeFragment() {
+
         //Shared preferences, stores the current state on the button press to save the activity's session.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
         SharedPreferences.Editor editor = preferences.edit();
@@ -171,14 +171,15 @@ public class TimerStartedScreenFragment extends Fragment {
         private boolean dateChange = false;
         private  float percentAsFloat;
 
-        /*Constructor for MyCounter class
+        /**Constructor for MyCounter class
         @param millisInFuture time in milliseconds in the future.
-        @param countDownInterval interval in milliseconds to countdown.*/
+        @param countDownInterval interval in milliseconds to countdown.**/
         private MyCounter(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
 
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
+
             mEndMinutes = preferences.getInt("END_HOUR", 0) * 3600; // 3600 for seconds, 60 for minutes.
             editor.putBoolean("TIMER_START", true);
             editor.commit();
@@ -231,8 +232,8 @@ public class TimerStartedScreenFragment extends Fragment {
                 //Checks if today's date matches the end date and updates the texts appropriately.
                 if (startCalendar.get(Calendar.DATE) != Calendar.getInstance().get(Calendar.DATE)) {
 
-                    txtStartDay.setText("Yesterday");
-                    txtEndDay.setText("Today");
+                    textStartDay.setText("Yesterday");
+                    textEndDay.setText("Today");
                     dateChange = true;
 
                 }
@@ -240,6 +241,7 @@ public class TimerStartedScreenFragment extends Fragment {
         }
 
         public void onFinish() {
+
             //Set the percentage to 100
             mPercentCompleted = 100;
             percentAsFloat = 1;
