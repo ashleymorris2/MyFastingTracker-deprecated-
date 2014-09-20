@@ -27,6 +27,7 @@ public class RecurringAlarmSetup {
     public RecurringAlarmSetup() {
 
         mTime = Calendar.getInstance();
+        mTimeNow = Calendar.getInstance();
 
     }
 
@@ -35,7 +36,6 @@ public class RecurringAlarmSetup {
         Calendar alarmCalendar = Calendar.getInstance();
         mTime.setTimeInMillis(calendar.getTimeInMillis());
 
-        mTimeNow = Calendar.getInstance();
         mTimeNow.setTimeInMillis(System.currentTimeMillis());
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -57,8 +57,8 @@ public class RecurringAlarmSetup {
             alarmCalendar.add(Calendar.DAY_OF_YEAR, 7);
         }
 
+        //Sets the alarm to be exact if available, if not it will use the method from the older API
         try {
-            //Set the alarm to call on a weekly basis.
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), alarmIntent);
         }
         catch (NoSuchMethodError e){

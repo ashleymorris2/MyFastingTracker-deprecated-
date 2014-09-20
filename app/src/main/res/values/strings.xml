@@ -9,6 +9,8 @@
     <string name="start_toggle">Start</string>
     <string name="btnStop">Breakfast</string>
 
+    <string name="reminders_disabled">All reminders are currently disabled, to see them turn reminders on.</string>
+
     <!-- Reminder settings fragment strings: -->
     <string name="reminder_toggle_body">Toggle for all fasting reminders</string>
 

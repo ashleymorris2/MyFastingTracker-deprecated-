@@ -33,6 +33,10 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private MenuItem mSwtichMenuItem;
+
+    private boolean drawerOpen;
+
 
     private String[] menu;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -41,6 +45,7 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
+
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.container);
@@ -56,7 +61,6 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
             View v;
 
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //Toast.makeText(getApplication(), menu[position], Toast.LENGTH_SHORT).show();
                 selectItem(position);
             }
         });
@@ -75,11 +79,18 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(mDrawerTitle);
 
+                if(mSwtichMenuItem!= null){
+                    mSwtichMenuItem.setVisible(false);
+                }
+
             }
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getActionBar().setTitle(mTitle);
+
+                invalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -110,6 +121,8 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
         SharedPreferences preferences = getSharedPreferences("appData", 0); // 0 - for private mode
         fastingState = preferences.getBoolean("IS_FASTING", false);
 
+        mDrawerLayout.closeDrawer(mDrawerListView);
+
         switch (position){
             case 0:
                 fragment = new HomeScreenFragment();
@@ -123,17 +136,28 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
                 break;
             case 2:
                 fragment = new ReminderListScreenFragment();
+
                 break;
             default:
                 break;
         }
         if(fragment != null) {
             //Remove when all cases have been implemented.
+            //Position will be used as a tag.
             getFragmentManager().beginTransaction()
-                    .replace(R.id.mainContent, fragment)
+                    .replace(R.id.mainContent, fragment, Integer.toString(position))
                     .commit();
         }
-        mDrawerLayout.closeDrawer(mDrawerListView);
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getActionBar().setTitle(mTitle);
+
     }
 
     //Changes the title of the action bar to the supplied string.
@@ -156,10 +180,15 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
         mDrawerToggle.syncState();
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.fasting_tracker, menu);
+
+        mSwtichMenuItem = menu.findItem(R.id.myswitch);
+        mSwtichMenuItem.setVisible(false);
+
         return true;
     }
 
@@ -195,23 +224,5 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
 
     }
 
-    private void loadSavedSession(boolean state) {
-   /*Loads the previous session for the user:
-     If the user is not fasting then fFastingSettings() is the default.
-     If the user is fasting then fFastingStarted() is loaded instead.*/
-
-        boolean mFastingState = state;
-
-        if (mFastingState == false){
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new TimerSettingScreenFragment())
-                    .commit();
-        }
-        else{
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new TimerStartedScreenFragment())
-                    .commit();
-        }
-    }
 }
 

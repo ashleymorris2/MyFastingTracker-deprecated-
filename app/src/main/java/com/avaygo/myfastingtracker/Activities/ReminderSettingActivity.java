@@ -55,7 +55,6 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
         final View customActionBarView = inflater.inflate(R.layout.actionbar_done_discard, null);
 
 
-
         // Show the custom action bar view and hide the normal Home icon and title.
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,ActionBar.DISPLAY_SHOW_CUSTOM
