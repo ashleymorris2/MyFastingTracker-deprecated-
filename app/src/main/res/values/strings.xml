@@ -8,7 +8,6 @@
     <string name="title_activity_fasting_tracker">Fasting tracker</string>
     <string name="start_toggle">Start</string>
     <string name="btnStop">Breakfast</string>
-
     <string name="reminders_disabled">All reminders are currently disabled, to see them turn reminders on.</string>
 
     <!-- Reminder settings fragment strings: -->
@@ -46,5 +45,6 @@
     <string name="title_activity_reminder_setting">ReminderSettingActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_duration_picker_dialogue">DurationPickerDialogue</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

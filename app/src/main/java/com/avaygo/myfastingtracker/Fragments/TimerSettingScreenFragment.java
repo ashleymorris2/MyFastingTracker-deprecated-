@@ -2,7 +2,6 @@ package com.avaygo.myfastingtracker.Fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,28 +61,28 @@ public class TimerSettingScreenFragment extends Fragment {
         myThread = new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
         myThread.start();
 
-        //===================================================================
-        //Find View Elements
-        //===================================================================
-        textCurrentClock = (TextView) getView().findViewById(R.id.clock_text);
-        textEndClock = (TextView) getView().findViewById(R.id.endclock_text);
         textEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
-
-        textEndDay = (TextView) getView().findViewById(R.id.TXT_FUTURE);
-        textStartDay = (TextView) getView().findViewById(R.id.TXT_TODAY);
         textSeekBarValue = (TextView) getView().findViewById(R.id.seekVal);
 
-        //====================================================================
-
         seekbarTime = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar2);
-
         seekbarTime.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             public void onStartTrackingTouch(CircularSeekBar seekBar) {
 
             }
 
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+
                 int seekValue = progress + 1;
+
+                if(!fromUser) {
+
+                    SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = preferences.edit();
+
+                    editor.putInt("END_HOUR", seekValue);
+                    editor.putLong("END_MILLISEC", seekValue * 3600000);
+                    editor.commit();
+                }
 
                 if (seekValue < 10) {
                     textSeekBarValue.setText("0" + seekValue + ":00");
@@ -117,11 +116,14 @@ public class TimerSettingScreenFragment extends Fragment {
             }
         });
 
+        boolean fromReminder = getActivity().getIntent().getBooleanExtra("fromReminder", false);
+        int savedDurationValue = getActivity().getIntent().getIntExtra("duration", 1);
+
+
         //START BUTTON
         buttonStart = (Button) getView().findViewById(R.id.start_toggle);
         buttonStart.setOnClickListener(new View.OnClickListener() {
             private View v;
-
             public void onClick(View v) {
 
                 futureCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
@@ -158,22 +160,39 @@ public class TimerSettingScreenFragment extends Fragment {
         textEndHour.setText(hourFormat.format(futureCalendar.getTime()));
 
         //Starts the clocks
+        textCurrentClock = (TextView) getView().findViewById(R.id.clock_text);
         textCurrentClock.setText(currentTimeFormat.format(currentCalendar.getTime()));
+
+        textEndClock = (TextView) getView().findViewById(R.id.endclock_text);
         textEndClock.setText(minuteFormat.format(currentCalendar.getTime()));
 
+        textStartDay = (TextView) getView().findViewById(R.id.TXT_TODAY);
         textStartDay.setText(DayFormat.format(currentCalendar.getTime()));
+
+        textEndDay = (TextView) getView().findViewById(R.id.TXT_FUTURE);
         textEndDay.setText(DayFormat.format(futureCalendar.getTime()));
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = preferences.edit();
+        //If this fragment has been opened via a reminder intent:
+        if (fromReminder){
 
-        //Default end of one hour is set.
-        editor.putInt("END_HOUR", 1);
-        editor.putLong("END_MILLISEC", 3600000);
-        editor.commit();
+            seekbarTime.setProgress(savedDurationValue - 1);
+
+            //Clear the intent after we are done with it
+            getActivity().getIntent().putExtra("fromReminder", false);
+        }
+        else {
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+            SharedPreferences.Editor editor = preferences.edit();
+
+            //Default end of one hour is set.
+            editor.putInt("END_HOUR", 1);
+            editor.putLong("END_MILLISEC", 3600000);
+            editor.commit();
+        }
     }
 
-//    Updates the time in the UI thread, changes the textview to match.
+    //Updates the time in the UI thread, changes the textview to match.
     public void upDateTime() {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {

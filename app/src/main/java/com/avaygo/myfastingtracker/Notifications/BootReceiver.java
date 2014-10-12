@@ -37,8 +37,10 @@ public class BootReceiver extends BroadcastReceiver {
 
         //Open a shared preferences session to retrieve the alarm end time.
         SharedPreferences preferences = context.getApplicationContext().getSharedPreferences("appData", 0); // 0 - for private mode
+        SharedPreferences preferences2 = context.getApplicationContext().getSharedPreferences("userPref", 0); // 0 - for private mode
+
         long endMill = preferences.getLong("END_TIME", 0);// @Param endMill the end time in milliseconds
-        Boolean listEnabled = preferences.getBoolean("listEnabled", false);
+        Boolean listEnabled = preferences2.getBoolean("listEnabled", false);
 
        //Checks that the shared preferences has actually been set.
        if(endMill > 0) {

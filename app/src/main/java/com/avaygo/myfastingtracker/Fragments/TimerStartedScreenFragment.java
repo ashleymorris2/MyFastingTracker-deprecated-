@@ -34,10 +34,12 @@ public class TimerStartedScreenFragment extends Fragment {
     //Calendars and time formatting:
     private Calendar startCalendar, endCalendar;
 
-    SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");
+    private SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");
 
-    AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
+    private AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
+
+    private final String FAST_PROGRESS = "fastProgress";
 
     //Fragment Class:
     private FragmentTransaction fragmentChange;
@@ -135,9 +137,17 @@ public class TimerStartedScreenFragment extends Fragment {
         if (endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE)) {
             textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
             textEndDay.setText("Tomorrow");//If two aren't equal then end must be tomorrow.
-        } else {
+        }
+        else {
             textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
             textEndDay.setText("Today");
+        }
+
+        if(savedInstanceState != null){
+
+            float progress = savedInstanceState.getFloat(FAST_PROGRESS);
+            holoCircularProgressBar.setProgress(progress);
+
         }
 
         if (endHour == 1) {
@@ -147,6 +157,12 @@ public class TimerStartedScreenFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putFloat(FAST_PROGRESS, holoCircularProgressBar.getProgress());
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
     //Clears the shared preferences and changes the fragment.
     private void changeFragment() {
@@ -270,7 +286,7 @@ public class TimerStartedScreenFragment extends Fragment {
         super.onDetach();
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
-    }
+
+
+
 }

@@ -21,7 +21,7 @@ public class RecurringAlarmSetup {
     private PendingIntent alarmIntent;
     private Calendar mTime, mTimeNow;
 
-    //SimpleDateFormat testFormat = new SimpleDateFormat("HH:mm:ss, EEE, d/M/y, D ");
+    SimpleDateFormat testFormat = new SimpleDateFormat("HH:mm:ss, EEE, d/M/y, D ");
 
 
     public RecurringAlarmSetup() {
@@ -52,10 +52,14 @@ public class RecurringAlarmSetup {
         alarmCalendar.set(Calendar.MINUTE, mTime.get(Calendar.MINUTE));
         alarmCalendar.set(Calendar.SECOND, 0);
 
+
         //If the alarm is in the past then add a specific amount of time to set it in the future.
-        while (alarmCalendar.getTimeInMillis() <= mTimeNow.getTimeInMillis()){
+        if (alarmCalendar.getTimeInMillis() <= mTimeNow.getTimeInMillis()){
             alarmCalendar.add(Calendar.DAY_OF_YEAR, 7);
         }
+
+        Toast.makeText(context.getApplicationContext(), testFormat.format(alarmCalendar.getTime()),Toast.LENGTH_LONG).show();
+
 
         //Sets the alarm to be exact if available, if not it will use the method from the older API
         try {

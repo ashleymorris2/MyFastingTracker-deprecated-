@@ -2,9 +2,9 @@ package com.avaygo.myfastingtracker.Activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.avaygo.myfastingtracker.Fragments.HomeScreenFragment;
 import com.avaygo.myfastingtracker.Fragments.ReminderListScreenFragment;
@@ -24,7 +23,7 @@ import com.avaygo.myfastingtracker.Fragments.TimerStartedScreenFragment;
 import com.avaygo.myfastingtracker.R;
 
 
-public class FastingTrackerActivity extends Activity implements TimerStartedScreenFragment.OnFragmentInteractionListener {
+public class FastingTrackerActivity extends Activity  {
 
     boolean fastingState;
 
@@ -33,19 +32,21 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private MenuItem mSwtichMenuItem;
-
-    private boolean drawerOpen;
-
+    private MenuItem mSwitchMenuItem;
 
     private String[] menu;
     private ActionBarDrawerToggle mDrawerToggle;
+    private int screenNumber;
+
+    private boolean  fromReminder;
+
+    static final String STATE_SCREEN = "userScreen";
+    static final String STATE_TITLE = "actionBarTitle";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
-
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.container);
@@ -61,7 +62,7 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
             View v;
 
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                selectItem(position);
+                screenNumber = selectItem(position);
             }
         });
 
@@ -79,8 +80,8 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(mDrawerTitle);
 
-                if(mSwtichMenuItem!= null){
-                    mSwtichMenuItem.setVisible(false);
+                if(mSwitchMenuItem != null){
+                    mSwitchMenuItem.setVisible(false);
                 }
 
             }
@@ -99,18 +100,33 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (savedInstanceState == null) {
-            //Shared preferences to load the activity's session.
-            /*SharedPreferences preferences = getSharedPreferences("appData", 0); // 0 - for private mode
-            fastingState = preferences.getBoolean("IS_FASTING", false);*/
+        Intent intent = getIntent();
+        fromReminder = intent.getBooleanExtra("fromReminder", false);
 
-            selectItem(1);//Change for 0 when home has been implemented.
+        if (savedInstanceState == null) {
+
+            if(fromReminder){
+                int savedFragment = intent.getIntExtra("fragmentNumber", 1);
+                selectItem(savedFragment);
+            }
+            else {
+             screenNumber =  selectItem(1);//Change for 0 when home has been implemented.
+            }
+        }
+        else{
+
+            //Restore the users activity
+            screenNumber = savedInstanceState.getInt(STATE_SCREEN);
+            selectItem(screenNumber);
+
+            mTitle = savedInstanceState.getCharSequence(STATE_TITLE);
+            getActionBar().setTitle(mTitle);
 
         }
     }
 
     //Sets the ListView Item as checked.
-    private void selectItem(int position) {
+    private int selectItem(int position) {
 
         mDrawerListView.setItemChecked(position, true);
         setTitle(menu[position]);
@@ -130,6 +146,11 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
             case 1:
                 if (fastingState == false) {
                     fragment = new TimerSettingScreenFragment();
+
+                    if(fromReminder = true) {
+                        fragment.setArguments(getIntent().getExtras());
+                    }
+
                 } else {
                     fragment = new TimerStartedScreenFragment();
                 }
@@ -149,12 +170,12 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
                     .commit();
         }
 
+        return position;
     }
 
-
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         getActionBar().setTitle(mTitle);
 
@@ -180,14 +201,14 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
         mDrawerToggle.syncState();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.fasting_tracker, menu);
 
-        mSwtichMenuItem = menu.findItem(R.id.myswitch);
-        mSwtichMenuItem.setVisible(false);
+        //Make the switch invisible.
+        mSwitchMenuItem = menu.findItem(R.id.myswitch);
+        mSwitchMenuItem.setVisible(false);
 
         return true;
     }
@@ -215,13 +236,13 @@ public class FastingTrackerActivity extends Activity implements TimerStartedScre
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+        //Save the users current activity state.
+        savedInstanceState.putInt(STATE_SCREEN, screenNumber);
+        savedInstanceState.putCharSequence(STATE_TITLE, getActionBar().getTitle());
 
+        super.onSaveInstanceState(savedInstanceState);
     }
 
 }

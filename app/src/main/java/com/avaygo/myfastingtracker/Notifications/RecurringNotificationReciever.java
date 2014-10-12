@@ -71,10 +71,14 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
 
             //Sets a pending intent that is called when the notification is selected
             Intent myIntent = new Intent(context, FastingTrackerActivity.class);
+
+            //Fragment number is the screen for the timer setting screen, in this case it is 1.
+            myIntent.putExtra("fromReminder", true);
+            myIntent.putExtra("fragmentNumber", 1);
+            myIntent.putExtra("duration", mReminder.getFastLength());
+
             PendingIntent pIntent = PendingIntent.getActivity(context, 0,
                     myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            myIntent.putExtra("duration", mReminder.getFastLength());
 
             Notification mNotify = new Notification.Builder(context)
                     .setContentTitle("It's " + mReminder.getDayName())

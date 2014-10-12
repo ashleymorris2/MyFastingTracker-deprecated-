@@ -7,7 +7,7 @@
     android:id="@+id/relative1">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/card_background"
         android:id="@+id/relativeLayout"

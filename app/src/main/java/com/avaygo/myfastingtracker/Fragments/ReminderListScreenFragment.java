@@ -87,7 +87,7 @@ public class ReminderListScreenFragment extends Fragment {
         populateListView();
 
         //Sets the initial viability of the fragments views
-        SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+        SharedPreferences preferences = getActivity().getSharedPreferences("userPref", 0); // 0 - for private mode
         listEnabled = preferences.getBoolean("listEnabled", false);
 
         if(listEnabled == false){
@@ -149,7 +149,6 @@ public class ReminderListScreenFragment extends Fragment {
                 mListView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 mListView.invalidate();
-
             }
         }
     }
@@ -158,7 +157,7 @@ public class ReminderListScreenFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+        SharedPreferences preferences = getActivity().getSharedPreferences("userPref", 0); // 0 - for private mode
         Switch switch1 = (Switch)menu.findItem(R.id.myswitch).getActionView().findViewById(R.id.switchForActionBar);
 
         //Makes the switch visible and set its checked status
@@ -185,7 +184,7 @@ public class ReminderListScreenFragment extends Fragment {
             public void onClick(View view) {
                 boolean isChecked = ((Switch)view).isChecked();
 
-                SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+                SharedPreferences preferences = getActivity().getSharedPreferences("userPref", 0); // 0 - for private mode
                 SharedPreferences.Editor editor = preferences.edit();
 
                 editor.putBoolean("listEnabled", isChecked);
@@ -198,16 +197,16 @@ public class ReminderListScreenFragment extends Fragment {
                     textRemindersDisabled.setVisibility(View.INVISIBLE);
                     mListView.setVisibility(View.VISIBLE);
 
-                    //Cancel all the set alarms
+                    //Cancel all the set alarms.
                     for(int i = 0; i <7; i++){
                         cReminder mReminder =  mReminderCardsList.get(i);
 
+                        //If the alarm is enabled then reset  it...
                         if(mReminder.isEnabled()){
                             mRecurringAlarm.createRecurringAlarm(getActivity(), mReminder.getStartTime(),
                                     mReminder.get_id());
                         }
                     }
-
                 }
                 //ALARMS OFF
                 else {
