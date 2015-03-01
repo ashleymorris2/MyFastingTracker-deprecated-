@@ -1,10 +1,12 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar"></style>
+    <style name="AppTheme" parent="android:Theme.Material">
+    </style>
 
-        <!-- Customize your theme here. -->
-     <style name="CircularProgressBar">
+
+    <!-- Customize your theme here. -->
+    <style name="CircularProgressBar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="stroke_width">5dp</item>
@@ -70,9 +72,8 @@
 
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/Peter_River</item>
         <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
-
+        <item name="android:background">@color/Peter_River</item>
     </style>
 
     <style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.StatusBar.Title">
@@ -82,7 +83,7 @@
 
     <style name="title_font_light">
         <item name="android:textColor">#ff424242</item>
-            <item name="android:textSize">14sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="font_light" parent="@android:style/TextAppearance.Medium">

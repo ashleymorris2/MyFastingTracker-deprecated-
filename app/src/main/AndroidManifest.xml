@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.avaygo.myfastingtracker"
     android:versionCode="0"
-    android:versionName="0.0.8" >
+    android:versionName="0.0.8">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -11,10 +11,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.light" >
+        android:theme="@style/Theme.light">
         <activity
-            android:name=".Activities.FastingTrackerActivity"
-            android:label="@string/app_name" >
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,35 +23,32 @@
         </activity>
 
         <service
-            android:name=".Notifications.TimerNotificationService"
+            android:name=".notifications.TimerNotificationService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
 
         <receiver
-            android:name=".Notifications.RecurringNotificationReciever"
-            android:enabled="true">
-
-            </receiver>
-
+            android:name=".notifications.RecurringNotificationReciever"
+            android:enabled="true"></receiver>
         <receiver
-            android:name=".Notifications.BootReceiver"
+            android:name=".notifications.BootReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name=".Activities.ReminderSettingActivity"
-            android:label="@string/title_activity_reminder_setting" >
-        </activity>
+            android:name=".activities.ReminderSettingActivity"
+            android:label="@string/title_activity_reminder_setting"></activity>
         <activity
-            android:name=".Activities.DurationPickerDialogue"
-            android:theme="@android:style/Theme.Holo.Dialog"
-            android:label="@string/title_activity_duration_picker_dialogue" >
-        </activity>
+            android:name=".activities.DurationPickerDialogue"
+            android:label="@string/title_activity_duration_picker_dialogue"
+            android:theme="@android:style/Theme.Holo.Dialog"></activity>
+        <activity
+            android:name=".activities.SaveFastDialogue"
+            android:label="@string/title_activity_dialgoue_save_fast"></activity>
     </application>
 
 </manifest>

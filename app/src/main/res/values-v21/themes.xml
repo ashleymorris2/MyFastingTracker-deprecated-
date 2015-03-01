@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:windowContentOverlay">@drawable/ab_transparent_example</item>
+    </style>
+
+
+    <style name="Theme.default">
+        <item name="textTitle">@style/title_font_default</item>
+        <item name="textTimer">@style/timer_font_default</item>
+        <item name="textRegular">@style/font_default</item>
+        <item name="textButton">@style/button_font_default</item>
+        <item name="pageBackground">@style/background_default</item>
+        <item name="circleProgress">@style/CircularProgressBar_default</item>
+        <item name="circleSeek">@style/CircularSeekBar_default</item>
+    </style>
+
+    <style name="Theme.light">
+        <item name="textTitle">@style/title_font_light</item>
+        <item name="textTimer">@style/timer_font_light</item>
+        <item name="textRegular">@style/font_light</item>
+        <item name="textColoured">@style/font_light_coloured</item>
+        <item name="dividerStyle">@style/divider_style</item>
+        <item name="textButton">@style/button_font_light</item>
+        <item name="pageBackground">@style/background_light</item>
+        <item name="circleProgress">@style/CircularProgressBar_light</item>
+        <item name="circleSeek">@style/CircularSeekBar_light</item>
+
+        <item name="android:colorAccent">@color/Belize_Hole</item>
+        <item name="android:textColorPrimary">@color/Clouds</item>
+        <item name="android:colorPrimary">@color/Peter_River</item>
+        <item name="android:colorPrimaryDark">@color/Belize_Hole</item>
+    </style>
+
+
+
+</resources>

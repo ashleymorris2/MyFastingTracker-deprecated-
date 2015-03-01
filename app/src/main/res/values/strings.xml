@@ -46,5 +46,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_duration_picker_dialogue">DurationPickerDialogue</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_dialgoue_save_fast">Save to Log</string>
 
 </resources>

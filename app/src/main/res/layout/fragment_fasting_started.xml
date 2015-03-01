@@ -3,7 +3,7 @@
 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.avaygo.myfastingtracker.Fragments.TimerStartedScreenFragment"
+    tools:context="com.avaygo.myfastingtracker.fragments.TimerStartedScreenFragment"
     android:id="@+id/main2"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
