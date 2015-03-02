@@ -29,7 +29,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/reminders_disabled"
         android:id="@+id/text_reminders_disabled"
         android:layout_alignParentLeft="true"
@@ -38,5 +37,6 @@
         android:layout_marginRight="16dp"
         android:layout_centerInParent="true"
         android:textSize="18sp"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:textColor="@color/Main_Text" />
 </RelativeLayout>
