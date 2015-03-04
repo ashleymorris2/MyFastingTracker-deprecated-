@@ -18,7 +18,7 @@
         <LinearLayout
             android:id="@+id/calendar1"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="360dp"
             android:orientation="vertical"
             android:padding="12dp">
         </LinearLayout>
