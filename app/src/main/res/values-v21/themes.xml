@@ -27,7 +27,7 @@
         <item name="circleProgress">@style/CircularProgressBar_light</item>
         <item name="circleSeek">@style/CircularSeekBar_light</item>
 
-        <item name="android:colorAccent">@color/Belize_Hole</item>
+        <item name="android:colorAccent">@color/Light_Accent</item>
         <item name="android:textColorPrimary">@color/Clouds</item>
         <item name="android:colorPrimary">@color/Peter_River</item>
         <item name="android:colorPrimaryDark">@color/Belize_Hole</item>

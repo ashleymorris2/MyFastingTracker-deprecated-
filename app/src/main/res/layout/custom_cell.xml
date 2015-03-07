@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp"
+    android:focusable="false"
+   >
 
     <TextView
         android:id="@+id/cell_text1"
@@ -13,7 +15,9 @@
         android:layout_height="wrap_content"
         android:text="Hello"
         android:gravity="center_horizontal"
-        android:textColor="@color/caldroid_darker_gray"
+        android:textColor="@color/caldroid_lighter_gray"
+        android:textSize="16sp"
         android:textStyle="bold" />
+
 
 </LinearLayout>

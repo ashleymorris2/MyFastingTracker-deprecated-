@@ -13,9 +13,13 @@
     <color name="Wet_Asphalt">#34495e</color>
     
     <color name="Belize_Hole">#2980b9</color>
-    <color name="Peter_River">#3498db</color>
-    <color name="Peter_Dark">#ff2a669b</color>
+    <color name="Peter_River">#2196F3</color>
+    <color name="Peter_Dark">#1976D2</color>
     <color name="Light_Blue">#94bee5</color>
+
+    <color name="Light_Accent">#00B0FF</color>
+
+    <color name="Background_colour">#ffe0e0e0</color>
 
     <color name="Main_Text">#ff424242</color>
 
