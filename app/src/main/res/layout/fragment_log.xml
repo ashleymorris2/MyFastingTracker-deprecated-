@@ -2,13 +2,14 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:background="#ffe0e0e0">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="600dp"
-    android:orientation="vertical"
-    android:background="@color/Light_Blue">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -19,7 +20,7 @@
         <LinearLayout
             android:id="@+id/calendar1"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="365dp"
             android:orientation="vertical"
             android:padding="12dp">
         </LinearLayout>
@@ -29,22 +30,39 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
+        android:elevation="2dp"
         android:layout_below="@+id/relativeLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@color/Background_colour"
-        android:padding="16dp">
+        android:background="@color/caldroid_gray"
+        android:id="@+id/linearLayout6">
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="6th March 2015"
             android:id="@+id/text_date_title"
             android:gravity="center_vertical"
             android:textStyle="bold"
-            android:textColor="@color/Main_Text"
-            android:textSize="16sp" />
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_marginLeft="16dp" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:text="There is nothing logged for this day"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/linearLayout6"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="14sp"
+        android:textColor="@color/Main_Text"
+        android:gravity="center"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
 
