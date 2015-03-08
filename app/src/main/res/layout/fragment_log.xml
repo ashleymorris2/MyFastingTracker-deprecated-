@@ -51,7 +51,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="90dp"
+        android:layout_height="550dp"
         android:text="There is nothing logged for this day"
         android:id="@+id/textView4"
         android:layout_below="@+id/linearLayout6"
@@ -59,7 +59,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="@color/Main_Text"
         android:gravity="center"
         android:layout_alignParentBottom="true" />

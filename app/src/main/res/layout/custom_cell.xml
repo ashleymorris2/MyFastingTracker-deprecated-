@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_cell"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
@@ -12,9 +12,9 @@
     <TextView
         android:id="@+id/cell_text1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:text="Hello"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
         android:textColor="@color/caldroid_lighter_gray"
         android:textSize="16sp"
         android:textStyle="bold" />
