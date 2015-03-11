@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.avaygo.myfastingtracker.R;
 import com.avaygo.myfastingtracker.adapters.NavigationDrawerAdapter;
 import com.avaygo.myfastingtracker.adapters.ObjectDrawerItem;
 import com.avaygo.myfastingtracker.fragments.HomeScreenFragment;
@@ -23,7 +24,6 @@ import com.avaygo.myfastingtracker.fragments.LogScreenFragment;
 import com.avaygo.myfastingtracker.fragments.ReminderListScreenFragment;
 import com.avaygo.myfastingtracker.fragments.TimerSettingScreenFragment;
 import com.avaygo.myfastingtracker.fragments.TimerStartedScreenFragment;
-import com.avaygo.myfastingtracker.R;
 
 
 public class MainActivity extends FragmentActivity {

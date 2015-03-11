@@ -1,8 +1,6 @@
 package com.avaygo.myfastingtracker.adapters;
 
 import android.content.Context;
-import android.media.Image;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
-
-import org.w3c.dom.Text;
-
-import java.sql.Array;
 
 /**
  * Created by Ash on 01/03/2015.

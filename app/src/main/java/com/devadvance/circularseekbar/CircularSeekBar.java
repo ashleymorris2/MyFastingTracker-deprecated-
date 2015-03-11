@@ -26,7 +26,6 @@
  */
 
 package com.devadvance.circularseekbar;
-import com.avaygo.myfastingtracker.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -42,6 +41,8 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.avaygo.myfastingtracker.R;
 
 public class CircularSeekBar extends View {
 
