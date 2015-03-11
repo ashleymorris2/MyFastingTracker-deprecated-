@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.fragments;
+package com.avaygo.myfastingtracker.fragment;
 
 
 import com.avaygo.myfastingtracker.R;
