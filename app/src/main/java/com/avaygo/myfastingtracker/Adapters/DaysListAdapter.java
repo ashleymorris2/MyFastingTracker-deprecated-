@@ -8,9 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.avaygo.myfastingtracker.R;
 import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
 import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
-import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

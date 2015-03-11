@@ -1,12 +1,9 @@
 package com.avaygo.myfastingtracker.fragments;
 
 
-
 import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +13,6 @@ import android.widget.TextView;
 import com.avaygo.myfastingtracker.R;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
-import com.roomorama.caldroid.WeekdayArrayAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

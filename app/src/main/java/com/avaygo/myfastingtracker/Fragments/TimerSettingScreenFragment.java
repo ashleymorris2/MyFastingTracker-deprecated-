@@ -9,13 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import android.widget.TextView;
 
-import com.avaygo.myfastingtracker.notifications.AlarmSetup;
 import com.avaygo.myfastingtracker.R;
+import com.avaygo.myfastingtracker.notifications.AlarmSetup;
 import com.devadvance.circularseekbar.CircularSeekBar;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

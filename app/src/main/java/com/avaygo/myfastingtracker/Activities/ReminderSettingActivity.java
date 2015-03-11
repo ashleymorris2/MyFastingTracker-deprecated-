@@ -13,11 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
 import com.avaygo.myfastingtracker.Days;
-import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
 import com.avaygo.myfastingtracker.R;
-import com.doomonafireball.betterpickers.radialtimepicker.RadialPickerLayout;
+import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
+import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
 
 import java.text.SimpleDateFormat;

@@ -2,10 +2,10 @@ package com.avaygo.myfastingtracker.fragments;
 
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,12 +17,12 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.avaygo.myfastingtracker.R;
 import com.avaygo.myfastingtracker.activities.ReminderSettingActivity;
 import com.avaygo.myfastingtracker.adapters.DaysListAdapter;
 import com.avaygo.myfastingtracker.adapters.Reminder;
 import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
 import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
-import com.avaygo.myfastingtracker.R;
 
 import java.util.Calendar;
 import java.util.List;
