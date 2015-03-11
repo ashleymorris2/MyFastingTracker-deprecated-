@@ -1,9 +1,11 @@
-package com.avaygo.myfastingtracker.Notifications;
+package com.avaygo.myfastingtracker.notifications;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,24 +21,24 @@ public class RecurringAlarmSetup {
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
-    private Calendar mTime, mTimeNow;
+    private Calendar alarmTime, timeNow;
 
     SimpleDateFormat testFormat = new SimpleDateFormat("HH:mm:ss, EEE, d/M/y, D ");
 
 
     public RecurringAlarmSetup() {
 
-        mTime = Calendar.getInstance();
-        mTimeNow = Calendar.getInstance();
+        alarmTime = Calendar.getInstance();
+        timeNow = Calendar.getInstance();
 
     }
 
     public void createRecurringAlarm(Context context, Calendar calendar, int id){
 
         Calendar alarmCalendar = Calendar.getInstance();
-        mTime.setTimeInMillis(calendar.getTimeInMillis());
+        alarmTime.setTimeInMillis(calendar.getTimeInMillis());
 
-        mTimeNow.setTimeInMillis(System.currentTimeMillis());
+        timeNow.setTimeInMillis(System.currentTimeMillis());
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, RecurringNotificationReciever.class);
@@ -46,26 +48,27 @@ public class RecurringAlarmSetup {
 
         alarmIntent = PendingIntent.getBroadcast(context, id , intent , PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmCalendar.set(Calendar.DAY_OF_YEAR, mTime.get(Calendar.DAY_OF_YEAR));
-        alarmCalendar.set(Calendar.DAY_OF_WEEK, mTime.get(Calendar.DAY_OF_WEEK));
-        alarmCalendar.set(Calendar.HOUR_OF_DAY, mTime.get(Calendar.HOUR_OF_DAY));
-        alarmCalendar.set(Calendar.MINUTE, mTime.get(Calendar.MINUTE));
+        alarmCalendar.set(Calendar.DAY_OF_YEAR, alarmTime.get(Calendar.DAY_OF_YEAR));
+        alarmCalendar.set(Calendar.DAY_OF_WEEK, alarmTime.get(Calendar.DAY_OF_WEEK));
+        alarmCalendar.set(Calendar.HOUR_OF_DAY, alarmTime.get(Calendar.HOUR_OF_DAY));
+        alarmCalendar.set(Calendar.MINUTE, alarmTime.get(Calendar.MINUTE));
         alarmCalendar.set(Calendar.SECOND, 0);
 
-
         //If the alarm is in the past then add a specific amount of time to set it in the future.
-        if (alarmCalendar.getTimeInMillis() <= mTimeNow.getTimeInMillis()){
+        //In this case it is 7 days, to set it for next week
+        if (alarmCalendar.getTimeInMillis() <= timeNow.getTimeInMillis()){
             alarmCalendar.add(Calendar.DAY_OF_YEAR, 7);
         }
 
-        Toast.makeText(context.getApplicationContext(), testFormat.format(alarmCalendar.getTime()),Toast.LENGTH_LONG).show();
-
+        Toast.makeText(context.getApplicationContext(), testFormat.format(alarmCalendar.getTime()),
+                Toast.LENGTH_LONG).show();
 
         //Sets the alarm to be exact if available, if not it will use the method from the older API
-        try {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), alarmIntent);
+        if(Build.VERSION.SDK_INT >= 19) {
+           alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), alarmIntent);
+           //alarmManager.setWindow(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), 1000, alarmIntent);
         }
-        catch (NoSuchMethodError e){
+        else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), alarmIntent);
         }
     }
@@ -84,7 +87,7 @@ public class RecurringAlarmSetup {
 
         }
         catch (Exception e){
-            Log.e("cancelAlarm method error:", e.toString());
+            Log.e("cancelAlarm error:", e.toString());
         }
     }
 

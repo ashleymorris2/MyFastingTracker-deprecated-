@@ -1,13 +1,12 @@
-package com.avaygo.myfastingtracker.Adapters;
+package com.avaygo.myfastingtracker.adapters;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Ash on 10/08/2014.
  * A class to hold Day objects for the list view.
  */
-public class cReminder {
+public class Reminder {
 
     private int _id;
     private String mDayName;
@@ -16,7 +15,7 @@ public class cReminder {
     private int mFastLength;
     private int mEnabled;
 
-    public cReminder() {
+    public Reminder() {
         mStartTime = Calendar.getInstance();
         mEndTime = Calendar.getInstance();
     }

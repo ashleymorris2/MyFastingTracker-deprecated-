@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Fragments;
+package com.avaygo.myfastingtracker.fragments;
 
 
 

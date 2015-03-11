@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Databases;
+package com.avaygo.myfastingtracker.databases;
 
 
 import android.content.ContentValues;
@@ -6,7 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.avaygo.myfastingtracker.Adapters.cReminder;
+import com.avaygo.myfastingtracker.adapters.Reminder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,11 +21,11 @@ import java.util.List;
 public class AlarmsDataSource {
 
     private SQLiteDatabase database;
-    private ReminderAlarmsHelper dbHelper;
+    private AlarmsDatabaseHelper dbHelper;
 
     //Constructor
     public AlarmsDataSource(Context context){
-        dbHelper = new ReminderAlarmsHelper(context);
+        dbHelper = new AlarmsDatabaseHelper(context);
     }
 
     //Opens a writable database
@@ -47,22 +47,22 @@ public class AlarmsDataSource {
     public void initialiseAlarms(String day, Calendar start, int duration, Calendar end){
 
         ContentValues values = new ContentValues();
-        values.put(ReminderAlarmsHelper.COLUMN_DAY, day);
-        values.put(ReminderAlarmsHelper.COLUMN_START, start.getTimeInMillis());
-        values.put(ReminderAlarmsHelper.COLUMN_END, end.getTimeInMillis());
-        values.put(ReminderAlarmsHelper.COLUMN_LENGTH, duration);
-        values.put(ReminderAlarmsHelper.COLUMN_ENABLED, 0);
+        values.put(AlarmsDatabaseHelper.COLUMN_DAY, day);
+        values.put(AlarmsDatabaseHelper.COLUMN_START, start.getTimeInMillis());
+        values.put(AlarmsDatabaseHelper.COLUMN_END, end.getTimeInMillis());
+        values.put(AlarmsDatabaseHelper.COLUMN_LENGTH, duration);
+        values.put(AlarmsDatabaseHelper.COLUMN_ENABLED, 0);
 
-        database.insert(ReminderAlarmsHelper.TABLE_NAME, null, values);
+        database.insert(AlarmsDatabaseHelper.TABLE_NAME, null, values);
     }
 
     //CRUD Operations:
-    public cReminder getAlarm(int _id){
+    public Reminder getAlarm(int _id){
 
-        cReminder reminder = new cReminder();
+        Reminder reminder = new Reminder();
 
-        String selectQuery = "SELECT * FROM " + ReminderAlarmsHelper.TABLE_NAME + " WHERE "
-                + ReminderAlarmsHelper.COLUMN_ID + "=" + _id;
+        String selectQuery = "SELECT * FROM " + AlarmsDatabaseHelper.TABLE_NAME + " WHERE "
+                + AlarmsDatabaseHelper.COLUMN_ID + "=" + _id;
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -84,6 +84,7 @@ public class AlarmsDataSource {
             reminder.setEnabled(cursor.getInt(5));
         }
 
+        cursor.close();
         return reminder;
     }
 
@@ -92,29 +93,29 @@ public class AlarmsDataSource {
      *
      * Takes no params.
      *
-     * @return a list of <cReminder> objects containing the alarm details
+     * @return a list of <Reminder> objects containing the alarm details
      */
-    public List <cReminder> getAllAlarms(){
+    public List <Reminder> getAllAlarms(){
 
-        List <cReminder> reminderList = new ArrayList<cReminder>();
-        String selectQuery = "SELECT * FROM " + ReminderAlarmsHelper.TABLE_NAME;
+        List <Reminder> reminderList = new ArrayList<Reminder>();
+        String selectQuery = "SELECT * FROM " + AlarmsDatabaseHelper.TABLE_NAME;
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                cReminder reminder = new cReminder();
-                Calendar calendar1 = Calendar.getInstance();
-                Calendar calendar2 = Calendar.getInstance();
+                Reminder reminder = new Reminder();
+                Calendar startTime = Calendar.getInstance();
+                Calendar endTime = Calendar.getInstance();
 
                 reminder.set_id(cursor.getInt(0));
                 reminder.setDayName(cursor.getString(1));
 
-                calendar1.setTimeInMillis(cursor.getLong(2));
-                reminder.setStartTime(calendar1);
+                startTime.setTimeInMillis(cursor.getLong(2));
+                reminder.setStartTime(startTime);
 
-                calendar2.setTimeInMillis(cursor.getLong(3));
-                reminder.setEndTime(calendar2);
+                endTime.setTimeInMillis(cursor.getLong(3));
+                reminder.setEndTime(endTime);
 
                 reminder.setFastLength(cursor.getInt(4));
                 reminder.setEnabled(cursor.getInt(5));
@@ -137,7 +138,7 @@ public class AlarmsDataSource {
 
         int count;
 
-        String countQuery = "SELECT  * FROM " + ReminderAlarmsHelper.TABLE_NAME;
+        String countQuery = "SELECT  * FROM " + AlarmsDatabaseHelper.TABLE_NAME;
         Cursor cursor = database.rawQuery(countQuery, null);
         count = cursor.getCount();
         cursor.close();
@@ -158,13 +159,13 @@ public class AlarmsDataSource {
 
         //Content values puts the new data in the given columns
         ContentValues values = new ContentValues();
-        values.put(ReminderAlarmsHelper.COLUMN_START, startTime.getTimeInMillis());
-        values.put(ReminderAlarmsHelper.COLUMN_END, endTime.getTimeInMillis());
-        values.put(ReminderAlarmsHelper.COLUMN_LENGTH, duration);
+        values.put(AlarmsDatabaseHelper.COLUMN_START, startTime.getTimeInMillis());
+        values.put(AlarmsDatabaseHelper.COLUMN_END, endTime.getTimeInMillis());
+        values.put(AlarmsDatabaseHelper.COLUMN_LENGTH, duration);
 
         //Updates the database with the new values
-         return database.update(ReminderAlarmsHelper.TABLE_NAME, values,
-                 ReminderAlarmsHelper.COLUMN_ID + " =" + _id, null);
+         return database.update(AlarmsDatabaseHelper.TABLE_NAME, values,
+                 AlarmsDatabaseHelper.COLUMN_ID + " =" + _id, null);
     }
 
     /**
@@ -177,14 +178,12 @@ public class AlarmsDataSource {
 
         int isEnabled = 0;
 
-        String selectQuery = "SELECT "+ ReminderAlarmsHelper.COLUMN_ENABLED +" FROM "
-                + ReminderAlarmsHelper.TABLE_NAME + " WHERE " + ReminderAlarmsHelper.COLUMN_ID + "=" + _id  ;
+        String selectQuery = "SELECT "+ AlarmsDatabaseHelper.COLUMN_ENABLED +" FROM "
+                + AlarmsDatabaseHelper.TABLE_NAME + " WHERE " + AlarmsDatabaseHelper.COLUMN_ID + "=" + _id  ;
 
         Cursor cursor = database.rawQuery(selectQuery,null);
         if (cursor.moveToFirst()) {
-
           isEnabled =  cursor.getInt(0);
-
         }
 
         cursor.close();
@@ -197,10 +196,10 @@ public class AlarmsDataSource {
         int enabled = (isEnabled) ? 1 : 0;
 
         ContentValues values = new ContentValues();
-        values.put(ReminderAlarmsHelper.COLUMN_ENABLED, enabled);
+        values.put(AlarmsDatabaseHelper.COLUMN_ENABLED, enabled);
 
-        return database.update(ReminderAlarmsHelper.TABLE_NAME, values,
-                ReminderAlarmsHelper.COLUMN_ID + " =" + _id, null);
+        return database.update(AlarmsDatabaseHelper.TABLE_NAME, values,
+                AlarmsDatabaseHelper.COLUMN_ID + " =" + _id, null);
     }
 
 }

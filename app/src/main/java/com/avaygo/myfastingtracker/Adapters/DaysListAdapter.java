@@ -1,44 +1,43 @@
-package com.avaygo.myfastingtracker.Adapters;
+package com.avaygo.myfastingtracker.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
-import com.avaygo.myfastingtracker.Notifications.RecurringAlarmSetup;
+import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
+import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
 import com.avaygo.myfastingtracker.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Ash on 10/08/2014.
  * Override of an array adapter.
  *
- * The Constructor takes two parameters. The context of the calling application and a list of cReminder objects.
+ * The Constructor takes two parameters. The context of the calling application and a list of Reminder objects.
  *
  */
-public class DaysListAdapter extends ArrayAdapter<cReminder> {
+public class DaysListAdapter extends ArrayAdapter<Reminder> {
 
     private  Context context;
-    private List <cReminder> mReminderDaysCard;
-    private RecurringAlarmSetup mRecuringAlarmSetup = new RecurringAlarmSetup();
+    private List <Reminder> reminderDaysList;
+    private RecurringAlarmSetup recurringAlarmSetup = new RecurringAlarmSetup();
+    private AlarmsDataSource alarmsDataSource = new AlarmsDataSource(getContext());
 
-    private AlarmsDataSource mAlarmsDataSource = new AlarmsDataSource(getContext());
+    SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:mm, EEEE", Locale.getDefault());
 
-    SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:mm, EEEE");
-
-    public DaysListAdapter(Context context, List <cReminder> reminderDaysCard) {
-        super(context, R.layout.listview_reminder_day, reminderDaysCard);
+    public DaysListAdapter(Context context, List <Reminder> reminderDaysList) {
+        super(context, R.layout.listview_reminder_day, reminderDaysList);
         this.context = context;
-        this.mReminderDaysCard = reminderDaysCard;
+        this.reminderDaysList = reminderDaysList;
     }
 
     @Override
@@ -53,13 +52,14 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
         }
 
         //Find the current cardView to work with.
-        final cReminder currentCard = mReminderDaysCard.get(position);
+        final Reminder currentCard = reminderDaysList.get(position);
 
+        final Switch switchReminderToggle = (Switch) itemView.findViewById(R.id.switch_reminder_toggle);
         TextView textDay = (TextView) itemView.findViewById(R.id.item_text_reminderday);
         TextView textStart = (TextView) itemView.findViewById(R.id.item_text_start_datetime);
         TextView textEnd = (TextView) itemView.findViewById(R.id.item_text_end_datetime);
         TextView textDuration = (TextView) itemView.findViewById(R.id.item_text_fasting_duration);
-        final Switch switchReminderToggle = (Switch) itemView.findViewById(R.id.switch_reminder_toggle);
+
 
         //Fill the view
         textDay.setText(currentCard.getDayName());
@@ -74,54 +74,32 @@ public class DaysListAdapter extends ArrayAdapter<cReminder> {
             textEnd.setText(hourMinuteFormat.format(currentCard.getEndTime().getTime()));
         }
 
-     /*   switchReminderToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            View v;
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                //Save into the database whether the reminder has been enabled or not.
-                mAlarmsDataSource.open();
-                mAlarmsDataSource.setIsEnabled(currentCard.get_id(), isChecked);
-                mAlarmsDataSource.close();
-
-                //If is checked then a recurring alarm is set-up.
-                if (isChecked) {
-                    mRecuringAlarmSetup.createRecurringAlarm(getContext(), currentCard.getStartTime(),
-                            currentCard.get_id());
-
-                } else {
-                    //TODO  Cancel a reoccurring alarm that takes the current cards start time.
-                }
-
-            }
-        });*/
-
         switchReminderToggle.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean isChecked = ((Switch)view).isChecked();
 
                 //Save into the database whether the reminder has been enabled or not.
-                mAlarmsDataSource.open();
-                mAlarmsDataSource.setIsEnabled(currentCard.get_id(), isChecked);
-                mAlarmsDataSource.close();
+                alarmsDataSource.open();
+                alarmsDataSource.setIsEnabled(currentCard.get_id(), isChecked);
+                alarmsDataSource.close();
 
                 if(isChecked){
-                    mRecuringAlarmSetup.createRecurringAlarm(getContext(), currentCard.getStartTime(),
+                    recurringAlarmSetup.createRecurringAlarm(getContext(), currentCard.getStartTime(),
                             currentCard.get_id());
 
                 }
                 else {
-                    mRecuringAlarmSetup.cancelRecurringAlarm(getContext(), currentCard.get_id());
+                    recurringAlarmSetup.cancelRecurringAlarm(getContext(), currentCard.get_id());
                 }
             }
         });
 
 
-        mAlarmsDataSource.open();
-        currentCard.setEnabled(mAlarmsDataSource.getIsEnabled(currentCard.get_id()));
+        alarmsDataSource.open();
+        currentCard.setEnabled(alarmsDataSource.getIsEnabled(currentCard.get_id()));
         switchReminderToggle.setChecked(currentCard.isEnabled());
-        mAlarmsDataSource.close();
+        alarmsDataSource.close();
 
         textDuration.setText(Integer.toString(currentCard.getFastLength()));
 

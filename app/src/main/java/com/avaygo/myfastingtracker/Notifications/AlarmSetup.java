@@ -1,9 +1,11 @@
-package com.avaygo.myfastingtracker.Notifications;
+package com.avaygo.myfastingtracker.notifications;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
@@ -40,18 +42,22 @@ public class AlarmSetup {
         Calendar alarmCalendar = Calendar.getInstance();
 
         Intent myIntent = new Intent(context, TimerNotificationService.class);
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0 ,myIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 1 ,myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmCalendar.set(Calendar.DAY_OF_YEAR, mAlarmTime.get(Calendar.DAY_OF_YEAR));
         alarmCalendar.set(Calendar.HOUR_OF_DAY, mAlarmTime.get(Calendar.HOUR_OF_DAY));
         alarmCalendar.set(Calendar.MINUTE, mAlarmTime.get(Calendar.MINUTE));
         alarmCalendar.set(Calendar.SECOND, mAlarmTime.get(Calendar.SECOND));
 
-        try {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
+        if(Build.VERSION.SDK_INT >= 19) {
+           alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
+
+            //Allow a 1 second maximum variation, testing purposes
+           // alarmManager.setWindow(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), 1000, pendingIntent);
         }
-        catch (NoSuchMethodError e){
+       else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
         }
     }
@@ -61,13 +67,13 @@ public class AlarmSetup {
             //Re-calls and then cancels the future intent.
             Intent myIntent = new Intent(context, TimerNotificationService.class);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            PendingIntent pendingIntent = PendingIntent.getService(context,0, myIntent,0);
+            PendingIntent pendingIntent = PendingIntent.getService(context,1, myIntent,0);
 
             alarmManager.cancel(pendingIntent);
             Toast.makeText(context, "Fast Cancelled", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){
-            Log.e("cancelAlarm method error:" , e.toString() );
+
         }
     }
 }

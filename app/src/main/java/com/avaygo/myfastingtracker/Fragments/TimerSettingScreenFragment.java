@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Fragments;
+package com.avaygo.myfastingtracker.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import android.widget.TextView;
 
-import com.avaygo.myfastingtracker.Notifications.AlarmSetup;
+import com.avaygo.myfastingtracker.notifications.AlarmSetup;
 import com.avaygo.myfastingtracker.R;
 import com.devadvance.circularseekbar.CircularSeekBar;
 
@@ -119,7 +119,6 @@ public class TimerSettingScreenFragment extends Fragment {
         boolean fromReminder = getActivity().getIntent().getBooleanExtra("fromReminder", false);
         int savedDurationValue = getActivity().getIntent().getIntExtra("duration", 1);
 
-
         //START BUTTON
         buttonStart = (Button) getView().findViewById(R.id.start_toggle);
         buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -143,12 +142,14 @@ public class TimerSettingScreenFragment extends Fragment {
                 editor.putLong("END_TIME", futureCalendar.getTimeInMillis());
 
                 // Commit the edits
-                editor.commit();
+               if( editor.commit()) {
 
-                //Launches a new fragment and replaces the current one.
-                fragmentChange = getActivity().getFragmentManager().beginTransaction();
-                fragmentChange.replace(R.id.mainContent, new TimerStartedScreenFragment());
-                fragmentChange.commit();
+                   //Launches a new fragment and replaces the current one.
+                   fragmentChange = getActivity().getFragmentManager().beginTransaction();
+                   fragmentChange.replace(R.id.mainContent, new TimerStartedScreenFragment());
+                   fragmentChange.commit();
+
+               }
             }
         });
 

@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Databases;
+package com.avaygo.myfastingtracker.databases;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,7 +11,7 @@ import android.util.Log;
  * Constructs a database to our described schema
  *
  */
-public class ReminderAlarmsHelper extends SQLiteOpenHelper {
+public class AlarmsDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "reminderAlarms.db";
     private static final int DATABASE_VERSION = 1;
@@ -25,12 +25,12 @@ public class ReminderAlarmsHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ENABLED = "enabled";
 
     //SQL statement to create the database.
-    private static final String DATABASE_CREATE = "CREATE TABLE " +
+        private static final String DATABASE_CREATE = "CREATE TABLE " +
             TABLE_NAME +" (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +COLUMN_DAY+
             " STRING," +COLUMN_START+ " INTEGER," +COLUMN_END+ " INTEGER," +
             COLUMN_LENGTH +" INTEGER," + COLUMN_ENABLED + " INTEGER);";
 
-    public ReminderAlarmsHelper(Context context) {
+    public AlarmsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -42,13 +42,12 @@ public class ReminderAlarmsHelper extends SQLiteOpenHelper {
             e.printStackTrace();
             Log.e("Database creation error", e.toString());
         }
-
-    };
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
        //Change this before release.
-        Log.w(ReminderAlarmsHelper.class.getName(),
+        Log.w(AlarmsDatabaseHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);

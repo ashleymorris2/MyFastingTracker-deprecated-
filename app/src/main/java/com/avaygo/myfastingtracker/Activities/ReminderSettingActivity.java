@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Activities;
+package com.avaygo.myfastingtracker.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -7,18 +7,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
+import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
 import com.avaygo.myfastingtracker.Days;
-import com.avaygo.myfastingtracker.Notifications.RecurringAlarmSetup;
+import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
 import com.avaygo.myfastingtracker.R;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialPickerLayout;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
@@ -242,26 +239,6 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
         }
     }
 
-    @Override
-    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
-    /*This method is called once the time has been set by the radialTimePicker. Updates the string in
-        the UI and sets the calendar */
-
-        timeFastStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        timeFastStart.set(Calendar.MINUTE, minute);
-        textReminderStart.setText(timeFormat.format(timeFastStart.getTime()));
-
-        //Sets the future clock to be ahead of the current clock.
-        timeFastEnd.setTimeInMillis(timeFastStart.getTimeInMillis());
-        timeFastEnd.add(Calendar.HOUR_OF_DAY, duration);
-
-        if (timeFastEnd.get(Calendar.DAY_OF_WEEK) != timeFastStart.get(Calendar.DAY_OF_WEEK)) {
-            textReminderEnd.setText(timeDayFormat.format(timeFastEnd.getTime()));
-        } else {
-            textReminderEnd.setText(timeFormat.format(timeFastEnd.getTime()));
-        }
-    }
-
     private void setCalendarDay() {
         //Enumerates the cards day to a numerical value that can be used to set the day on the calendars.
 
@@ -296,4 +273,23 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
         timeFastEnd.set(Calendar.DAY_OF_WEEK, dayInWeek);
     }
 
+    @Override
+    public void onTimeSet(RadialTimePickerDialog radialTimePickerDialog, int hourOfDay, int minute) {
+       /*This method is called once the time has been set by the radialTimePicker. Updates the string in
+        the UI and sets the calendar */
+
+        timeFastStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        timeFastStart.set(Calendar.MINUTE, minute);
+        textReminderStart.setText(timeFormat.format(timeFastStart.getTime()));
+
+        //Sets the future clock to be ahead of the current clock.
+        timeFastEnd.setTimeInMillis(timeFastStart.getTimeInMillis());
+        timeFastEnd.add(Calendar.HOUR_OF_DAY, duration);
+
+        if (timeFastEnd.get(Calendar.DAY_OF_WEEK) != timeFastStart.get(Calendar.DAY_OF_WEEK)) {
+            textReminderEnd.setText(timeDayFormat.format(timeFastEnd.getTime()));
+        } else {
+            textReminderEnd.setText(timeFormat.format(timeFastEnd.getTime()));
+        }
+    }
 }

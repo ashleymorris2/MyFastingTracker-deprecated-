@@ -1,29 +1,32 @@
-package com.avaygo.myfastingtracker.Activities;
+package com.avaygo.myfastingtracker.activities;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.avaygo.myfastingtracker.Fragments.HomeScreenFragment;
-import com.avaygo.myfastingtracker.Fragments.ReminderListScreenFragment;
-import com.avaygo.myfastingtracker.Fragments.TimerSettingScreenFragment;
-import com.avaygo.myfastingtracker.Fragments.TimerStartedScreenFragment;
+import com.avaygo.myfastingtracker.adapters.NavigationDrawerAdapter;
+import com.avaygo.myfastingtracker.adapters.ObjectDrawerItem;
+import com.avaygo.myfastingtracker.fragments.HomeScreenFragment;
+import com.avaygo.myfastingtracker.fragments.LogScreenFragment;
+import com.avaygo.myfastingtracker.fragments.ReminderListScreenFragment;
+import com.avaygo.myfastingtracker.fragments.TimerSettingScreenFragment;
+import com.avaygo.myfastingtracker.fragments.TimerStartedScreenFragment;
 import com.avaygo.myfastingtracker.R;
 
 
-public class FastingTrackerActivity extends Activity  {
+public class MainActivity extends FragmentActivity {
 
     boolean fastingState;
 
@@ -48,16 +51,35 @@ public class FastingTrackerActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
 
+        ObjectDrawerItem [] drawerItem = new ObjectDrawerItem[6];
+
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.container);
         mDrawerListView = (ListView) findViewById(R.id.drawerList);
+
+        //Gets the xml strings into an array of strings
         menu = getResources().getStringArray(R.array.array_menu);
+
+        //Passes the array of strings to the drawerItem class
+        for(int i = 0; i < 6; i++){
+            drawerItem[i] = new ObjectDrawerItem();
+            drawerItem[i].setName(menu[i]);
+        }
+
+        drawerItem[0].setIcon(R.drawable.ic_home);//Home
+        drawerItem[1].setIcon(R.drawable.ic_alarm);//
+        drawerItem[2].setIcon(R.drawable.ic_notifications);//
+        drawerItem[3].setIcon(R.drawable.ic_action_today);//Log
+        drawerItem[4].setIcon(R.drawable.ic_action_settings);//Settings
+        drawerItem[5].setIcon(R.drawable.ic_action_settings);//Settings
+
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_expandable_list_item_1, menu));
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, drawerItem);
+        mDrawerListView.setAdapter(adapter);
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             View v;
 
@@ -126,49 +148,57 @@ public class FastingTrackerActivity extends Activity  {
     }
 
     //Sets the ListView Item as checked.
-    private int selectItem(int position) {
+    private int selectItem(final int position) {
 
         mDrawerListView.setItemChecked(position, true);
         setTitle(menu[position]);
 
-        Fragment fragment = null;
         Bundle args = new Bundle();
 
         SharedPreferences preferences = getSharedPreferences("appData", 0); // 0 - for private mode
         fastingState = preferences.getBoolean("IS_FASTING", false);
 
-        mDrawerLayout.closeDrawer(mDrawerListView);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
 
-        switch (position){
-            case 0:
-                fragment = new HomeScreenFragment();
-                break;
-            case 1:
-                if (fastingState == false) {
-                    fragment = new TimerSettingScreenFragment();
+                Fragment fragment = null;
 
-                    if(fromReminder = true) {
-                        fragment.setArguments(getIntent().getExtras());
-                    }
+                switch (position) {
+                    case 0:
+                        fragment = new HomeScreenFragment();
+                        break;
+                    case 1:
+                        if (fastingState == false) {
+                            fragment = new TimerSettingScreenFragment();
 
-                } else {
-                    fragment = new TimerStartedScreenFragment();
+                            if (fromReminder = true) {
+                                fragment.setArguments(getIntent().getExtras());
+                            }
+
+                        } else {
+                            fragment = new TimerStartedScreenFragment();
+                        }
+                        break;
+                    case 2:
+                        fragment = new ReminderListScreenFragment();
+                        break;
+                    case 3:
+                        fragment = new LogScreenFragment();
+                        break;
+                    default:
+                        break;
                 }
-                break;
-            case 2:
-                fragment = new ReminderListScreenFragment();
+                if (fragment != null) {
+                    //Remove when all cases have been implemented.
+                    //Position will be used as a tag.
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.mainContent, fragment, Integer.toString(position))
+                            .commit();
+                }
+            }
+        }, 280);
 
-                break;
-            default:
-                break;
-        }
-        if(fragment != null) {
-            //Remove when all cases have been implemented.
-            //Position will be used as a tag.
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.mainContent, fragment, Integer.toString(position))
-                    .commit();
-        }
+        mDrawerLayout.closeDrawer(mDrawerListView);
 
         return position;
     }

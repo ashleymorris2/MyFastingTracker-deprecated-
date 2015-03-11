@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Fragments;
+package com.avaygo.myfastingtracker.fragments;
 
 
 import android.app.Activity;
@@ -17,11 +17,11 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.avaygo.myfastingtracker.Activities.ReminderSettingActivity;
-import com.avaygo.myfastingtracker.Adapters.DaysListAdapter;
-import com.avaygo.myfastingtracker.Adapters.cReminder;
-import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
-import com.avaygo.myfastingtracker.Notifications.RecurringAlarmSetup;
+import com.avaygo.myfastingtracker.activities.ReminderSettingActivity;
+import com.avaygo.myfastingtracker.adapters.DaysListAdapter;
+import com.avaygo.myfastingtracker.adapters.Reminder;
+import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
+import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
 import com.avaygo.myfastingtracker.R;
 
 import java.util.Calendar;
@@ -34,20 +34,20 @@ import java.util.List;
  */
 public class ReminderListScreenFragment extends Fragment {
 
-    private AlarmsDataSource mAlarmsDataSource;
-    private String[] mDaysOfTheWeek;
-    private ListView mListView;
-    private MenuItem mSwitchMenuItem;
+    private AlarmsDataSource alarmsDataSource;
+    private String[] daysOfTheWeek;
+    private ListView listView;
+    private MenuItem switchMenuItem;
 
-    private RecurringAlarmSetup mRecurringAlarm;
+    private RecurringAlarmSetup recurringAlarm;
 
     private boolean listEnabled;
     private TextView textRemindersDisabled;
 
-    private Calendar now;
+    private Calendar currentTime;
 
-    //An array list to hold cReminder objects for the listview.
-    private List <cReminder> mReminderCardsList;
+    //An array list to hold Reminder objects for the listview.
+    private List <Reminder> reminderCardsList;
 
 
     public ReminderListScreenFragment() {
@@ -67,22 +67,22 @@ public class ReminderListScreenFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        mDaysOfTheWeek = getResources().getStringArray(R.array.array_weekdays);
+        daysOfTheWeek = getResources().getStringArray(R.array.array_weekdays);
 
-        mAlarmsDataSource = new AlarmsDataSource(getActivity());
-        mAlarmsDataSource.open();
+        alarmsDataSource = new AlarmsDataSource(getActivity());
+        alarmsDataSource.open();
 
-        now = Calendar.getInstance();
+        currentTime = Calendar.getInstance();
 
         //Checks to see if the initial setup of the database has been performed
-        if(mAlarmsDataSource.getAlarmsCount() != 7) {
+        if(alarmsDataSource.getAlarmsCount() != 7) {
             for (int i = 0; i < 7; i++) {
-                mAlarmsDataSource.initialiseAlarms(mDaysOfTheWeek[i], now, 1, now);
+                alarmsDataSource.initialiseAlarms(daysOfTheWeek[i], currentTime, 1, currentTime);
             }
         }
 
         textRemindersDisabled = (TextView) getActivity().findViewById(R.id.text_reminders_disabled);
-        mListView  = (ListView) getActivity().findViewById(R.id.listview_days);
+        listView = (ListView) getActivity().findViewById(R.id.listview_days);
         populateReminderCardsList();
         populateListView();
 
@@ -91,38 +91,37 @@ public class ReminderListScreenFragment extends Fragment {
         listEnabled = preferences.getBoolean("listEnabled", false);
 
         if(listEnabled == false){
-            mListView.setVisibility(View.INVISIBLE);
+            listView.setVisibility(View.INVISIBLE);
             textRemindersDisabled.setVisibility(View.VISIBLE);
         }
         else {
             textRemindersDisabled.setVisibility(View.INVISIBLE);
-            mListView.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 
-    //Calls the constructor for cReminder and populates a list of objects.
+    //Calls the constructor for Reminder and populates a list of objects.
     private void populateReminderCardsList() {
-
-        mReminderCardsList = mAlarmsDataSource.getAllAlarms();
-
+        reminderCardsList = alarmsDataSource.getAllAlarms();
     }
 
     private void populateListView() {
 
-        DaysListAdapter adapter = new DaysListAdapter (getActivity(), mReminderCardsList);
+        DaysListAdapter adapter = new DaysListAdapter (getActivity(), reminderCardsList);
 
-        mListView.addFooterView(new View(getActivity()), null, false);
-        mListView.addHeaderView(new View(getActivity()), null, false);
-        mListView.setAdapter(adapter);
+        listView.addFooterView(new View(getActivity()), null, false);
+        listView.addHeaderView(new View(getActivity()), null, false);
+        listView.setAdapter(adapter);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             View v;
+
             @Override
             public void onItemClick(AdapterView<?> adapterView,
                                     View viewClicker, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), ReminderSettingActivity.class);
-                cReminder currentCard = mReminderCardsList.get(position - 1);
+                Reminder currentCard = reminderCardsList.get(position - 1);
 
                 intent.putExtra("day", currentCard.getDayName());
                 intent.putExtra("startTime", currentCard.getStartTime().getTimeInMillis());
@@ -142,13 +141,13 @@ public class ReminderListScreenFragment extends Fragment {
         if (requestCode == 1){
             if (resultCode == Activity.RESULT_OK){
 
-                mReminderCardsList = mAlarmsDataSource.getAllAlarms();
+                reminderCardsList = alarmsDataSource.getAllAlarms();
 
-                DaysListAdapter adapter = new DaysListAdapter (getActivity(), mReminderCardsList);
+                DaysListAdapter adapter = new DaysListAdapter (getActivity(), reminderCardsList);
 
-                mListView.setAdapter(adapter);
+                listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                mListView.invalidate();
+                listView.invalidate();
             }
         }
     }
@@ -162,7 +161,7 @@ public class ReminderListScreenFragment extends Fragment {
 
         //Makes the switch visible and set its checked status
         listEnabled = preferences.getBoolean("listEnabled", false);
-        mSwitchMenuItem.setVisible(true);
+        switchMenuItem.setVisible(true);
         switch1.setChecked(listEnabled);
     }
 
@@ -171,8 +170,8 @@ public class ReminderListScreenFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
 
-        mSwitchMenuItem = menu.findItem(R.id.myswitch);
-        mSwitchMenuItem.setVisible(true);
+        switchMenuItem = menu.findItem(R.id.myswitch);
+        switchMenuItem.setVisible(true);
 
         //Gets the switch to work with from the action bar menu, we can now specify the onClickListener
         Switch switch1 = (Switch)menu.findItem(R.id.myswitch).getActionView().findViewById(R.id.switchForActionBar);
@@ -190,27 +189,27 @@ public class ReminderListScreenFragment extends Fragment {
                 editor.putBoolean("listEnabled", isChecked);
                 editor.commit();
 
-                mRecurringAlarm = new RecurringAlarmSetup();
+                recurringAlarm = new RecurringAlarmSetup();
 
                 //ALARMS ON
                 if(isChecked){
                     textRemindersDisabled.setVisibility(View.INVISIBLE);
-                    mListView.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.VISIBLE);
 
                     //Cancel all the set alarms.
                     for(int i = 0; i <7; i++){
-                        cReminder mReminder =  mReminderCardsList.get(i);
+                        Reminder mReminder =  reminderCardsList.get(i);
 
                         //If the alarm is enabled then reset  it...
                         if(mReminder.isEnabled()){
-                            mRecurringAlarm.createRecurringAlarm(getActivity(), mReminder.getStartTime(),
+                            recurringAlarm.createRecurringAlarm(getActivity(), mReminder.getStartTime(),
                                     mReminder.get_id());
                         }
                     }
                 }
                 //ALARMS OFF
                 else {
-                    mListView.setVisibility(View.INVISIBLE);
+                    listView.setVisibility(View.INVISIBLE);
                     textRemindersDisabled.setVisibility(View.VISIBLE);
 
                     cancelAlarms();
@@ -223,12 +222,12 @@ public class ReminderListScreenFragment extends Fragment {
     public void cancelAlarms() {
         Thread thread = new Thread(new Runnable() {
             @Override
-            public void run() {
+            public synchronized void run() {
                 for(int i = 0; i <7; i++){
-                    cReminder mReminder =  mReminderCardsList.get(i);
+                    Reminder mReminder =  reminderCardsList.get(i);
 
                     if(mReminder.isEnabled()){
-                        mRecurringAlarm.cancelRecurringAlarm(getActivity(), mReminder.get_id());
+                        recurringAlarm.cancelRecurringAlarm(getActivity(), mReminder.get_id());
                     }
                 }
             }

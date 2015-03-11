@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Notifications;
+package com.avaygo.myfastingtracker.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,13 +10,13 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 
-import com.avaygo.myfastingtracker.Activities.FastingTrackerActivity;
-import com.avaygo.myfastingtracker.Adapters.cReminder;
-import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
+import com.avaygo.myfastingtracker.activities.MainActivity;
+import com.avaygo.myfastingtracker.adapters.Reminder;
+import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
 import com.avaygo.myfastingtracker.R;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -24,90 +24,140 @@ import java.util.Calendar;
  */
 public class RecurringNotificationReciever extends BroadcastReceiver {
 
-    private RecurringAlarmSetup  mRecurringAlarm;
-    private AlarmsDataSource mAlarmsDataSource;
-    private cReminder mReminder;
-    private Calendar mAlarmTime, mTimeNow;
-
-    SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm");
-
+    private RecurringAlarmSetup recurringAlarm;
+    private AlarmsDataSource alarmsDataSource;
+    private Reminder reminder;
+    private Calendar alarmTime, timeNow;
+    private long timeLeft;
 
     public RecurringNotificationReciever() {
-
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         Bundle extras = intent.getExtras();
+        int alarmId = extras.getInt("_id");
 
-        int _id = extras.getInt("_id");
+        alarmTime = Calendar.getInstance();
+        timeNow = Calendar.getInstance();
+        timeNow.setTimeInMillis(System.currentTimeMillis());
 
-        mAlarmTime = Calendar.getInstance();
-        mTimeNow = Calendar.getInstance();
-        mTimeNow.setTimeInMillis(System.currentTimeMillis());
+        recurringAlarm = new RecurringAlarmSetup();
+        alarmsDataSource = new AlarmsDataSource(context);
 
-        mRecurringAlarm = new RecurringAlarmSetup();
-        mAlarmsDataSource = new AlarmsDataSource(context);
-        mReminder = new cReminder();
+        //Recalls the saved alarm from the database with the supplied ID, in order to set the alarms
+        alarmsDataSource.open();
 
-        //Recalls the alarm from the database in order to set the alarms
-        mAlarmsDataSource.open();
-        mReminder = mAlarmsDataSource.getAlarm(_id);
-
+        reminder = new Reminder();
+        reminder = alarmsDataSource.getAlarm(alarmId);
 
         SharedPreferences preferences = context.getSharedPreferences("appData", 0);
         boolean timerStarted = preferences.getBoolean("TIMER_START", false);
+        long timeLeftInMill = preferences.getLong("END_MILLISEC", 0);/*the time left in milliseconds until
+                                                                          the fast is complete*/
+        long endMill = preferences.getLong("END_TIME", 0);// the end time in milliseconds
 
+        //Checks if the user is currently fasting, if so the remaining time is calculated.
+        if (timerStarted) {
+            timeLeftInMill = endMill - System.currentTimeMillis();
 
-        //Only show a notification to the user if they are not currently fasting
-        // else skip and reschedule a new one
+            //If the time left in milliseconds is less than 0 than timeleft will be set as 0
+            timeLeft = Math.max(0, timeLeftInMill);
+        }
+
+        //Only show a notification to the user if they are not currently fasting or the timer is
+        // complete. Else skip and reschedule a new one
         if(!timerStarted) {
 
             //Change for user selected one.
             Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationManager mNM = (NotificationManager)
+            NotificationManager notificationManager = (NotificationManager)
                     context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             //Sets a pending intent that is called when the notification is selected
-            Intent myIntent = new Intent(context, FastingTrackerActivity.class);
+            Intent myIntent = new Intent(context, MainActivity.class);
 
             //Fragment number is the screen for the timer setting screen, in this case it is 1.
             myIntent.putExtra("fromReminder", true);
             myIntent.putExtra("fragmentNumber", 1);
-            myIntent.putExtra("duration", mReminder.getFastLength());
+            myIntent.putExtra("duration", reminder.getFastLength());
 
-            PendingIntent pIntent = PendingIntent.getActivity(context, 0,
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                     myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            Notification mNotify = new Notification.Builder(context)
-                    .setContentTitle("It's " + mReminder.getDayName())
+            Notification notification = new NotificationCompat.Builder(context)
+
+                    //Lollipop specific notification code
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+
+                    .setContentTitle("It's " + reminder.getDayName())
                     .setContentText("Time to start your " +
-                            mReminder.getFastLength() + " hour fast")
+                            reminder.getFastLength() + " hour fast")
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setVibrate(new long[]{1000, 500, 1000})
-                    .setContentIntent(pIntent)
+                    .setContentIntent(pendingIntent)
                     .setSound(sound)
                     .build();
 
-            mNotify.flags = Notification.FLAG_AUTO_CANCEL;
-            mNM.notify(1, mNotify);
+            notification.flags = Notification.FLAG_AUTO_CANCEL;
+            notificationManager.notify(1, notification);
+        }
+
+        /*Debugging code. To test if the timer is being stopped correctly. Remove once tested and use
+          the one if statement above.*/
+        else if(timeLeft == 0) {
+
+            //Change for user selected one.
+            Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationManager notificationManager = (NotificationManager)
+                    context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            //Sets a pending intent that is called when the notification is selected
+            Intent myIntent = new Intent(context, MainActivity.class);
+
+            //Fragment number is the screen for the timer setting screen, in this case it is 1.
+            myIntent.putExtra("fromReminder", true);
+            myIntent.putExtra("fragmentNumber", 1);
+            myIntent.putExtra("duration", reminder.getFastLength());
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                    myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Notification notification = new NotificationCompat.Builder(context)
+
+                    //Lollipop specific notification code
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                    .setContentTitle("It's " + reminder.getDayName())
+                    .setContentText("Time to start your next fast for " +
+                            reminder.getFastLength() + " hours.")
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setVibrate(new long[]{1000, 500, 1000})
+                    .setContentIntent(pendingIntent)
+                    .setSound(sound)
+                    .build();
+
+            notification.flags = Notification.FLAG_AUTO_CANCEL;
+            notificationManager.notify(1, notification);
         }
 
 
         //Reschedule with a 7 day break
-        mAlarmTime.set(Calendar.DAY_OF_YEAR, mReminder.getStartTime().get(Calendar.DAY_OF_YEAR) + 7);
-        mAlarmTime.set(Calendar.DAY_OF_WEEK, mReminder.getStartTime().get(Calendar.DAY_OF_WEEK));
-        mAlarmTime.set(Calendar.HOUR_OF_DAY, mReminder.getStartTime().get(Calendar.HOUR_OF_DAY));
-        mAlarmTime.set(Calendar.MINUTE, mReminder.getStartTime().get(Calendar.MINUTE));
-        mAlarmTime.set(Calendar.SECOND, 0);
+        alarmTime.set(Calendar.DAY_OF_YEAR, reminder.getStartTime().get(Calendar.DAY_OF_YEAR) + 7);
+        alarmTime.set(Calendar.DAY_OF_WEEK, reminder.getStartTime().get(Calendar.DAY_OF_WEEK));
+        alarmTime.set(Calendar.HOUR_OF_DAY, reminder.getStartTime().get(Calendar.HOUR_OF_DAY));
+        alarmTime.set(Calendar.MINUTE, reminder.getStartTime().get(Calendar.MINUTE));
+        alarmTime.set(Calendar.SECOND, 0);
 
         //Saves the new time to the database in case it needs to be recalled in the boot receiver
-        mAlarmsDataSource.updateAlarm(_id, mAlarmTime, mReminder.getFastLength(),mReminder.getEndTime());
+        alarmsDataSource.updateAlarm(alarmId, alarmTime, reminder.getFastLength(), reminder.getEndTime());
+        recurringAlarm.createRecurringAlarm(context, alarmTime, alarmId);
 
-        mRecurringAlarm.createRecurringAlarm(context, mAlarmTime, _id );
-
-        mAlarmsDataSource.close();
+        alarmsDataSource.close();
     }
 
 }

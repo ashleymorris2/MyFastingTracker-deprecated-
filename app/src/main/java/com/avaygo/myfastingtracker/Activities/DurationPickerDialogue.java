@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Activities;
+package com.avaygo.myfastingtracker.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,10 @@ import com.devadvance.circularseekbar.CircularSeekBar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * DurationPickerDialogue is a dialogue screen that allows a used to select the duration of the fast
+ * in the reminder settings.
+ */
 public class DurationPickerDialogue extends Activity {
 
     private Calendar timeEnd;
@@ -21,7 +25,7 @@ public class DurationPickerDialogue extends Activity {
     private TextView textHour, textMinutes, textDay, textSeekValue;
     private Button buttonDone;
 
-    private int mDuration;
+    private int duration;
 
     private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");//The day for the future clock.
     private SimpleDateFormat hourFormat = new SimpleDateFormat("HH");//The hour for the future clock.
@@ -37,11 +41,13 @@ public class DurationPickerDialogue extends Activity {
         setContentView(R.layout.dialogue_duration_picker);
 
         final Intent intent = getIntent();
-        mDuration = intent.getIntExtra("DURATION", 1);
+        duration = intent.getIntExtra("DURATION", 1);
 
         timeEnd = Calendar.getInstance();
         timeEnd.setTimeInMillis(intent.getLongExtra("TIME", 0));
-        timeEnd.add(Calendar.HOUR_OF_DAY, mDuration);
+
+        //Adds the duration to the calendars hour.
+        timeEnd.add(Calendar.HOUR_OF_DAY, duration);
 
         textHour = (TextView) findViewById(R.id.text_picker_hour);
         textHour.setText(hourFormat.format(timeEnd.getTimeInMillis()));
@@ -53,14 +59,14 @@ public class DurationPickerDialogue extends Activity {
         textDay.setText(dayFormat.format(timeEnd.getTimeInMillis()));
 
         textSeekValue = (TextView) findViewById(R.id.text_seek_value);
-        if (mDuration == 1) {
-            textSeekValue.setText(mDuration + " Hour");
+        if (duration == 1) {
+            textSeekValue.setText(duration + " Hour");
         } else {
-            textSeekValue.setText(mDuration + " Hours");
+            textSeekValue.setText(duration + " Hours");
         }
 
         circleSeekBar = (CircularSeekBar) findViewById(R.id.circularSeekBar2);
-        circleSeekBar.setProgress(mDuration - 1);
+        circleSeekBar.setProgress(duration - 1);
         circleSeekBar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onStartTrackingTouch(CircularSeekBar seekBar) {
@@ -80,12 +86,12 @@ public class DurationPickerDialogue extends Activity {
                 timeEnd = Calendar.getInstance();
                 timeEnd.setTimeInMillis(intent.getLongExtra("TIME", 0));
 
-                timeEnd.add(timeEnd.HOUR_OF_DAY, seekValue);
+                timeEnd.add(Calendar.HOUR_OF_DAY, seekValue);
 
                 textHour.setText(hourFormat.format(timeEnd.getTime()));
                 textDay.setText(dayFormat.format(timeEnd.getTime()));
 
-                mDuration = seekValue;
+                duration = seekValue;
             }
 
             @Override
@@ -102,7 +108,7 @@ public class DurationPickerDialogue extends Activity {
             public void onClick(View view) {
                 //On click the activity is finished and the result is returned to the calling activity
                 Intent intent = new Intent();
-                intent.putExtra("DURATION", mDuration);
+                intent.putExtra("DURATION", duration);
                 intent.putExtra("TIME", timeEnd.getTimeInMillis());
 
                 setResult(RESULT_OK, intent);
