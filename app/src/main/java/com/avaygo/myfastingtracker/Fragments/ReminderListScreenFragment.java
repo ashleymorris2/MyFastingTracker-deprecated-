@@ -18,7 +18,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
-import com.avaygo.myfastingtracker.activities.ReminderSettingActivity;
+import com.avaygo.myfastingtracker.Activities.ReminderSettingActivity;
 import com.avaygo.myfastingtracker.adapters.DaysListAdapter;
 import com.avaygo.myfastingtracker.adapters.Reminder;
 import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
@@ -168,7 +168,6 @@ public class ReminderListScreenFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
 
         switchMenuItem = menu.findItem(R.id.myswitch);
         switchMenuItem.setVisible(true);

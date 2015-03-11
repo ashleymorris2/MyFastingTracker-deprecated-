@@ -11,7 +11,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import com.avaygo.myfastingtracker.R;
-import com.avaygo.myfastingtracker.activities.MainActivity;
+import com.avaygo.myfastingtracker.Activities.MainActivity;
 
 public class TimerNotificationService extends Service {
 
