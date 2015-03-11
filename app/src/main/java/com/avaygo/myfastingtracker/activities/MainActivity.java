@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Activities;
+package com.avaygo.myfastingtracker.activities;
 
 import android.app.Fragment;
 import android.content.Intent;

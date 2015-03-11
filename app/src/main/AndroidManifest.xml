@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.light">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,14 +41,14 @@
         </receiver>
 
         <activity
-            android:name=".Activities.ReminderSettingActivity"
+            android:name=".activities.ReminderSettingActivity"
             android:label="@string/title_activity_reminder_setting"></activity>
         <activity
-            android:name=".Activities.DurationPickerDialogue"
+            android:name=".activities.DurationPickerDialogue"
             android:label="@string/title_activity_duration_picker_dialogue"
             android:theme="@android:style/Theme.Holo.Dialog"></activity>
         <activity
-            android:name=".Activities.SaveFastDialogue"
+            android:name=".activities.SaveFastDialogue"
             android:label="@string/title_activity_dialgoue_save_fast"></activity>
     </application>
 

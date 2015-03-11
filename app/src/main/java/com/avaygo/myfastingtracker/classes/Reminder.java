@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.adapters;
+package com.avaygo.myfastingtracker.classes;
 
 import java.util.Calendar;
 

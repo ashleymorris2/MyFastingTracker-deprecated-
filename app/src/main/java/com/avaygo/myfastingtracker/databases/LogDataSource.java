@@ -4,7 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.avaygo.myfastingtracker.classes.FastingRecord;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Ash on 09/03/2015.
@@ -70,4 +74,25 @@ public class LogDataSource {
         database.insert(LogDatabaseHelper.TABLE_NAME, null, values);
     }
 
+    /**
+     * Gets all the records currently in the database by month and year.
+     *
+     * @param month The month that is to be searched for. Either end month or start month of the fast.
+     * @param year The year that is to be searched for.
+     * @return A list of all the records that match the searched parameters.
+     */
+    public List<FastingRecord> getRecordsForMonth(int month, int year){
+
+        //Select by month and year
+        //E.g. want all of February records but only from 2015.
+        List<FastingRecord> recordsList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " +LogDatabaseHelper.TABLE_NAME+ " WHERE "
+                +LogDatabaseHelper.COLUMN_START_MONTH+" = "+ month + " AND "
+                +LogDatabaseHelper.COLUMN_START_YEAR+" = " +year+";";
+
+
+
+
+        return null;
+    }
 }

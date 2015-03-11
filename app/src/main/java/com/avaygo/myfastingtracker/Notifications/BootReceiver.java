@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.avaygo.myfastingtracker.adapters.Reminder;
+import com.avaygo.myfastingtracker.classes.Reminder;
 import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
 
 import java.util.Calendar;

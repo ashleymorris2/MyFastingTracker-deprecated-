@@ -13,8 +13,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.avaygo.myfastingtracker.R;
-import com.avaygo.myfastingtracker.Activities.MainActivity;
-import com.avaygo.myfastingtracker.adapters.Reminder;
+import com.avaygo.myfastingtracker.activities.MainActivity;
+import com.avaygo.myfastingtracker.classes.Reminder;
 import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
 
 import java.util.Calendar;

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.avaygo.myfastingtracker.adapters.Reminder;
+import com.avaygo.myfastingtracker.classes.Reminder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -97,7 +97,7 @@ public class AlarmsDataSource {
      */
     public List <Reminder> getAllAlarms(){
 
-        List <Reminder> reminderList = new ArrayList<Reminder>();
+        List <Reminder> reminderList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + AlarmsDatabaseHelper.TABLE_NAME;
 
         Cursor cursor = database.rawQuery(selectQuery, null);

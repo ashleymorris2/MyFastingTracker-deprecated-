@@ -4,7 +4,7 @@
 
     android:layout_width="@dimen/date_picker_component_width"
     android:layout_height="match_parent"
-    tools:context="com.avaygo.myfastingtracker.Activities.DurationPickerDialogue"
+    tools:context="com.avaygo.myfastingtracker.activities.DurationPickerDialogue"
     android:id="@+id/linearLayout"
     android:background="#f2f2f2"
     android:orientation="vertical"

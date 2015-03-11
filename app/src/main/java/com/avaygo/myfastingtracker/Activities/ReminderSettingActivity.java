@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Activities;
+package com.avaygo.myfastingtracker.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -48,12 +48,13 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
         LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
 
+        //Set the action bar as the custom done/discard
         final View customActionBarView = inflater.inflate(R.layout.actionbar_done_discard, null);
-
 
         // Show the custom action bar view and hide the normal Home icon and title.
         final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,ActionBar.DISPLAY_SHOW_CUSTOM
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+                ActionBar.DISPLAY_SHOW_CUSTOM
                         | ActionBar.DISPLAY_SHOW_HOME
                         | ActionBar.DISPLAY_SHOW_TITLE
         );
@@ -80,7 +81,6 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
         setCalendarDay();
 
         timeFastEnd.add(Calendar.HOUR_OF_DAY, duration);
-
         cardStart = timeFormat.format(timeFastStart.getTimeInMillis());
 
         textDuration = (TextView) findViewById(R.id.text_duration);
@@ -132,15 +132,14 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
                     //Creates or updates a recurring alarm if alarms have been enabled for this reminder
                     //if not only the reminder is changed and the alarm isn't altered.
                     if (mAlarmsDataSource.getIsEnabled(_id) == 1) {
-
                         mRecurringAlarm.createRecurringAlarm(getApplicationContext(),
                                 timeFastStart, _id);
                     }
 
                     Toast.makeText(view.getContext(), "Reminder has been updated",
                             Toast.LENGTH_SHORT).show();
-
                 }
+
                 mAlarmsDataSource.close();
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
@@ -148,15 +147,14 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
             }
         }
         );
+
         //DISCARD BUTTON
         customActionBarView.findViewById(R.id.actionbar_discard).setOnClickListener
                 (new View.OnClickListener() {
-            View v;
+
             @Override
             public void onClick(View v) {
-
                 finish();
-
             }
         }
         );
@@ -176,9 +174,10 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
                                 DateFormat.is24HourFormat(ReminderSettingActivity.this));
 
                 if (mHasDialogFrame) {
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().
+                            beginTransaction();
 
-                    ft.add(R.id.frame, timePickerDialog, FRAG_TAG_TIME_PICKER)
+                    fragmentTransaction.add(R.id.frame, timePickerDialog, FRAG_TAG_TIME_PICKER)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
                 } else {
