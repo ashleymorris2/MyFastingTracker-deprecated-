@@ -25,15 +25,14 @@ public class LogDatabaseHelper extends SQLiteOpenHelper{
     public static final String COLUMN_END_YEAR = "end_year"; // The year in which the fast actually ended
 
     public static final String COLUMN_START_TIMESTAMP = "start_timestamp"; //The timestamp of the actual start time
-    public static final String COLUMN_END_TIMESTAMP = "end_timestamp"; //The timestamp of the actual end time
-
-    public static final String COLUMN_FAST_DURATION = "fast_duration"; // The duration in hours that the fast was supposed to last
-    public static final String COLUMN_FAST_END = "fast_expected_end";  /*The timestamp of the time the fast was expected to end at
+    public static final String COLUMN_LOG_TIMESTAMP = "log_timestamp"; //The timestamp of time that the log was made at.
+    public static final String COLUMN_END_TIMESTAMP = "end_timestamp";  /*The timestamp of the time the fast was expected to end at
                                                                          Take the start time and add the duration to get the correct
                                                                          figure*/
 
-    public static final String COLUMN_PERCENT_COMPLETE = "percent_complete"; //The percentage that was actually completed
+    public static final String COLUMN_FAST_DURATION = "fast_duration"; // The duration in hours that the fast was supposed to last
 
+    public static final String COLUMN_PERCENT_COMPLETE = "percent_complete"; //The percentage that was actually completed
     public static final String COLUMN_USER_NOTE = "user_note"; // A user specified note about how their fast went.
     public static final String COLUMN_USER_RATING = "user_rating";// A numerical rating from the user 1-5
 
@@ -47,9 +46,9 @@ public class LogDatabaseHelper extends SQLiteOpenHelper{
             + COLUMN_END_MONTH + " INTEGER, "
             + COLUMN_END_YEAR + " INTEGER, "
             + COLUMN_START_TIMESTAMP + " INTEGER, "
-            + COLUMN_END_TIMESTAMP + " INTEGER, "
+            + COLUMN_LOG_TIMESTAMP + " INTEGER, "
             + COLUMN_FAST_DURATION + " INTEGER, "
-            + COLUMN_FAST_END + " INTEGER, "
+            + COLUMN_END_TIMESTAMP + " INTEGER, "
             + COLUMN_PERCENT_COMPLETE + " INTEGER, "
             + COLUMN_USER_NOTE + " TEXT, "
             + COLUMN_USER_RATING + " INTEGER);";

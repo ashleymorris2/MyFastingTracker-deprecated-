@@ -63,8 +63,8 @@ public class LogDataSource {
         values.put(LogDatabaseHelper.COLUMN_END_YEAR, endYear);
 
         values.put(LogDatabaseHelper.COLUMN_START_TIMESTAMP, startDate.getTimeInMillis());
-        values.put(LogDatabaseHelper.COLUMN_END_TIMESTAMP, endDate.getTimeInMillis());
-        values.put(LogDatabaseHelper.COLUMN_FAST_END, fastEnd.getTimeInMillis());
+        values.put(LogDatabaseHelper.COLUMN_LOG_TIMESTAMP, endDate.getTimeInMillis());
+        values.put(LogDatabaseHelper.COLUMN_END_TIMESTAMP, fastEnd.getTimeInMillis());
 
         values.put(LogDatabaseHelper.COLUMN_FAST_DURATION, duration);
         values.put(LogDatabaseHelper.COLUMN_PERCENT_COMPLETE, percentComplete);

@@ -21,6 +21,7 @@ import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class ReminderSettingActivity extends FragmentActivity implements RadialTimePickerDialog.OnTimeSetListener {
 
@@ -37,8 +38,8 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
 
     private int duration, _id;
 
-    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-    SimpleDateFormat timeDayFormat = new SimpleDateFormat("HH:mm, EEEE");
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    SimpleDateFormat timeDayFormat = new SimpleDateFormat("HH:mm, EEEE", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,11 +272,11 @@ public class ReminderSettingActivity extends FragmentActivity implements RadialT
         timeFastEnd.set(Calendar.DAY_OF_WEEK, dayInWeek);
     }
 
+
+    /*This method is called once the time has been set by the radialTimePicker. Updates the string in
+    the UI and sets the calendar */
     @Override
     public void onTimeSet(RadialTimePickerDialog radialTimePickerDialog, int hourOfDay, int minute) {
-       /*This method is called once the time has been set by the radialTimePicker. Updates the string in
-        the UI and sets the calendar */
-
         timeFastStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
         timeFastStart.set(Calendar.MINUTE, minute);
         textReminderStart.setText(timeFormat.format(timeFastStart.getTime()));
