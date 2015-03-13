@@ -7,7 +7,7 @@ import java.util.Calendar;
  */
 public class FastingRecord {
 
-    private int id;
+    private long id;
     private int startDay;
     private int startMonth;
     private int startYear;
@@ -27,117 +27,121 @@ public class FastingRecord {
 
 
     public FastingRecord() {
+        startTimeStamp = Calendar.getInstance();
+        endTimeStamp = Calendar.getInstance();
+        logTimeStamp = Calendar.getInstance();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
-    }
-
-    public int getStartDay() {
-        return startDay;
     }
 
     public void setStartDay(int startDay) {
         this.startDay = startDay;
     }
 
-    public int getStartMonth() {
-        return startMonth;
-    }
-
     public void setStartMonth(int startMonth) {
         this.startMonth = startMonth;
-    }
-
-    public int getStartYear() {
-        return startYear;
     }
 
     public void setStartYear(int startYear) {
         this.startYear = startYear;
     }
 
-    public int getEndDay() {
-        return endDay;
-    }
-
     public void setEndDay(int endDay) {
         this.endDay = endDay;
-    }
-
-    public int getEndMonth() {
-        return endMonth;
     }
 
     public void setEndMonth(int endMonth) {
         this.endMonth = endMonth;
     }
 
-    public int getEndYear() {
-        return endYear;
-    }
-
     public void setEndYear(int endYear) {
         this.endYear = endYear;
-    }
-
-    public int getFastDuration() {
-        return fastDuration;
     }
 
     public void setFastDuration(int fastDuration) {
         this.fastDuration = fastDuration;
     }
 
-    public Calendar getStartTimeStamp() {
-        return startTimeStamp;
+    public void setStartTimeStamp(long startTimeStamp) {
+        this.startTimeStamp.setTimeInMillis(startTimeStamp);
     }
 
-    public void setStartTimeStamp(Calendar startTimeStamp) {
-        this.startTimeStamp = startTimeStamp;
+    public void setEndTimeStamp(long endTimeStamp) {
+        this.endTimeStamp.setTimeInMillis(endTimeStamp);
     }
 
-    public Calendar getEndTimeStamp() {
-        return endTimeStamp;
-    }
-
-    public void setEndTimeStamp(Calendar endTimeStamp) {
-        this.endTimeStamp = endTimeStamp;
-    }
-
-    public Calendar getLogTimeStamp() {
-        return logTimeStamp;
-    }
-
-    public void setLogTimeStamp(Calendar logTimeStamp) {
-        this.logTimeStamp = logTimeStamp;
-    }
-
-    public int getPercentageComplete() {
-        return percentageComplete;
+    public void setLogTimeStamp(long logTimeStamp) {
+        this.logTimeStamp.setTimeInMillis(logTimeStamp);
     }
 
     public void setPercentageComplete(int percentageComplete) {
         this.percentageComplete = percentageComplete;
     }
 
-    public String getUserNote() {
-        return userNote;
-    }
-
     public void setUserNote(String userNote) {
         this.userNote = userNote;
     }
 
-    public int getUserRating() {
-        return userRating;
-    }
-
     public void setUserRating(int userRating) {
         this.userRating = userRating;
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public int getStartDay() {
+        return startDay;
+    }
+
+    public int getStartMonth() {
+        return startMonth;
+    }
+
+    public int getStartYear() {
+        return startYear;
+    }
+
+    public int getEndDay() {
+        return endDay;
+    }
+
+    public int getEndMonth() {
+        return endMonth;
+    }
+
+    public int getEndYear() {
+        return endYear;
+    }
+
+    public int getFastDuration() {
+        return fastDuration;
+    }
+
+    public Calendar getStartTimeStamp() {
+        return startTimeStamp;
+    }
+
+    public Calendar getEndTimeStamp() {
+        return endTimeStamp;
+    }
+
+    public Calendar getLogTimeStamp() {
+        return logTimeStamp;
+    }
+
+    public int getPercentageComplete() {
+        return percentageComplete;
+    }
+
+    public String getUserNote() {
+        return userNote;
+    }
+
+    public int getUserRating() {
+        return userRating;
     }
 }

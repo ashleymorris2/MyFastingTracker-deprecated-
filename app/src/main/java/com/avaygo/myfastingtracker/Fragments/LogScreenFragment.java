@@ -3,6 +3,9 @@ package com.avaygo.myfastingtracker.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -11,10 +14,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
+import com.avaygo.myfastingtracker.classes.FastingRecord;
+import com.avaygo.myfastingtracker.databases.LogDataSource;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
+import java.sql.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,6 +36,8 @@ public class LogScreenFragment extends Fragment {
 
     private TextView textDateTitle;
     private Date previousDate;
+    private Resources resources;
+
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d");
 
@@ -73,13 +82,12 @@ public class LogScreenFragment extends Fragment {
         previousDate = calendar.getTime();
         caldroidFragment.setSelectedDates(previousDate, previousDate);
 
+        new GetEvents(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)).execute();
 
         android.support.v4.app.FragmentTransaction transaction = myContext.getSupportFragmentManager()
                 .beginTransaction();
 
         transaction.replace(R.id.calendar1, caldroidFragment).commit();
-
-
 
         CaldroidListener caldroidListener = new CaldroidListener() {
 
@@ -114,5 +122,62 @@ public class LogScreenFragment extends Fragment {
         textDateTitle.setText(dateFormat.format(System.currentTimeMillis()));
     }
 
+
+    private class GetEvents extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
+
+        int month;
+        int year;
+        private LogDataSource logDataSource;
+
+        private GetEvents(int month, int year) {
+            this.month = month;
+            this.year = year;
+            logDataSource = new LogDataSource(getActivity());
+            logDataSource.open();
+        }
+
+        @Override
+        protected ArrayList<FastingRecord> doInBackground(Void... voids) {
+
+            return logDataSource.getRecordsForMonth(month, year);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<FastingRecord> fastingRecords) {
+            super.onPostExecute(fastingRecords);
+
+            int day;
+            int month;
+            int year;
+
+            Calendar calendar = Calendar.getInstance();
+
+            if (fastingRecords != null) {
+                //Goes through each element in the fasting records array and assigns
+                // the day, month and year variables to the ones that have been retrieved
+                for (int i = 0; i < fastingRecords.size(); i++) {
+                    day = fastingRecords.get(i).getEndDay();
+                    month = fastingRecords.get(i).getEndMonth();
+                    year = fastingRecords.get(i).getEndYear();
+
+                    //Sets the calendar to the retrieved date.
+                    //Assigns current date the calendar date to pass to the caldroid fragment.
+                    calendar.set(year, month, day, 0, 0);
+                    Date currentDate = calendar.getTime();
+
+                    if (caldroidFragment != null) {
+                        if (fastingRecords.get(i).getPercentageComplete() < 100) {
+                            caldroidFragment.setTextColorForDate(R.color.Red_Accent, currentDate);
+                        } else {
+                            caldroidFragment.setTextColorForDate(R.color.Light_Accent, currentDate);
+                        }
+                    }
+                }
+            }
+
+            logDataSource.close();
+            caldroidFragment.refreshView();
+        }
+    }
 
 }

@@ -46,9 +46,9 @@ public class LogDatabaseHelper extends SQLiteOpenHelper{
             + COLUMN_END_MONTH + " INTEGER, "
             + COLUMN_END_YEAR + " INTEGER, "
             + COLUMN_START_TIMESTAMP + " INTEGER, "
+            + COLUMN_END_TIMESTAMP + " INTEGER, "
             + COLUMN_LOG_TIMESTAMP + " INTEGER, "
             + COLUMN_FAST_DURATION + " INTEGER, "
-            + COLUMN_END_TIMESTAMP + " INTEGER, "
             + COLUMN_PERCENT_COMPLETE + " INTEGER, "
             + COLUMN_USER_NOTE + " TEXT, "
             + COLUMN_USER_RATING + " INTEGER);";

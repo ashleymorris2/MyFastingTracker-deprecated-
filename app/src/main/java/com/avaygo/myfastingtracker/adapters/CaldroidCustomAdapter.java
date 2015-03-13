@@ -9,14 +9,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
+import com.avaygo.myfastingtracker.classes.FastingRecord;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidGridAdapter;
 
 import java.util.HashMap;
+import java.util.List;
 
 import hirondelle.date4j.DateTime;
 
 public class CaldroidCustomAdapter extends CaldroidGridAdapter {
+
+
+    private List<FastingRecord> fastingRecords;
+
 
     public CaldroidCustomAdapter(Context context, int month, int year,
                                        HashMap<String, Object> caldroidData,
@@ -46,6 +52,8 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
         // Get dateTime of this cell
         DateTime dateTime = this.datetimeList.get(position);
         Resources resources = context.getResources();
+
+
 
         cellText1.setText("" + dateTime.getDay());
         if (dateTime.equals(getToday())) {
@@ -120,4 +128,7 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
         return cellView;
     }
 
+    public void setFastingRecords(List<FastingRecord> fastingRecords) {
+        this.fastingRecords = fastingRecords;
+    }
 }
