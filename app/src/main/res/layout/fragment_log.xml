@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:text="There is nothing logged for this day"
-        android:id="@+id/textView4"
+        android:id="@+id/text_nothing_logged"
         android:layout_below="@+id/linearLayout6"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -67,13 +67,18 @@
         android:paddingBottom="36dp" />
 
     <com.avaygo.myfastingtracker.classes.NonScrollListView
-        android:id="@id/noscroll"
+        android:id="@+id/noscroll_listview"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:divider="@android:color/transparent"
+        android:clickable="false"
+        android:dividerHeight="8dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/linearLayout6">
+        android:layout_below="@+id/linearLayout6"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
     </com.avaygo.myfastingtracker.classes.NonScrollListView>
 

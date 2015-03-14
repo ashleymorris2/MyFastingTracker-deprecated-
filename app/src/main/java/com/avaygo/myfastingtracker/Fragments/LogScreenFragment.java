@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
+import com.avaygo.myfastingtracker.adapters.RecordsListAdapter;
 import com.avaygo.myfastingtracker.classes.FastingRecord;
+import com.avaygo.myfastingtracker.classes.NonScrollListView;
 import com.avaygo.myfastingtracker.databases.LogDataSource;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -22,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +37,13 @@ public class LogScreenFragment extends Fragment {
 
     private TextView textDateTitle;
     private Date previousDate;
-    private Resources resources;
+
+    private TextView textStatus;
+    private NonScrollListView nonScrollListView;
+
+    private RecordsListAdapter adapter;
+    private GetRecords getRecords;
+    private GetRecordsForDay getRecordsForDay;
 
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d");
@@ -63,7 +72,7 @@ public class LogScreenFragment extends Fragment {
 
         caldroidFragment = new CaldroidCustomFragment();
         Bundle args = new Bundle();
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
         args.putInt(CaldroidFragment.MONTH, calendar.get(Calendar.MONTH) +1);
         args.putInt(CaldroidFragment.YEAR, calendar.get(Calendar.YEAR));
@@ -72,6 +81,8 @@ public class LogScreenFragment extends Fragment {
 
         caldroidFragment.setArguments(args);
 
+        ///Only interested in the date and not the time so set every other variable in the
+        //calendar to 0.
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -80,14 +91,19 @@ public class LogScreenFragment extends Fragment {
         previousDate = calendar.getTime();
         caldroidFragment.setSelectedDates(previousDate, previousDate);
 
+        textStatus = (TextView) getActivity().findViewById(R.id.text_nothing_logged);
+        nonScrollListView = (NonScrollListView) getActivity().findViewById(R.id.noscroll_listview);
+
         new GetRecords(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)).execute();
+        new GetRecordsForDay(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR)).execute();
 
         android.support.v4.app.FragmentTransaction transaction = myContext.getSupportFragmentManager()
                 .beginTransaction();
 
         transaction.replace(R.id.calendar1, caldroidFragment).commit();
 
-        CaldroidListener caldroidListener = new CaldroidListener() {
+        final CaldroidListener caldroidListener = new CaldroidListener() {
 
             @Override
             public void onSelectDate(Date date, View view) {
@@ -96,6 +112,10 @@ public class LogScreenFragment extends Fragment {
                 calendar.setTimeInMillis(date.getTime());
 
                 int selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+
+                new GetRecordsForDay(selectedDay, month, year).execute();
 
                 //Format the selected date to the text view
                 textDateTitle.setText(dateFormat.format(date));
@@ -111,15 +131,16 @@ public class LogScreenFragment extends Fragment {
                     caldroidFragment.refreshView();
                 }
 
-
             }
 
             @Override
             public void onChangeMonth(int month, int year) {
                 super.onChangeMonth(month, year);
+
+
+                new GetRecords(month, year).execute();
             }
         };
-
         caldroidFragment.setCaldroidListener(caldroidListener);
 
         textDateTitle = (TextView) getActivity().findViewById(R.id.text_date_title);
@@ -184,7 +205,49 @@ public class LogScreenFragment extends Fragment {
     }
 
 
+    private class GetRecordsForDay extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
+
+        int day;
+        int month;
+        int year;
+
+        private LogDataSource logDataSource;
+
+        private GetRecordsForDay(int day, int month, int year) {
+            this.day = day;
+            this.month = month;
+            this.year = year;
+            logDataSource = new LogDataSource(getActivity());
+            logDataSource.open();
+        }
+
+        @Override
+        protected ArrayList<FastingRecord> doInBackground(Void... voids) {
+            return logDataSource.getRecordsForDay(day,month,year);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<FastingRecord> fastingRecords) {
+            super.onPostExecute(fastingRecords);
+
+            if(fastingRecords.size() > 0){
+                textStatus.setVisibility(View.GONE);
+                nonScrollListView.setVisibility(View.VISIBLE);
+                populateListView(fastingRecords);
+            }
+            else {
+                nonScrollListView.setVisibility(View.GONE);
+                textStatus.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
 
+    private void populateListView(final List<FastingRecord> recordList){
+
+        adapter = new RecordsListAdapter(getActivity(), recordList);
+        nonScrollListView.setAdapter(adapter);
+
+    }
 
 }

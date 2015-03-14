@@ -54,7 +54,6 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
         Resources resources = context.getResources();
 
 
-
         cellText1.setText("" + dateTime.getDay());
         if (dateTime.equals(getToday())) {
             cellText1.setPaintFlags(cellText1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -82,11 +81,6 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
                 cellView.setBackgroundResource(com.caldroid.R.drawable.disable_cell);
             } else {
                 cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
-            }
-
-            //Border for today's date
-            if (dateTime.equals(getToday())) {
-                cellView.setBackgroundResource(com.caldroid.R.drawable.red_border_gray_bg);
             }
 
         } else {
