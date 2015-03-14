@@ -3,7 +3,6 @@ package com.avaygo.myfastingtracker.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import com.avaygo.myfastingtracker.databases.LogDataSource;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +80,7 @@ public class LogScreenFragment extends Fragment {
         previousDate = calendar.getTime();
         caldroidFragment.setSelectedDates(previousDate, previousDate);
 
-        new GetEvents(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)).execute();
+        new GetRecords(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)).execute();
 
         android.support.v4.app.FragmentTransaction transaction = myContext.getSupportFragmentManager()
                 .beginTransaction();
@@ -93,6 +91,11 @@ public class LogScreenFragment extends Fragment {
 
             @Override
             public void onSelectDate(Date date, View view) {
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(date.getTime());
+
+                int selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
 
                 //Format the selected date to the text view
                 textDateTitle.setText(dateFormat.format(date));
@@ -107,6 +110,7 @@ public class LogScreenFragment extends Fragment {
                     previousDate = date;
                     caldroidFragment.refreshView();
                 }
+
 
             }
 
@@ -123,13 +127,13 @@ public class LogScreenFragment extends Fragment {
     }
 
 
-    private class GetEvents extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
+    private class GetRecords extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
 
         int month;
         int year;
         private LogDataSource logDataSource;
 
-        private GetEvents(int month, int year) {
+        private GetRecords(int month, int year) {
             this.month = month;
             this.year = year;
             logDataSource = new LogDataSource(getActivity());
@@ -138,7 +142,6 @@ public class LogScreenFragment extends Fragment {
 
         @Override
         protected ArrayList<FastingRecord> doInBackground(Void... voids) {
-
             return logDataSource.getRecordsForMonth(month, year);
         }
 
@@ -179,5 +182,9 @@ public class LogScreenFragment extends Fragment {
             caldroidFragment.refreshView();
         }
     }
+
+
+
+
 
 }

@@ -89,10 +89,11 @@ public class LogDataSource {
 
         ArrayList<FastingRecord> recordsList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + LogDatabaseHelper.TABLE_NAME + " WHERE "
-                + LogDatabaseHelper.COLUMN_START_MONTH + " = " + month + " AND "
-                + LogDatabaseHelper.COLUMN_START_YEAR + " = " + year + " ORDER BY "
+                + LogDatabaseHelper.COLUMN_END_MONTH + " = " + month + " AND "
+                + LogDatabaseHelper.COLUMN_END_YEAR + " = " + year +
+                " ORDER BY "
                 + LogDatabaseHelper.COLUMN_END_DAY + " ASC, "
-                + LogDatabaseHelper.COLUMN_PERCENT_COMPLETE + " ASC;";
+                + LogDatabaseHelper.COLUMN_FAST_DURATION+ " ASC;";
 
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -127,4 +128,10 @@ public class LogDataSource {
         cursor.close();
         return recordsList;
     }
+
+  public ArrayList<FastingRecord> getRecordsForDay(int day, int month, int year) {
+
+
+      return null;
+  }
 }

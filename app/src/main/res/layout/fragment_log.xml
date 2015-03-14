@@ -23,6 +23,7 @@
             android:layout_height="365dp"
             android:orientation="vertical"
             android:padding="12dp">
+
         </LinearLayout>
     </RelativeLayout>
 
@@ -51,7 +52,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="550dp"
+        android:layout_height="fill_parent"
         android:text="There is nothing logged for this day"
         android:id="@+id/textView4"
         android:layout_below="@+id/linearLayout6"
@@ -62,7 +63,19 @@
         android:textSize="16sp"
         android:textColor="@color/Main_Text"
         android:gravity="center"
-        android:layout_alignParentBottom="true" />
+        android:paddingTop="36dp"
+        android:paddingBottom="36dp" />
+
+    <com.avaygo.myfastingtracker.classes.NonScrollListView
+        android:id="@id/noscroll"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/linearLayout6">
+
+    </com.avaygo.myfastingtracker.classes.NonScrollListView>
 
 </RelativeLayout>
 
