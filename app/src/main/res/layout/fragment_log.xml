@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:fillViewport="true"
     android:layout_width="match_parent"
-    android:background="#ffe0e0e0">
+    android:background="#ffe0e0e0"
+    android:id="@+id/ScrollView">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -64,7 +65,8 @@
         android:textColor="@color/Main_Text"
         android:gravity="center"
         android:paddingTop="36dp"
-        android:paddingBottom="36dp" />
+        android:paddingBottom="36dp"
+        android:visibility="invisible" />
 
     <com.avaygo.myfastingtracker.classes.NonScrollListView
         android:id="@+id/noscroll_listview"

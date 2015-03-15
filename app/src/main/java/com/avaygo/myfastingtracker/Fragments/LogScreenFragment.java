@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
@@ -44,6 +46,7 @@ public class LogScreenFragment extends Fragment {
     private RecordsListAdapter adapter;
     private GetRecords getRecords;
     private GetRecordsForDay getRecordsForDay;
+    private ScrollView scrollView;
 
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d");
@@ -93,6 +96,18 @@ public class LogScreenFragment extends Fragment {
 
         textStatus = (TextView) getActivity().findViewById(R.id.text_nothing_logged);
         nonScrollListView = (NonScrollListView) getActivity().findViewById(R.id.noscroll_listview);
+
+        scrollView = (ScrollView) getActivity().findViewById(R.id.ScrollView);
+
+        //Need to wait until the scroll view is on the screen before scrolling back to the top.
+        //Once the view is ready can return the focus to the top.
+        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //The view is ready so able to scroll back up to the top.
+                scrollView.fullScroll(View.FOCUS_UP);
+            }
+        });
 
         new GetRecords(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)).execute();
         new GetRecordsForDay(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
@@ -244,10 +259,8 @@ public class LogScreenFragment extends Fragment {
 
 
     private void populateListView(final List<FastingRecord> recordList){
-
         adapter = new RecordsListAdapter(getActivity(), recordList);
         nonScrollListView.setAdapter(adapter);
-
     }
 
 }

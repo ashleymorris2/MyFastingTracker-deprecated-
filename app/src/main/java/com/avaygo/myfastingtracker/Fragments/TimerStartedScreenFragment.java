@@ -186,10 +186,12 @@ public class TimerStartedScreenFragment extends Fragment {
            //Launches a new fragment and replaces the current one.
            //Toast.makeText(getActivity(), "Fast cancelled", Toast.LENGTH_SHORT).show();
 
-
-           logDataSource.createRecord(startCalendar, endCalendar, duration, counter.getPercentageComplete(),
-                                        "This fast is a test", 5);
-           logDataSource.close();
+           //Only save to the database if the fast is longer than an hour
+           if(counter.getElapsedTime() >= 3600){
+               logDataSource.createRecord(startCalendar, endCalendar, duration, counter.getPercentageComplete(),
+                       "This fast is a test", 5);
+               logDataSource.close();
+           }
 
            fragmentChange = getActivity().getFragmentManager().beginTransaction();
            fragmentChange.replace(R.id.mainContent, new TimerSettingScreenFragment());
@@ -199,7 +201,7 @@ public class TimerStartedScreenFragment extends Fragment {
 
     private class MyCounter extends CountDownTimer {
 
-        private int mEndMinutes, mElapsedTime, percentCompleted;
+        private int endSeconds, elapsedTime, percentCompleted;
         private boolean dateChange = false;
         private  float percentAsFloat;
 
@@ -212,7 +214,7 @@ public class TimerStartedScreenFragment extends Fragment {
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
 
-            mEndMinutes = preferences.getInt("END_HOUR", 0) * 3600; // 3600 for seconds, 60 for minutes.
+            endSeconds = preferences.getInt("END_HOUR", 0) * 3600; // 3600 for seconds, 60 for minutes.
             editor.putBoolean("TIMER_START", true);
             editor.commit();
 
@@ -250,24 +252,21 @@ public class TimerStartedScreenFragment extends Fragment {
 
             //Calculates the remaining time as a percentage for the progress bar.
             // Seconds for high accuracy and minutes for low accuracy.
-            mElapsedTime = mEndMinutes - totalMinutes;
-            percentCompleted = (mElapsedTime * 100) / mEndMinutes;
+            elapsedTime = endSeconds - totalMinutes;
+            percentCompleted = (elapsedTime * 100) / endSeconds;
 
-            //@percentageAsFloat is needed because the circular progress bar is set to a maximum of 1.
+            //percentageAsFloat is needed because the circular progress bar is set to a maximum of 1.
             percentAsFloat = percentCompleted / 100f;
             holoCircularProgressBar.setProgress(percentAsFloat);
 
-
             textPercentComplete.setText(percentCompleted + "%");
 
-            if (dateChange == false) {
+            if (!dateChange) {
                 //Checks if today's date matches the end date and updates the texts appropriately.
                 if (startCalendar.get(Calendar.DATE) != Calendar.getInstance().get(Calendar.DATE)) {
-
                     textStartDay.setText("Yesterday");
                     textEndDay.setText("Today");
                     dateChange = true;
-
                 }
             }
         }
@@ -282,6 +281,10 @@ public class TimerStartedScreenFragment extends Fragment {
 
             textHourAndMinutes.setText("00:00");
             textSeconds.setText(":00");
+        }
+
+        public int getElapsedTime(){
+            return elapsedTime;
         }
 
         public int getPercentageComplete(){

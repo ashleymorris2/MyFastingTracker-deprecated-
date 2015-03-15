@@ -1,6 +1,8 @@
 package com.avaygo.myfastingtracker.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,8 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Resources resources = context.getResources();
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = convertView;
 
@@ -49,6 +53,9 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
         textDuration.setText(currentRecord.getFastDuration() + " Hours");
 
         TextView textPercentage = (TextView) itemView.findViewById(R.id.text_percentage);
+        if(currentRecord.getPercentageComplete() == 100){
+            textPercentage.setTextColor(resources.getColor(R.color.Light_Accent));
+        }
         textPercentage.setText(currentRecord.getPercentageComplete() + "%");
 
 
