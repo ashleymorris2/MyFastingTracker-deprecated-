@@ -36,15 +36,16 @@
                     android:text="Started: "
                     android:id="@+id/textView4"
                     android:textColor="@color/Main_Text"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_marginRight="4dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="20:00"
                     android:id="@+id/text_start_time"
                     android:textColor="@color/transparent_black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:text="20:00" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,10 +60,11 @@
                     android:id="@+id/textView6"
                     android:textColor="@color/Main_Text"
                     android:textSize="16sp"
-                    android:paddingRight="6dp" />
+                    android:layout_marginRight="4dp"
+                    android:paddingRight="7dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="20:00"
                     android:id="@+id/text_end_time"
@@ -75,7 +77,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:padding="12dp"
             android:layout_marginTop="2dp"
             android:id="@+id/linearLayout"
@@ -85,22 +87,25 @@
             <TextView
                 android:id="@+id/text_duration"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/imageViewIcon"
 
                 android:text="16 Hours"
                 android:textColor="@color/Main_Text"
                 android:textSize="16sp"
-                android:gravity="center_vertical|right" />
+                android:gravity="center_vertical|right"
+                android:layout_weight="1"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="100%"
                 android:id="@+id/text_percentage"
                 android:gravity="right"
-                android:textColor="@color/Red_Accent" />
+                android:textColor="@color/Red_Accent"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 

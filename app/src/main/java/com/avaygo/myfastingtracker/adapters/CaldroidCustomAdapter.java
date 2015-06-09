@@ -2,6 +2,7 @@ package com.avaygo.myfastingtracker.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,14 +48,17 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
         int bottomPadding = cellView.getPaddingBottom();
         int rightPadding = cellView.getPaddingRight();
 
+        Resources resources = context.getResources();
+
         TextView cellText1 = (TextView) cellView.findViewById(R.id.cell_text1);
+        cellText1.setTextColor(resources.getColor(com.caldroid.R.color.caldroid_lighter_gray));
 
         // Get dateTime of this cell
         DateTime dateTime = this.datetimeList.get(position);
-        Resources resources = context.getResources();
-
 
         cellText1.setText("" + dateTime.getDay());
+        cellText1.setPaintFlags(0);
+
         if (dateTime.equals(getToday())) {
             cellText1.setPaintFlags(cellText1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
@@ -82,7 +86,6 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
             } else {
                 cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
             }
-
         } else {
             shouldResetDiabledView = true;
         }
@@ -94,8 +97,6 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
             } else {
                 cellView.setBackgroundResource(R.drawable.date_selector);
             }
-
-            //cellText1.setTextColor(CaldroidFragment.selectedTextColor);
 
         } else {
             shouldResetSelectedView = true;
@@ -120,9 +121,5 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
         setCustomResources(dateTime, cellView, cellText1);
 
         return cellView;
-    }
-
-    public void setFastingRecords(List<FastingRecord> fastingRecords) {
-        this.fastingRecords = fastingRecords;
     }
 }

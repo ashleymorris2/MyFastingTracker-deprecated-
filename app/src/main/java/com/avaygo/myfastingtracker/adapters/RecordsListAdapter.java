@@ -16,6 +16,7 @@ import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Ash on 14/03/2015.
@@ -25,7 +26,9 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
     private Context context;
     private List<FastingRecord> recordList;
 
-    private SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm");//Current time
+    private SimpleDateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());//Current time
+    private SimpleDateFormat hourMinuteDayFormat = new SimpleDateFormat("HH:mm, EEEE", Locale.getDefault());//Current time
+
 
     public RecordsListAdapter(Context context, List<FastingRecord> recordList) {
         super(context, R.layout.listview_record_row, recordList);
@@ -60,11 +63,16 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
 
 
         TextView textStartTime = (TextView) itemView.findViewById(R.id.text_start_time);
-        textStartTime.setText(hourMinuteFormat.format(currentRecord.getStartTimeStamp().getTime()));
+        if(currentRecord.getStartDay() != currentRecord.getEndDay()){
+            textStartTime.setText(hourMinuteDayFormat.format(currentRecord.getStartTimeStamp().getTime()));
+        }
+        else {
+            textStartTime.setText(hourMinuteFormat.format(currentRecord.getStartTimeStamp().getTime()));
+        }
+
 
         TextView textEndTime = (TextView) itemView.findViewById(R.id.text_end_time);
         textEndTime.setText(hourMinuteFormat.format(currentRecord.getLogTimeStamp().getTime()));
-
 
         return itemView;
     }
