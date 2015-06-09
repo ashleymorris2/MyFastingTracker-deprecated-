@@ -26,30 +26,22 @@ import de.passy.holocircularprogressbar.HoloCircularProgressBar;
 
 
 public class TimerStartedScreenFragment extends Fragment {
+    //CountDownTimer class, overwritten methods to save state.
+    private static MyCounter counter;
+    private final String FAST_PROGRESS = "fastProgress";
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
     private Button buttonBreakFast;
     private TextView textStartTime, textEndTime, textHourAndMinutes, textSeconds, txtFastDuration, textPercentComplete,
             textStartDay, textEndDay;
-
     private int duration;
-
     //Calendars and time formatting:
     private Calendar startCalendar, endCalendar;
-
     private SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-
     private AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
-
-    private final String FAST_PROGRESS = "fastProgress";
-
     //Fragment Class:
     private FragmentTransaction fragmentChange;
-
-    //CountDownTimer class, overwritten methods to save state.
-    private static MyCounter counter;
-
     private LogDataSource logDataSource;
 
     public TimerStartedScreenFragment() {
@@ -86,7 +78,9 @@ public class TimerStartedScreenFragment extends Fragment {
                 //Gives the user an alert dialog if they are over 1 percent into their fast.
                 if (counter.getPercentageComplete() < 1 || counter.getPercentageComplete() == 100) {
                     myNotification.cancelAlarm(getActivity());
+                    saveRecordToDatabase();
                     changeFragment();
+
                 } else {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(TimerStartedScreenFragment.this.getActivity());
                     dialogBuilder.setMessage("Do you want to break your fast early?");
@@ -95,7 +89,9 @@ public class TimerStartedScreenFragment extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     myNotification.cancelAlarm(getActivity());
+                                    saveRecordToDatabase();
                                     changeFragment();
+
                                 }
                             }
                     );
@@ -126,7 +122,7 @@ public class TimerStartedScreenFragment extends Fragment {
 
         //Calculates the difference between the current time and the end time
         if (timerStarted == true) {
-             timeLeftInMill = endMill - System.currentTimeMillis();
+            timeLeftInMill = endMill - System.currentTimeMillis();
         }
 
         counter = new MyCounter(timeLeftInMill, 1000);//
@@ -144,14 +140,13 @@ public class TimerStartedScreenFragment extends Fragment {
         if (endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE)) {
             textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
             textEndDay.setText("Tomorrow");//If two aren't equal then end must be tomorrow.
-        }
-        else {
+        } else {
             textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
             textEndDay.setText("Today");
         }
 
         //Recover the instance from the saved state, only if there is something to recover.
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             float progress = savedInstanceState.getFloat(FAST_PROGRESS);
             holoCircularProgressBar.setProgress(progress);
         }
@@ -169,45 +164,69 @@ public class TimerStartedScreenFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    //Clears the shared preferences and changes the fragment.
-    private synchronized void changeFragment() {
+    private void saveRecordToDatabase() {
 
         Calendar endCalendar = Calendar.getInstance();
         endCalendar.setTimeInMillis(System.currentTimeMillis());
+
+        long difference = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis() ;
+        long differenceHours = difference / (60*60*1000);
+
+        //Only save to the database if the fast is longer than an hour
+        if (differenceHours >= 1) {
+            logDataSource.createRecord(startCalendar, endCalendar, duration, counter.getPercentageComplete(),
+                    "This fast is a test", 5);
+            logDataSource.close();
+        }
+    }
+
+    //Clears the shared preferences and changes the fragment.
+    private synchronized void changeFragment() {
+
 
         //Shared preferences, stores the current state on the button press to save the activity's session.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
         SharedPreferences.Editor editor = preferences.edit();
 
+
         //Commit the edits
         editor.clear();
 
-       if( editor.commit()) {
-           //Launches a new fragment and replaces the current one.
-           //Toast.makeText(getActivity(), "Fast cancelled", Toast.LENGTH_SHORT).show();
+        if (editor.commit()) {
+            //Launches a new fragment and replaces the current one.
+            //Toast.makeText(getActivity(), "Fast cancelled", Toast.LENGTH_SHORT).show();
 
-           //Only save to the database if the fast is longer than an hour
-           if(counter.getElapsedTime() >= 3600){
-               logDataSource.createRecord(startCalendar, endCalendar, duration, counter.getPercentageComplete(),
-                       "This fast is a test", 5);
-               logDataSource.close();
-           }
+            fragmentChange = getActivity().getFragmentManager().beginTransaction();
+            fragmentChange.replace(R.id.mainContent, new TimerSettingScreenFragment());
+            fragmentChange.commit();
+        }
+    }
 
-           fragmentChange = getActivity().getFragmentManager().beginTransaction();
-           fragmentChange.replace(R.id.mainContent, new TimerSettingScreenFragment());
-           fragmentChange.commit();
-       }
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    public void onDetach() {
+        super.onDetach();
     }
 
     private class MyCounter extends CountDownTimer {
 
         private int endSeconds, elapsedTime, percentCompleted;
         private boolean dateChange = false;
-        private  float percentAsFloat;
+        private float percentAsFloat;
 
-        /**Constructor for MyCounter class
-        @param millisInFuture time in milliseconds in the future.
-        @param countDownInterval interval in milliseconds to countdown.**/
+        /**
+         * Constructor for MyCounter class
+         *
+         * @param millisInFuture    time in milliseconds in the future.
+         * @param countDownInterval interval in milliseconds to countdown.*
+         */
         private MyCounter(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
 
@@ -283,29 +302,14 @@ public class TimerStartedScreenFragment extends Fragment {
             textSeconds.setText(":00");
         }
 
-        public int getElapsedTime(){
+        public int getElapsedTime() {
             return elapsedTime;
         }
 
-        public int getPercentageComplete(){
+        public int getPercentageComplete() {
             return percentCompleted;
         }
     }
-
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    public void onDetach() {
-        super.onDetach();
-    }
-
-
 
 
 }

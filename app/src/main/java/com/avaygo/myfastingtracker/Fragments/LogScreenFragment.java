@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avaygo.myfastingtracker.R;
 import com.avaygo.myfastingtracker.adapters.RecordsListAdapter;
@@ -145,13 +146,14 @@ public class LogScreenFragment extends Fragment {
                     previousDate = date;
                     caldroidFragment.refreshView();
                 }
-
             }
 
             @Override
             public void onChangeMonth(int month, int year) {
                 super.onChangeMonth(month, year);
 
+                //Because Caldroid is retarded and adds on a month....
+                month = month - 1;
 
                 new GetRecords(month, year).execute();
             }
@@ -161,7 +163,6 @@ public class LogScreenFragment extends Fragment {
         textDateTitle = (TextView) getActivity().findViewById(R.id.text_date_title);
         textDateTitle.setText(dateFormat.format(System.currentTimeMillis()));
     }
-
 
     private class GetRecords extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
 
@@ -219,7 +220,6 @@ public class LogScreenFragment extends Fragment {
         }
     }
 
-
     private class GetRecordsForDay extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
 
         int day;
@@ -256,7 +256,6 @@ public class LogScreenFragment extends Fragment {
             }
         }
     }
-
 
     private void populateListView(final List<FastingRecord> recordList){
         adapter = new RecordsListAdapter(getActivity(), recordList);
