@@ -167,15 +167,29 @@ public class TimerStartedScreenFragment extends Fragment {
     private void saveRecordToDatabase() {
 
         Calendar endCalendar = Calendar.getInstance();
-        endCalendar.setTimeInMillis(System.currentTimeMillis());
 
         long difference = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis() ;
         long differenceHours = difference / (60*60*1000);
 
         //Only save to the database if the fast is longer than an hour
         if (differenceHours >= 1) {
-            logDataSource.createRecord(startCalendar, endCalendar, duration, counter.getPercentageComplete(),
-                    "This fast is a test", 5);
+            if(counter.getPercentageComplete() == 100) {
+                //If the fast is at 100% only save the start time plus the duration.
+                //This is so that the saved time is never beyond 100% of the duration.
+                endCalendar.setTimeInMillis(startCalendar.getTimeInMillis());
+                endCalendar.add(Calendar.HOUR_OF_DAY, duration);
+
+                logDataSource.createRecord(startCalendar, endCalendar, duration,
+                        counter.getPercentageComplete(), "This fast is a test", 5);
+            }
+            else{
+                //Else save the current time.
+                endCalendar.setTimeInMillis(System.currentTimeMillis());
+
+                logDataSource.createRecord(startCalendar, endCalendar, duration,
+                        counter.getPercentageComplete(), "This fast is a test", 5);
+            }
+
             logDataSource.close();
         }
     }

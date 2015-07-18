@@ -64,6 +64,7 @@ public class FastingRecord {
         this.fastDuration = fastDuration;
     }
 
+
     public void setStartTimeStamp(long startTimeStamp) {
         this.startTimeStamp.setTimeInMillis(startTimeStamp);
     }
@@ -75,6 +76,7 @@ public class FastingRecord {
     public void setLogTimeStamp(long logTimeStamp) {
         this.logTimeStamp.setTimeInMillis(logTimeStamp);
     }
+
 
     public void setPercentageComplete(int percentageComplete) {
         this.percentageComplete = percentageComplete;

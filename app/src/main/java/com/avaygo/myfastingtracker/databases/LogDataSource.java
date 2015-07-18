@@ -68,6 +68,7 @@ public class LogDataSource {
 
         values.put(LogDatabaseHelper.COLUMN_START_TIMESTAMP, startDate.getTimeInMillis());
         values.put(LogDatabaseHelper.COLUMN_LOG_TIMESTAMP, endDate.getTimeInMillis());
+
         values.put(LogDatabaseHelper.COLUMN_END_TIMESTAMP, fastEnd.getTimeInMillis());
 
         values.put(LogDatabaseHelper.COLUMN_FAST_DURATION, duration);

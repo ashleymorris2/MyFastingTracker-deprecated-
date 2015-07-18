@@ -63,6 +63,8 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
 
 
         TextView textStartTime = (TextView) itemView.findViewById(R.id.text_start_time);
+
+        //Changes the formatting depending on if the fast started and ended on the same day.
         if(currentRecord.getStartDay() != currentRecord.getEndDay()){
             textStartTime.setText(hourMinuteDayFormat.format(currentRecord.getStartTimeStamp().getTime()));
         }

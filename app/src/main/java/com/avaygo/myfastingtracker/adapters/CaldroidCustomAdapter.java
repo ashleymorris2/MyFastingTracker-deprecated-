@@ -102,6 +102,7 @@ public class CaldroidCustomAdapter extends CaldroidGridAdapter {
             shouldResetSelectedView = true;
         }
 
+
         if (shouldResetDiabledView && shouldResetSelectedView) {
             // Customize for today
             if (dateTime.equals(getToday())) {
