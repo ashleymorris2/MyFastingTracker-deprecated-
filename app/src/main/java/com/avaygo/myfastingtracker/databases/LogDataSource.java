@@ -40,8 +40,11 @@ public class LogDataSource {
      * @param startDate From here the timestamp, start day, month and year can be saved.
      * @param endDate   From here the timestamp, end day, month and year can be saved.
      * @param duration  The duration that the fast was supposed to last for
+     * @return long - The new row ID
+     *
+     *
      */
-    public void createRecord(Calendar startDate, Calendar endDate, int duration,
+    public long createRecord(Calendar startDate, Calendar endDate, int duration,
                              int percentComplete, String userNote, int userRating) {
 
         Calendar fastEnd = Calendar.getInstance();
@@ -76,7 +79,16 @@ public class LogDataSource {
         values.put(LogDatabaseHelper.COLUMN_USER_NOTE, userNote);
         values.put(LogDatabaseHelper.COLUMN_USER_RATING, userRating);
 
-        database.insert(LogDatabaseHelper.TABLE_NAME, null, values);
+       return database.insert(LogDatabaseHelper.TABLE_NAME, null, values);
+    }
+
+    public void editNote(String newNote, long rowID){
+
+        ContentValues values = new ContentValues();
+        values.put(LogDatabaseHelper.COLUMN_USER_NOTE, newNote);
+
+        database.update(LogDatabaseHelper.TABLE_NAME, values,
+                LogDatabaseHelper.COLUMN_ID +"="+ rowID, null);
     }
 
 

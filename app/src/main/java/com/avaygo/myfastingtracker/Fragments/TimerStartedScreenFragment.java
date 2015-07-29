@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
@@ -78,8 +79,15 @@ public class TimerStartedScreenFragment extends Fragment {
                 //Gives the user an alert dialog if they are over 1 percent into their fast.
                 if (counter.getPercentageComplete() < 1 || counter.getPercentageComplete() == 100) {
                     myNotification.cancelAlarm(getActivity());
-                    saveRecordToDatabase();
-                    changeFragment();
+
+                    //Only a completed fast is saved to the database
+                    if (counter.percentCompleted == 100) {
+                        long newRowId = saveRecordToDatabase();
+                        displayAlert(newRowId);
+                    } else {
+                        changeFragment();
+                    }
+
 
                 } else {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(TimerStartedScreenFragment.this.getActivity());
@@ -88,10 +96,20 @@ public class TimerStartedScreenFragment extends Fragment {
                     dialogBuilder.setPositiveButton("Yes",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    myNotification.cancelAlarm(getActivity());
-                                    saveRecordToDatabase();
-                                    changeFragment();
 
+                                    myNotification.cancelAlarm(getActivity());
+
+                                    Calendar endCalendar = Calendar.getInstance();
+                                    long difference = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis();
+                                    long differenceHours = difference / (60 * 60 * 1000);
+
+                                    //The fast has to be longer than an hour to be worth saving.
+                                    if (differenceHours >= 1) {
+                                        long newRowId = saveRecordToDatabase();
+                                        displayAlert(newRowId);
+                                    } else {
+                                        changeFragment();
+                                    }
                                 }
                             }
                     );
@@ -102,8 +120,8 @@ public class TimerStartedScreenFragment extends Fragment {
                                 }
                             }
                     );
-                    AlertDialog alert11 = dialogBuilder.create();
-                    alert11.show();
+                    AlertDialog alertDialog = dialogBuilder.create();
+                    alertDialog.show();
                 }
 
             }
@@ -164,44 +182,71 @@ public class TimerStartedScreenFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    private void saveRecordToDatabase() {
+    private long saveRecordToDatabase() {
 
-        Calendar endCalendar = Calendar.getInstance();
-
-        long difference = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis() ;
-        long differenceHours = difference / (60*60*1000);
+        long newRowID = 0;
 
         //Only save to the database if the fast is longer than an hour
-        if (differenceHours >= 1) {
-            if(counter.getPercentageComplete() == 100) {
-                //If the fast is at 100% only save the start time plus the duration.
-                //This is so that the saved time is never beyond 100% of the duration.
-                endCalendar.setTimeInMillis(startCalendar.getTimeInMillis());
-                endCalendar.add(Calendar.HOUR_OF_DAY, duration);
 
-                logDataSource.createRecord(startCalendar, endCalendar, duration,
-                        counter.getPercentageComplete(), "This fast is a test", 5);
-            }
-            else{
-                //Else save the current time.
-                endCalendar.setTimeInMillis(System.currentTimeMillis());
+        if (counter.getPercentageComplete() == 100) {
+            //If the fast is at 100% only save the start time plus the duration.
+            //This is so that the saved time is never beyond 100% of the duration.
+            endCalendar.setTimeInMillis(startCalendar.getTimeInMillis());
+            endCalendar.add(Calendar.HOUR_OF_DAY, duration);
 
-                logDataSource.createRecord(startCalendar, endCalendar, duration,
-                        counter.getPercentageComplete(), "This fast is a test", 5);
-            }
+            newRowID = logDataSource.createRecord(startCalendar, endCalendar, duration,
+                    counter.getPercentageComplete(), "", 5);
+        } else {
+            //Else save the current time.
+            endCalendar.setTimeInMillis(System.currentTimeMillis());
 
-            logDataSource.close();
+            newRowID = logDataSource.createRecord(startCalendar, endCalendar, duration,
+                    counter.getPercentageComplete(), "", 5);
         }
+
+        logDataSource.close();
+
+        return newRowID;
+    }
+
+    private void displayAlert(final long rowId) {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View alertView = layoutInflater.inflate(R.layout.dialog_fast_message, null);
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+
+        //Sets the layout to the alertview
+        alertBuilder.setView(alertView);
+
+        final EditText userNote = (EditText) alertView.findViewById(R.id.editTextDialogUserInput);
+
+        alertBuilder.setCancelable(false)
+                .setTitle("Summary")
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Save the message to the database
+                        logDataSource.open();
+                        logDataSource.editNote(userNote.getText().toString(), rowId);
+                        logDataSource.close();
+
+                        dialogInterface.cancel();
+                        changeFragment();
+                    }
+                });
+
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+
+
     }
 
     //Clears the shared preferences and changes the fragment.
     private synchronized void changeFragment() {
 
-
         //Shared preferences, stores the current state on the button press to save the activity's session.
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
         SharedPreferences.Editor editor = preferences.edit();
-
 
         //Commit the edits
         editor.clear();
