@@ -47,12 +47,16 @@
             android:label="@string/title_activity_duration_picker_dialogue"
             android:theme="@android:style/Theme.Holo.Dialog" />
         <activity
-            android:name=".activities.SaveFastDialogue"
-            android:label="@string/title_activity_dialgoue_save_fast" />
-        <activity
             android:name=".activities.FastDetailsActivity"
-            android:label="@string/title_activity_fast_details" >
+            android:label="@string/title_activity_fast_details"
+            android:parentActivityName=".activities.MainActivity" >
         </activity>
+
+        <receiver
+            android:name=".notifications.PostponeFastReciever"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
     </application>
 
 </manifest>

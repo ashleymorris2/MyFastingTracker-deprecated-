@@ -4,7 +4,6 @@ package com.avaygo.myfastingtracker.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avaygo.myfastingtracker.R;
 import com.avaygo.myfastingtracker.activities.FastDetailsActivity;
@@ -34,7 +33,6 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- *
  */
 public class LogScreenFragment extends Fragment {
 
@@ -51,6 +49,8 @@ public class LogScreenFragment extends Fragment {
     private GetRecords getRecords;
     private GetRecordsForDay getRecordsForDay;
     private ScrollView scrollView;
+
+    private int selectedDay, month, year;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d");
 
@@ -79,7 +79,7 @@ public class LogScreenFragment extends Fragment {
         Bundle args = new Bundle();
         final Calendar calendar = Calendar.getInstance();
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
-        args.putInt(CaldroidFragment.MONTH, calendar.get(Calendar.MONTH) +1);
+        args.putInt(CaldroidFragment.MONTH, calendar.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, calendar.get(Calendar.YEAR));
         args.putBoolean(CaldroidFragment.SHOW_NAVIGATION_ARROWS, false);
         args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
@@ -128,9 +128,9 @@ public class LogScreenFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(date.getTime());
 
-                int selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
+                selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+                month = calendar.get(Calendar.MONTH);
+                year = calendar.get(Calendar.YEAR);
 
                 new GetRecordsForDay(selectedDay, month, year).execute();
 
@@ -139,10 +139,10 @@ public class LogScreenFragment extends Fragment {
 
                 //Clears the previously selected date from the fragment.
                 //Updates the graphic for the currently selected date and clears the old one.
-                if(previousDate.getTime() != date.getTime()) {
+                if (previousDate.getTime() != date.getTime()) {
 
                     caldroidFragment.clearSelectedDates();
-                    caldroidFragment.setSelectedDates(date,date);
+                    caldroidFragment.setSelectedDates(date, date);
 
                     previousDate = date;
                     caldroidFragment.refreshView();
@@ -159,13 +159,13 @@ public class LogScreenFragment extends Fragment {
                 new GetRecords(month, year).execute();
             }
         };
-        caldroidFragment.setCaldroidListener(caldroidListener);
 
+        caldroidFragment.setCaldroidListener(caldroidListener);
         textDateTitle = (TextView) getActivity().findViewById(R.id.text_date_title);
         textDateTitle.setText(dateFormat.format(System.currentTimeMillis()));
     }
 
-    private class GetRecords extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
+    private class GetRecords extends AsyncTask<Void, Void, ArrayList<FastingRecord>> {
 
         int month;
         int year;
@@ -210,18 +210,18 @@ public class LogScreenFragment extends Fragment {
                         if (fastingRecords.get(i).getPercentageComplete() < 100) {
                             caldroidFragment.setTextColorForDate(R.color.Red_Accent, currentDate);
                         } else {
-                            caldroidFragment.setTextColorForDate(R.color.Light_Accent, currentDate);
+                            caldroidFragment.setTextColorForDate(R.color.Blue_Accent, currentDate);
                         }
                     }
                 }
             }
 
-            logDataSource.close();
             caldroidFragment.refreshView();
+            logDataSource.close();
         }
     }
 
-    private class GetRecordsForDay extends AsyncTask<Void, Void, ArrayList<FastingRecord>>{
+    private class GetRecordsForDay extends AsyncTask<Void, Void, ArrayList<FastingRecord>> {
 
         int day;
         int month;
@@ -239,28 +239,35 @@ public class LogScreenFragment extends Fragment {
 
         @Override
         protected ArrayList<FastingRecord> doInBackground(Void... voids) {
-            return logDataSource.getRecordsForDay(day,month,year);
+            return logDataSource.getRecordsForDay(day, month, year);
         }
 
         @Override
         protected void onPostExecute(ArrayList<FastingRecord> fastingRecords) {
             super.onPostExecute(fastingRecords);
 
-            if(fastingRecords.size() > 0){
+            if (fastingRecords.size() > 0) {
                 textStatus.setVisibility(View.GONE);
                 nonScrollListView.setVisibility(View.VISIBLE);
                 populateListView(fastingRecords);
-            }
-            else {
+            } else {
                 nonScrollListView.setVisibility(View.GONE);
                 textStatus.setVisibility(View.VISIBLE);
             }
+
+            logDataSource.close();
         }
     }
 
-    private void populateListView(final List<FastingRecord> recordList){
-        adapter = new RecordsListAdapter(getActivity(), recordList);
-        nonScrollListView.setAdapter(adapter);
+    private void populateListView(final List<FastingRecord> recordList) {
+
+        if(adapter == null) {
+            adapter = new RecordsListAdapter(getActivity(), recordList);
+            nonScrollListView.setAdapter(adapter);
+        }
+        else{
+            adapter.refill(recordList);
+        }
 
         //Handle the clicks on individual elements in the list
         nonScrollListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -272,16 +279,47 @@ public class LogScreenFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), FastDetailsActivity.class);
 
                 //Add the extras that will be used on the next screen.
+                intent.putExtra("ROW_ID", currentItem.getId());
+
                 intent.putExtra("START_TIMESTAMP", currentItem.getStartTimeStamp().getTimeInMillis());
                 intent.putExtra("END_TIMESTAMP", currentItem.getEndTimeStamp().getTimeInMillis());
                 intent.putExtra("LOG_TIMESTAMP", currentItem.getLogTimeStamp().getTimeInMillis());
 
-                intent.putExtra("FAST_DURATION",currentItem.getFastDuration());
+                intent.putExtra("FAST_DURATION", currentItem.getFastDuration());
                 intent.putExtra("PERCENT_COMPLETE", currentItem.getPercentageComplete());
                 intent.putExtra("USER_NOTE", currentItem.getUserNote());
 
-                startActivity(intent);
+                intent.putExtra("DAY", selectedDay);
+                intent.putExtra("MONTH", month);
+                intent.putExtra("YEAR", year);
+
+                startActivityForResult(intent, 1);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                Calendar calendar = Calendar.getInstance();
+
+                int day, month, year;
+
+                day = data.getIntExtra("DAY", calendar.get(Calendar.DAY_OF_MONTH));
+                month = data.getIntExtra("MONTH", calendar.get(Calendar.MONTH));
+                year = data.getIntExtra("YEAR", calendar.get(Calendar.YEAR));
+
+                calendar.set(year, month, day, 0, 0);
+                Date selectedDate = calendar.getTime();
+
+                caldroidFragment.setTextColorForDate(R.color.caldroid_lighter_gray, selectedDate);
+                caldroidFragment.refreshView();
+
+                new GetRecordsForDay(day, month, year).execute();
+            }
+        }
     }
 }

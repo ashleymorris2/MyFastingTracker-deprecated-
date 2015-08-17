@@ -41,6 +41,7 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
 
         alarmTime = Calendar.getInstance();
         timeNow = Calendar.getInstance();
+
         timeNow.setTimeInMillis(System.currentTimeMillis());
 
         recurringAlarm = new RecurringAlarmSetup();
@@ -52,17 +53,41 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
         reminder = new Reminder();
         reminder = alarmsDataSource.getAlarm(alarmId);
 
+        //Action Pending Intents
+        //For the buttons on the notification
+        //Now Intent
+        Intent nowRecieve = new Intent(context, PostponeFastReciever.class);
+        nowRecieve.setAction("NOW_ACTION");
+        nowRecieve.putExtra("_id", alarmId);
+        PendingIntent pendingIntentNow = PendingIntent.getBroadcast(context, 1, nowRecieve,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //Postpone 1 Intent
+        Intent postponeOneRecieve = new Intent(context, PostponeFastReciever.class);
+        postponeOneRecieve.setAction("POSTPONE_1_ACTION");
+        postponeOneRecieve.putExtra("_id", alarmId);
+        PendingIntent pendingIntentPostponeOne = PendingIntent.getBroadcast(context, 1, postponeOneRecieve,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //Postpone 2 Intent
+        Intent postponeTwoRecieve = new Intent(context, PostponeFastReciever.class);
+        postponeTwoRecieve.setAction("POSTPONE_2_ACTION");
+        postponeTwoRecieve.putExtra("_id", alarmId);
+        PendingIntent pendingIntentPostponeTwo = PendingIntent.getBroadcast(context, 1, postponeTwoRecieve,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
         SharedPreferences preferences = context.getSharedPreferences("appData", 0);
         boolean timerStarted = preferences.getBoolean("TIMER_START", false);
-        long timeLeftInMill = preferences.getLong("END_MILLISEC", 0);/*the time left in milliseconds until
-                                                                          the fast is complete*/
-        long endMill = preferences.getLong("END_TIME", 0);// the end time in milliseconds
+        long timeLeftInMill = preferences.getLong("END_MILLISEC", 0);
+        long endMill = preferences.getLong("END_TIME", 0);
 
         //Checks if the user is currently fasting, if so the remaining time is calculated.
         if (timerStarted) {
             timeLeftInMill = endMill - System.currentTimeMillis();
 
-            //If the time left in milliseconds is less than 0 than timeleft will be set as 0
+            //If the time left in milliseconds is less than 0 than time left will be set as 0
+            //This is because time left can be a negative number, but we only want to work with zero
+            //or greater.
             timeLeft = Math.max(0, timeLeftInMill);
         }
 
@@ -97,9 +122,15 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
                     .setContentText("Time to start your " +
                             reminder.getFastLength() + " hour fast")
                     .setSmallIcon(R.drawable.ic_launcher)
-                    .setVibrate(new long[]{1000, 500, 1000})
+                    .setVibrate(new long[]{1000, 500, 1000, 500, 1000})
+                    .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setSound(sound)
+                    .addAction(R.drawable.ic_action_action_alarm, "NOW", pendingIntentNow)//Start from notification
+
+                    //Change the +1 and +5 for the user selected values at a later time
+                    .addAction(R.drawable.ic_action_action_alarm, "+ 5", pendingIntentPostponeOne)//Postpone depending on user setting
+                    .addAction(R.drawable.ic_action_action_alarm, "+ 10", pendingIntentPostponeTwo)//Postpone 2
                     .build();
 
             notification.flags = Notification.FLAG_AUTO_CANCEL;
@@ -145,7 +176,6 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
             notificationManager.notify(1, notification);
         }
 
-
         //Reschedule with a 7 day break
         alarmTime.set(Calendar.DAY_OF_YEAR, reminder.getStartTime().get(Calendar.DAY_OF_YEAR) + 7);
         alarmTime.set(Calendar.DAY_OF_WEEK, reminder.getStartTime().get(Calendar.DAY_OF_WEEK));
@@ -159,5 +189,4 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
 
         alarmsDataSource.close();
     }
-
 }

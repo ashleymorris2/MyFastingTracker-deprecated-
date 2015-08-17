@@ -41,8 +41,6 @@ public class LogDataSource {
      * @param endDate   From here the timestamp, end day, month and year can be saved.
      * @param duration  The duration that the fast was supposed to last for
      * @return long - The new row ID
-     *
-     *
      */
     public long createRecord(Calendar startDate, Calendar endDate, int duration,
                              int percentComplete, String userNote, int userRating) {
@@ -79,18 +77,24 @@ public class LogDataSource {
         values.put(LogDatabaseHelper.COLUMN_USER_NOTE, userNote);
         values.put(LogDatabaseHelper.COLUMN_USER_RATING, userRating);
 
-       return database.insert(LogDatabaseHelper.TABLE_NAME, null, values);
+        return database.insert(LogDatabaseHelper.TABLE_NAME, null, values);
     }
 
-    public void editNote(String newNote, long rowID){
+    public String getNote(long rowId) {
 
-        ContentValues values = new ContentValues();
-        values.put(LogDatabaseHelper.COLUMN_USER_NOTE, newNote);
+        String userNote = "";
+        Cursor cursor = database.rawQuery("SELECT " + LogDatabaseHelper.COLUMN_USER_NOTE + " FROM " + LogDatabaseHelper.TABLE_NAME
+                + " WHERE " + LogDatabaseHelper.COLUMN_ID + "=" + rowId, null);
+        int count = cursor.getCount();
 
-        database.update(LogDatabaseHelper.TABLE_NAME, values,
-                LogDatabaseHelper.COLUMN_ID +"="+ rowID, null);
+        if (count == 1) {
+            cursor.moveToFirst();
+            userNote = cursor.getString(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_USER_NOTE));
+        }
+
+        cursor.close();
+        return userNote;
     }
-
 
     /**
      * Gets all the records currently in the database by month and year.
@@ -109,7 +113,7 @@ public class LogDataSource {
                 + LogDatabaseHelper.COLUMN_END_YEAR + " = " + year +
                 " ORDER BY "
                 + LogDatabaseHelper.COLUMN_END_DAY + " ASC, "
-                + LogDatabaseHelper.COLUMN_FAST_DURATION+ " ASC;";
+                + LogDatabaseHelper.COLUMN_FAST_DURATION + " ASC;";
 
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -142,53 +146,69 @@ public class LogDataSource {
         return recordsList;
     }
 
+    public ArrayList<FastingRecord> getRecordsForDay(int day, int month, int year) {
 
-  public ArrayList<FastingRecord> getRecordsForDay(int day, int month, int year) {
+        //Select by month and year
+        //E.g. want all of February records but only from 2015.
+        ArrayList<FastingRecord> recordsList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + LogDatabaseHelper.TABLE_NAME + " WHERE "
+                + LogDatabaseHelper.COLUMN_END_DAY + " = " + day + " AND "
+                + LogDatabaseHelper.COLUMN_END_MONTH + " = " + month + " AND "
+                + LogDatabaseHelper.COLUMN_END_YEAR + " = " + year +
+                " ORDER BY "
+                + LogDatabaseHelper.COLUMN_PERCENT_COMPLETE + " DESC, "
+                + LogDatabaseHelper.COLUMN_FAST_DURATION + " DESC";
 
-      //Select by month and year
-      //E.g. want all of February records but only from 2015.
-      ArrayList<FastingRecord> recordsList = new ArrayList<>();
-      String selectQuery = "SELECT * FROM " + LogDatabaseHelper.TABLE_NAME + " WHERE "
-              + LogDatabaseHelper.COLUMN_END_DAY + " = " + day + " AND "
-              + LogDatabaseHelper.COLUMN_END_MONTH + " = " + month + " AND "
-              + LogDatabaseHelper.COLUMN_END_YEAR + " = " + year +
-              " ORDER BY "
-              + LogDatabaseHelper.COLUMN_PERCENT_COMPLETE+ " DESC, "
-              + LogDatabaseHelper.COLUMN_FAST_DURATION + " DESC";
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                FastingRecord fastingRecord = new FastingRecord();
 
-      Cursor cursor = database.rawQuery(selectQuery, null);
-      if (cursor.moveToFirst()) {
-          do {
-              FastingRecord fastingRecord = new FastingRecord();
+                fastingRecord.setId(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_ID)));
 
-              fastingRecord.setId(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_ID)));
+                fastingRecord.setStartDay(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_DAY)));
+                fastingRecord.setStartMonth(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_MONTH)));
+                fastingRecord.setStartYear(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_YEAR)));
 
-              fastingRecord.setStartDay(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_DAY)));
-              fastingRecord.setStartMonth(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_MONTH)));
-              fastingRecord.setStartYear(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_YEAR)));
+                fastingRecord.setEndDay(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_DAY)));
+                fastingRecord.setEndMonth(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_MONTH)));
+                fastingRecord.setEndYear(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_YEAR)));
 
-              fastingRecord.setEndDay(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_DAY)));
-              fastingRecord.setEndMonth(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_MONTH)));
-              fastingRecord.setEndYear(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_YEAR)));
+                fastingRecord.setStartTimeStamp(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_TIMESTAMP)));
+                fastingRecord.setEndTimeStamp(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_TIMESTAMP)));
+                fastingRecord.setLogTimeStamp(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_LOG_TIMESTAMP)));
 
-              fastingRecord.setStartTimeStamp(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_START_TIMESTAMP)));
-              fastingRecord.setEndTimeStamp(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_END_TIMESTAMP)));
-              fastingRecord.setLogTimeStamp(cursor.getLong(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_LOG_TIMESTAMP)));
+                fastingRecord.setFastDuration(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_FAST_DURATION)));
+                fastingRecord.setPercentageComplete(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_PERCENT_COMPLETE)));
 
-              fastingRecord.setFastDuration(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_FAST_DURATION)));
-              fastingRecord.setPercentageComplete(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_PERCENT_COMPLETE)));
-
-              fastingRecord.setUserNote(cursor.getString(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_USER_NOTE)));
-              fastingRecord.setUserRating(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_USER_RATING)));
+                fastingRecord.setUserNote(cursor.getString(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_USER_NOTE)));
+                fastingRecord.setUserRating(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_USER_RATING)));
 
 
-              recordsList.add(fastingRecord);
-          } while (cursor.moveToNext());
-      }
+                recordsList.add(fastingRecord);
+            } while (cursor.moveToNext());
+        }
 
-      cursor.close();
-      return recordsList;
-  }
+        cursor.close();
+        return recordsList;
+    }
+
+    public void editNote(String newNote, long rowID) {
+
+        ContentValues values = new ContentValues();
+        values.put(LogDatabaseHelper.COLUMN_USER_NOTE, newNote);
+
+        database.update(LogDatabaseHelper.TABLE_NAME, values,
+                LogDatabaseHelper.COLUMN_ID + "=" + rowID, null);
+    }
+
+    public void deleteRecord(long rowId){
+
+        String selection = LogDatabaseHelper.COLUMN_ID + "=?";
+        String [] whereArgs = new String [] { String.valueOf(rowId)};
+
+        database.delete(LogDatabaseHelper.TABLE_NAME, selection, whereArgs);
+    }
 
 
 }

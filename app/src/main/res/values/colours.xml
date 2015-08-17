@@ -21,8 +21,9 @@
 
     <color name="Light_Accent">#00B0FF</color>
 
-    <color name="Red_Accent">#d7ff5252</color>
+    <color name="Red_Accent">#F44336</color>
     <color name="Blue_Accent">#03A9F4</color>
+    <color name="Green_Accent">#4CAF50</color>
 
     <color name="Background_colour">#ffe0e0e0</color>
 

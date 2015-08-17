@@ -57,7 +57,10 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
 
         TextView textPercentage = (TextView) itemView.findViewById(R.id.text_percentage);
         if(currentRecord.getPercentageComplete() == 100){
-            textPercentage.setTextColor(resources.getColor(R.color.Light_Accent));
+            textPercentage.setTextColor(resources.getColor(R.color.Blue_Accent));
+        }
+        else{
+            textPercentage.setTextColor(resources.getColor(R.color.Red_Accent));
         }
         textPercentage.setText(currentRecord.getPercentageComplete() + "%");
 

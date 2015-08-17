@@ -3,6 +3,9 @@
 
     <string name="app_name">My Fasting Tracker</string>
     <string name="action_settings">Settings</string>
+    <string name="action_edit">Edit Note</string>
+    <string name="action_delete">Delete Record</string>
+
     <string name="current_time">NOW</string>
     <string name="end_time">END</string>
     <string name="title_activity_fasting_tracker">Fasting tracker</string>

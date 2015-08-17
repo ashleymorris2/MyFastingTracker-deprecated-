@@ -70,6 +70,9 @@ public class TimerStartedScreenFragment extends Fragment {
         logDataSource = new LogDataSource(getActivity());
         logDataSource.open();
 
+        SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = preferences.edit();
+
         buttonBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
         buttonBreakFast.setOnClickListener(new View.OnClickListener() {
 
@@ -83,7 +86,13 @@ public class TimerStartedScreenFragment extends Fragment {
                     //Only a completed fast is saved to the database
                     if (counter.percentCompleted == 100) {
                         long newRowId = saveRecordToDatabase();
-                        displayAlert(newRowId);
+                        editor.clear();
+
+                        //Clear this fast from shared preferences so that when the user reopens the
+                        //app the session will be preserved
+                        if(editor.commit()) {
+                            displayAlert(newRowId);
+                        }
                     } else {
                         changeFragment();
                     }
@@ -106,7 +115,11 @@ public class TimerStartedScreenFragment extends Fragment {
                                     //The fast has to be longer than an hour to be worth saving.
                                     if (differenceHours >= 1) {
                                         long newRowId = saveRecordToDatabase();
-                                        displayAlert(newRowId);
+                                        editor.clear();
+
+                                        if (editor.commit()) {
+                                            displayAlert(newRowId);
+                                        }
                                     } else {
                                         changeFragment();
                                     }
@@ -128,9 +141,6 @@ public class TimerStartedScreenFragment extends Fragment {
         });
 
         holoCircularProgressBar = (HoloCircularProgressBar) getView().findViewById(R.id.holoCircularProgressBar1);
-
-        //Shared preferences to retrieve the session data.
-        SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
 
         long startMill = preferences.getLong("START_TIME", 0);// the start time in milliseconds
         long endMill = preferences.getLong("END_TIME", 0);// the end time in milliseconds
@@ -184,7 +194,7 @@ public class TimerStartedScreenFragment extends Fragment {
 
     private long saveRecordToDatabase() {
 
-        long newRowID = 0;
+        long newRowID;
 
         //Only save to the database if the fast is longer than an hour
 
@@ -210,6 +220,7 @@ public class TimerStartedScreenFragment extends Fragment {
     }
 
     private void displayAlert(final long rowId) {
+
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View alertView = layoutInflater.inflate(R.layout.dialog_fast_message, null);
 
@@ -237,8 +248,6 @@ public class TimerStartedScreenFragment extends Fragment {
 
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
-
-
     }
 
     //Clears the shared preferences and changes the fragment.
@@ -369,6 +378,5 @@ public class TimerStartedScreenFragment extends Fragment {
             return percentCompleted;
         }
     }
-
 
 }

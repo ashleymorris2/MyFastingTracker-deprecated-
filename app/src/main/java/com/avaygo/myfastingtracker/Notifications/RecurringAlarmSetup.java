@@ -12,9 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-
 /**
  * Created by Ash on 10/09/2014.
+ * <p/>
+ * The purpose of this class is to make recurring alarms for the notifications that
+ * the app has to deal with.
+ * <p/>
+ * One method is used to set an alarm and another is used to cancel it.
  */
 public class RecurringAlarmSetup {
 
@@ -26,13 +30,11 @@ public class RecurringAlarmSetup {
 
 
     public RecurringAlarmSetup() {
-
         alarmTime = Calendar.getInstance();
         timeNow = Calendar.getInstance();
-
     }
 
-    public void createRecurringAlarm(Context context, Calendar calendar, int id){
+    public void createRecurringAlarm(Context context, Calendar calendar, int id) {
 
         Calendar alarmCalendar = Calendar.getInstance();
         alarmTime.setTimeInMillis(calendar.getTimeInMillis());
@@ -45,7 +47,7 @@ public class RecurringAlarmSetup {
         //So that the RecurringNotificationReceiver class can access the right element in the database
         intent.putExtra("_id", id);
 
-        alarmIntent = PendingIntent.getBroadcast(context, id , intent , PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmCalendar.set(Calendar.DAY_OF_YEAR, alarmTime.get(Calendar.DAY_OF_YEAR));
         alarmCalendar.set(Calendar.DAY_OF_WEEK, alarmTime.get(Calendar.DAY_OF_WEEK));
@@ -55,7 +57,7 @@ public class RecurringAlarmSetup {
 
         //If the alarm is in the past then add a specific amount of time to set it in the future.
         //In this case it is 7 days, to set it for next week
-        if (alarmCalendar.getTimeInMillis() <= timeNow.getTimeInMillis()){
+        if (alarmCalendar.getTimeInMillis() <= timeNow.getTimeInMillis()) {
             alarmCalendar.add(Calendar.DAY_OF_YEAR, 7);
         }
 
@@ -63,16 +65,14 @@ public class RecurringAlarmSetup {
                 Toast.LENGTH_LONG).show();
 
         //Sets the alarm to be exact if available, if not it will use the method from the older API
-        if(Build.VERSION.SDK_INT >= 19) {
-           alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), alarmIntent);
-           //alarmManager.setWindow(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), 1000, alarmIntent);
-        }
-        else {
+        if (Build.VERSION.SDK_INT >= 19) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), alarmIntent);
+        } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), alarmIntent);
         }
     }
 
-    public void cancelRecurringAlarm(Context context, int id){
+    public void cancelRecurringAlarm(Context context, int id) {
 
         try {
             //Re-calls and then cancels the future intent.
@@ -84,10 +84,9 @@ public class RecurringAlarmSetup {
 
             alarmManager.cancel(alarmIntent);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e("cancelAlarm error:", e.toString());
         }
     }
 
-    }
+}

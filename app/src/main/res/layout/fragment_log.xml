@@ -48,7 +48,7 @@
             android:textStyle="bold"
             android:textColor="#ffffff"
             android:textSize="16sp"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginLeft="8dp" />
     </LinearLayout>
 
     <TextView
@@ -80,7 +80,8 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/linearLayout6"
         android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        android:layout_marginTop="8dp">
 
     </com.avaygo.myfastingtracker.classes.NonScrollListView>
 
