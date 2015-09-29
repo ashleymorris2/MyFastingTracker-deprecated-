@@ -1,2 +1,2 @@
-MyFastingTracker
+Android Phone App
 ================
