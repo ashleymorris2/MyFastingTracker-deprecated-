@@ -90,7 +90,7 @@ public class TimerStartedScreenFragment extends Fragment {
 
                         //Clear this fast from shared preferences so that when the user reopens the
                         //app the session will be preserved
-                        if(editor.commit()) {
+                        if (editor.commit()) {
                             displayAlert(newRowId);
                         }
                     } else {
@@ -230,6 +230,18 @@ public class TimerStartedScreenFragment extends Fragment {
         alertBuilder.setView(alertView);
 
         final EditText userNote = (EditText) alertView.findViewById(R.id.editTextDialogUserInput);
+
+        long timeCompleted = System.currentTimeMillis() - startCalendar.getTimeInMillis();
+        TextView textDuration = (TextView) alertView.findViewById(R.id.textDuration);
+
+        if (counter.getPercentageComplete() == 100) {
+            textDuration.setText(longToHours(timeCompleted));
+        } else {
+            textDuration.setText(longToHours(timeCompleted) + longToMins(timeCompleted));
+        }
+
+        TextView textPercentage = (TextView) alertView.findViewById(R.id.textPercentage);
+        textPercentage.setText(String.valueOf(counter.getPercentageComplete()));
 
         alertBuilder.setCancelable(false)
                 .setTitle("Summary")
@@ -379,4 +391,41 @@ public class TimerStartedScreenFragment extends Fragment {
         }
     }
 
+    public String longToHours(long millisToCalculate) {
+
+        int iHours = (int) ((millisToCalculate / (1000 * 60 * 60)) % 24);
+        int totalMinutes = (int) (millisToCalculate / 1000);
+
+        String hours;
+        String length;
+
+        hours = Integer.toString(iHours);
+
+        length = hours + "h";
+
+        //Fasts less than an hour don't get recorded
+        return length;
+    }
+
+    public String longToMins(long millisToCalculate) {
+
+        int iMinutes = (int) ((millisToCalculate / (1000 * 60)) % 60);
+        int totalMinutes = (int) (millisToCalculate / 1000);
+
+        String minutes;
+        String length;
+
+        //Formatting code, add leading zero if less than 10 minutes
+        if (iMinutes < 10) {
+            minutes = ("0" + Integer.toString(iMinutes));
+        } else {
+            minutes = Integer.toString(iMinutes);
+        }
+
+
+        length = minutes + "m";
+
+
+        return length;
+    }
 }

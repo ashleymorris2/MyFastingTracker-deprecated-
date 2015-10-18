@@ -304,21 +304,38 @@ public class LogScreenFragment extends Fragment {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
 
+                LogDataSource logDataSource;
                 Calendar calendar = Calendar.getInstance();
 
                 int day, month, year;
+                boolean noteChanged, deleteRecord;
 
                 day = data.getIntExtra("DAY", calendar.get(Calendar.DAY_OF_MONTH));
                 month = data.getIntExtra("MONTH", calendar.get(Calendar.MONTH));
                 year = data.getIntExtra("YEAR", calendar.get(Calendar.YEAR));
 
+                noteChanged = data.getBooleanExtra("NOTE_CHANGED", false);
+                deleteRecord = data.getBooleanExtra("DELETE_RECORD", false);
+
                 calendar.set(year, month, day, 0, 0);
                 Date selectedDate = calendar.getTime();
 
-                caldroidFragment.setTextColorForDate(R.color.caldroid_lighter_gray, selectedDate);
-                caldroidFragment.refreshView();
-
                 new GetRecordsForDay(day, month, year).execute();
+
+                if(deleteRecord) {
+
+                    //check number of records on the deleted day if < 1 then change color for date.
+                    logDataSource = new LogDataSource(getActivity());
+                    logDataSource.open();
+
+                    if(logDataSource.getNoOfRecordsForDay(day, month, year) < 1){
+                        caldroidFragment.setTextColorForDate(R.color.caldroid_lighter_gray, selectedDate);
+                        caldroidFragment.refreshView();
+                    }
+
+                    logDataSource.close();
+                }
+
             }
         }
     }

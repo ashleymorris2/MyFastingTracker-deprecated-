@@ -9,13 +9,15 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
-        versionName             "0.3.0"
-        }
-        buildTypes {
-            release {
-
-            minifyEnabled  false
+        versionName "0.3.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
         }
     }
 }
@@ -32,9 +34,9 @@ dependencies {
 
     compile 'com.roomorama:caldroid:1.1.8'
 
-
-
-    compile ("com.doomonafireball.betterpickers:library:1.5.3") {
+    compile("com.doomonafireball.betterpickers:library:1.5.3") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
 }
+
+

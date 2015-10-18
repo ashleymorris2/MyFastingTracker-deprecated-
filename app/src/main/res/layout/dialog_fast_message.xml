@@ -30,7 +30,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="12h 45m"
-            android:id="@+id/textView11"
+            android:id="@+id/textDuration"
             android:layout_weight=".5"
             android:gravity="right"
             android:textSize="16sp" />
@@ -59,7 +59,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="90%"
-            android:id="@+id/textView9"
+            android:id="@+id/textPercentage"
             android:layout_weight=".5"
             android:gravity="right"
             android:textSize="16sp" />

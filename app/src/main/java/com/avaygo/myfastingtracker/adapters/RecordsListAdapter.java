@@ -3,10 +3,12 @@ package com.avaygo.myfastingtracker.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avaygo.myfastingtracker.R;
@@ -56,13 +58,30 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
         textDuration.setText(currentRecord.getFastDuration() + " Hours");
 
         TextView textPercentage = (TextView) itemView.findViewById(R.id.text_percentage);
+        ImageView commentImage = (ImageView) itemView.findViewById(R.id.commentImageView);
+
         if(currentRecord.getPercentageComplete() == 100){
             textPercentage.setTextColor(resources.getColor(R.color.Blue_Accent));
+            if(!currentRecord.getUserNote().isEmpty()){
+                commentImage.setImageResource(R.drawable.ic_comment_blue_24dp);
+            }
+            else{
+                commentImage.setImageResource(R.drawable.ic_comment_gray_24dp);
+            }
         }
         else{
             textPercentage.setTextColor(resources.getColor(R.color.Red_Accent));
+            if(!currentRecord.getUserNote().isEmpty()){
+                commentImage.setImageResource(R.drawable.ic_comment_red_24dp);
+            }
+            else {
+                commentImage.setImageResource(R.drawable.ic_comment_gray_24dp);
+            }
         }
         textPercentage.setText(currentRecord.getPercentageComplete() + "%");
+
+
+
 
 
         TextView textStartTime = (TextView) itemView.findViewById(R.id.text_start_time);

@@ -46,12 +46,13 @@
                     android:layout_marginBottom="16dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginRight="8dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="This fast started at 21:00 on Tuesday, 9 June and ended at 15:00 on Wednesday."
+                    android:text="This fast started at 21:00 on Tuesday, 9 June and ended at 15:00 on Wednesday. It was projected to last for 16 hours ending at 16:00 on Wednesday 10th June 2015. You achieved 14 hours and 23 minutes for 78% completion."
                     android:id="@+id/text_block_1"
                     android:layout_below="@+id/text_end_title"
                     android:layout_alignParentLeft="true"
@@ -60,32 +61,6 @@
                     android:textSize="16sp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="It was projected to last for 16 hours ending at 16:00 on Wednesday 10th June 2015."
-                    android:id="@+id/text_block_2"
-                    android:layout_below="@+id/text_block_1"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="You achieved 14 hours and 23 minutes for 78% completion."
-                    android:id="@+id/text_block_3"
-                    android:layout_below="@+id/text_block_2"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp" />
 
             </RelativeLayout>
 

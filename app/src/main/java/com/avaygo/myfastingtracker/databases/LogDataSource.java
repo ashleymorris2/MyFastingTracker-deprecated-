@@ -184,7 +184,6 @@ public class LogDataSource {
                 fastingRecord.setUserNote(cursor.getString(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_USER_NOTE)));
                 fastingRecord.setUserRating(cursor.getInt(cursor.getColumnIndex(LogDatabaseHelper.COLUMN_USER_RATING)));
 
-
                 recordsList.add(fastingRecord);
             } while (cursor.moveToNext());
         }
@@ -208,6 +207,20 @@ public class LogDataSource {
         String [] whereArgs = new String [] { String.valueOf(rowId)};
 
         database.delete(LogDatabaseHelper.TABLE_NAME, selection, whereArgs);
+    }
+
+    public int getNoOfRecordsForDay(int day, int month, int year){
+
+        String countQuery = "SELECT * FROM " + LogDatabaseHelper.TABLE_NAME + " WHERE "
+                + LogDatabaseHelper.COLUMN_END_DAY + " = " + day + " AND "
+                + LogDatabaseHelper.COLUMN_END_MONTH + " = " + month + " AND "
+                + LogDatabaseHelper.COLUMN_END_YEAR + " = " + year;
+
+        Cursor cursor = database.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+
+        return count;
     }
 
 
