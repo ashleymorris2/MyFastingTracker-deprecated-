@@ -20,21 +20,17 @@ import java.util.Calendar;
 
 public class TimerSettingScreenFragment extends Fragment {
 
-    //UI Elements:
-    private Button buttonStart;
     private TextView textSeekBarValue, textCurrentClock, textEndClock, textEndHour,
             textStartDay, textEndDay;
 
-    private CircularSeekBar seekbarTime;
-
-    //Threads and Runnables:
+    //Threads and Runnable:
     private Thread myThread = null;
     private Runnable myRunnableThread = new CountDownRunner();
 
     //Calendars and time formatting:
     private Calendar currentCalendar, futureCalendar;
     private SimpleDateFormat currentTimeFormat = new SimpleDateFormat("HH:mm");//Current time
-    private SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE");//The day for the future clock.
+    private SimpleDateFormat DayFormat  = new SimpleDateFormat("EEEE");//The day for the future clock.
     private SimpleDateFormat hourFormat = new SimpleDateFormat("HH:");//The hour for the future clock.
     private SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");//The minutes for the future clock
 
@@ -56,13 +52,16 @@ public class TimerSettingScreenFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        boolean fromReminder = getActivity().getIntent().getBooleanExtra("fromReminder", false);
+        int savedDurationValue = getActivity().getIntent().getIntExtra("duration", 1);
+
         myThread = new Thread(myRunnableThread);//New thread to run the timer separately so that the UI doesn't get held up.
         myThread.start();
 
         textEndHour = (TextView) getView().findViewById(R.id.dynamicHour);
         textSeekBarValue = (TextView) getView().findViewById(R.id.seekVal);
 
-        seekbarTime = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar2);
+        CircularSeekBar seekbarTime = (CircularSeekBar) getView().findViewById(R.id.circularSeekBar2);
         seekbarTime.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             public void onStartTrackingTouch(CircularSeekBar seekBar) {
 
@@ -72,7 +71,7 @@ public class TimerSettingScreenFragment extends Fragment {
 
                 int seekValue = progress + 1;
 
-                if(!fromUser) {
+                if (!fromUser) {
 
                     SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
                     SharedPreferences.Editor editor = preferences.edit();
@@ -114,13 +113,11 @@ public class TimerSettingScreenFragment extends Fragment {
             }
         });
 
-        boolean fromReminder = getActivity().getIntent().getBooleanExtra("fromReminder", false);
-        int savedDurationValue = getActivity().getIntent().getIntExtra("duration", 1);
-
         //START BUTTON
-        buttonStart = (Button) getView().findViewById(R.id.start_toggle);
+        Button buttonStart = (Button) getView().findViewById(R.id.start_toggle);
         buttonStart.setOnClickListener(new View.OnClickListener() {
             private View v;
+
             public void onClick(View v) {
 
                 futureCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
@@ -140,14 +137,14 @@ public class TimerSettingScreenFragment extends Fragment {
                 editor.putLong("END_TIME", futureCalendar.getTimeInMillis());
 
                 // Commit the edits
-               if( editor.commit()) {
+                if (editor.commit()) {
 
-                   //Launches a new fragment and replaces the current one.
-                   fragmentChange = getActivity().getFragmentManager().beginTransaction();
-                   fragmentChange.replace(R.id.mainContent, new TimerStartedScreenFragment());
-                   fragmentChange.commit();
+                    //Launches a new fragment and replaces the current one.
+                    fragmentChange = getActivity().getFragmentManager().beginTransaction();
+                    fragmentChange.replace(R.id.mainContent, new TimerStartedScreenFragment());
+                    fragmentChange.commit();
 
-               }
+                }
             }
         });
 
@@ -173,14 +170,12 @@ public class TimerSettingScreenFragment extends Fragment {
 
         //If this fragment has been opened via a reminder intent:
         if (fromReminder){
-
             seekbarTime.setProgress(savedDurationValue - 1);
 
             //Clear the intent after we are done with it
             getActivity().getIntent().putExtra("fromReminder", false);
         }
         else {
-
             SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = preferences.edit();
 

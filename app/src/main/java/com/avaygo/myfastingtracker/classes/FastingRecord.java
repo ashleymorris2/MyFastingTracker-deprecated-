@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 /**
  * Created by Ash on 11/03/2015.
+ *
+ * POJO to model the fasting records
  */
 public class FastingRecord {
 

@@ -37,7 +37,16 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         Bundle extras = intent.getExtras();
+
         int alarmId = extras.getInt("_id");
+        boolean timerStarted;
+        long timeLeftInMill, endMill;
+
+        SharedPreferences preferences = context.getSharedPreferences("appData", 0);
+        timerStarted = preferences.getBoolean("TIMER_START", false);
+        timeLeftInMill = preferences.getLong("END_MILLISEC", 0);
+        endMill = preferences.getLong("END_TIME", 0);
+
 
         alarmTime = Calendar.getInstance();
         timeNow = Calendar.getInstance();
@@ -55,31 +64,29 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
 
         //Action Pending Intents
         //For the buttons on the notification
+
         //Now Intent
-        Intent nowRecieve = new Intent(context, PostponeFastReciever.class);
-        nowRecieve.setAction("NOW_ACTION");
-        nowRecieve.putExtra("_id", alarmId);
-        PendingIntent pendingIntentNow = PendingIntent.getBroadcast(context, 1, nowRecieve,
+        Intent nowReceive = new Intent(context, PostponeFastReciever.class);
+        nowReceive.setAction("NOW_ACTION");
+        nowReceive.putExtra("_id", alarmId);
+        nowReceive.putExtra("END_TIME", endMill);
+        PendingIntent pendingIntentNow = PendingIntent.getBroadcast(context, 1, nowReceive,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         //Postpone 1 Intent
-        Intent postponeOneRecieve = new Intent(context, PostponeFastReciever.class);
-        postponeOneRecieve.setAction("POSTPONE_1_ACTION");
-        postponeOneRecieve.putExtra("_id", alarmId);
-        PendingIntent pendingIntentPostponeOne = PendingIntent.getBroadcast(context, 1, postponeOneRecieve,
+        Intent postponeOneReceive = new Intent(context, PostponeFastReciever.class);
+        postponeOneReceive.setAction("POSTPONE_1_ACTION");
+        postponeOneReceive.putExtra("_id", alarmId);
+        PendingIntent pendingIntentPostponeOne = PendingIntent.getBroadcast(context, 1, postponeOneReceive,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         //Postpone 2 Intent
-        Intent postponeTwoRecieve = new Intent(context, PostponeFastReciever.class);
-        postponeTwoRecieve.setAction("POSTPONE_2_ACTION");
-        postponeTwoRecieve.putExtra("_id", alarmId);
-        PendingIntent pendingIntentPostponeTwo = PendingIntent.getBroadcast(context, 1, postponeTwoRecieve,
+        Intent postponeTwoReceive = new Intent(context, PostponeFastReciever.class);
+        postponeTwoReceive.setAction("POSTPONE_2_ACTION");
+        postponeTwoReceive.putExtra("_id", alarmId);
+        PendingIntent pendingIntentPostponeTwo = PendingIntent.getBroadcast(context, 1, postponeTwoReceive,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        SharedPreferences preferences = context.getSharedPreferences("appData", 0);
-        boolean timerStarted = preferences.getBoolean("TIMER_START", false);
-        long timeLeftInMill = preferences.getLong("END_MILLISEC", 0);
-        long endMill = preferences.getLong("END_TIME", 0);
 
         //Checks if the user is currently fasting, if so the remaining time is calculated.
         if (timerStarted) {

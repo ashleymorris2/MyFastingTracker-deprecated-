@@ -8,11 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.avaygo.myfastingtracker.classes.FastingManager;
+
 import java.util.Calendar;
 
 public class PostponeFastReciever extends BroadcastReceiver {
 
     AlarmManager alarmManager;
+    FastingManager fastingManager = new FastingManager();
 
     public PostponeFastReciever() {
     }
@@ -24,11 +27,13 @@ public class PostponeFastReciever extends BroadcastReceiver {
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
+
         notificationManager.cancel(1);
 
         switch (action) {
             case "NOW_ACTION":
-                //Implement later
+                fastingManager.startFast(context, System.currentTimeMillis(),
+                        intent.getLongExtra("END_TIME", 0));
                 break;
 
             case "POSTPONE_1_ACTION":

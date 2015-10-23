@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 /**
  * Created by Ash on 10/08/2014.
- * A class to hold Day objects for the list view.
+ * A  POJO class to hold Day objects for the list view.
  */
 public class Reminder {
 

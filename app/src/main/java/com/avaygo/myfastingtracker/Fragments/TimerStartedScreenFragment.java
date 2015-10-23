@@ -27,20 +27,24 @@ import de.passy.holocircularprogressbar.HoloCircularProgressBar;
 
 
 public class TimerStartedScreenFragment extends Fragment {
+
     //CountDownTimer class, overwritten methods to save state.
     private static MyCounter counter;
-    private final String FAST_PROGRESS = "fastProgress";
+    private static final String FAST_PROGRESS = "fastProgress";
+
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
     private Button buttonBreakFast;
     private TextView textStartTime, textEndTime, textHourAndMinutes, textSeconds, txtFastDuration, textPercentComplete,
             textStartDay, textEndDay;
     private int duration;
+
     //Calendars and time formatting:
     private Calendar startCalendar, endCalendar;
     private SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
     private AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
+
     //Fragment Class:
     private FragmentTransaction fragmentChange;
     private LogDataSource logDataSource;
@@ -106,8 +110,10 @@ public class TimerStartedScreenFragment extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
 
+                                    //cancels the notification
                                     myNotification.cancelAlarm(getActivity());
 
+                                    //Works out how long the duration has been
                                     Calendar endCalendar = Calendar.getInstance();
                                     long difference = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis();
                                     long differenceHours = difference / (60 * 60 * 1000);
@@ -237,11 +243,11 @@ public class TimerStartedScreenFragment extends Fragment {
         if (counter.getPercentageComplete() == 100) {
             textDuration.setText(longToHours(timeCompleted));
         } else {
-            textDuration.setText(longToHours(timeCompleted) + longToMins(timeCompleted));
+            textDuration.setText(longToHours(timeCompleted) +" "+ longToMins(timeCompleted));
         }
 
         TextView textPercentage = (TextView) alertView.findViewById(R.id.textPercentage);
-        textPercentage.setText(String.valueOf(counter.getPercentageComplete()));
+        textPercentage.setText(String.valueOf(counter.getPercentageComplete()) + "%");
 
         alertBuilder.setCancelable(false)
                 .setTitle("Summary")
