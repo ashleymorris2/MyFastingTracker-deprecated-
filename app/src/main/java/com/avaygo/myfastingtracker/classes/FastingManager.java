@@ -18,7 +18,7 @@ public class FastingManager implements IFastingManager {
     AlarmSetup alarm = new AlarmSetup();
 
     @Override
-    public boolean startFast(Context context, long startTime, long endTime) {
+    public boolean startFast(Context context, long startTime, long endTime, int duration) {
 
         Calendar alarmTime = Calendar.getInstance();
         alarmTime.setTimeInMillis(endTime);
@@ -33,6 +33,7 @@ public class FastingManager implements IFastingManager {
         editor.putBoolean("IS_FASTING", true);
         editor.putLong("START_TIME", System.currentTimeMillis());
         editor.putLong("END_TIME", endTime);
+        editor.putInt("END_HOUR", duration);
 
         return editor.commit();
     }

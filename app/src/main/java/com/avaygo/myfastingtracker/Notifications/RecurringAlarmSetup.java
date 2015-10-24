@@ -42,7 +42,7 @@ public class RecurringAlarmSetup {
         timeNow.setTimeInMillis(System.currentTimeMillis());
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, RecurringNotificationReciever.class);
+        Intent intent = new Intent(context, RecurringNotificationReceiver.class);
 
         //So that the RecurringNotificationReceiver class can access the right element in the database
         intent.putExtra("_id", id);
@@ -76,7 +76,7 @@ public class RecurringAlarmSetup {
 
         try {
             //Re-calls and then cancels the future intent.
-            Intent intent = new Intent(context, RecurringNotificationReciever.class);
+            Intent intent = new Intent(context, RecurringNotificationReceiver.class);
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             PendingIntent alarmIntent = PendingIntent.getBroadcast(context, id, intent,

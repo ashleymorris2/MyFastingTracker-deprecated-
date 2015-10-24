@@ -33,7 +33,7 @@ public class PostponeFastReciever extends BroadcastReceiver {
         switch (action) {
             case "NOW_ACTION":
                 fastingManager.startFast(context, System.currentTimeMillis(),
-                        intent.getLongExtra("END_TIME", 0));
+                        intent.getLongExtra("END_TIME", 0), intent.getIntExtra("END_HOUR", 1));
                 break;
 
             case "POSTPONE_1_ACTION":
@@ -51,7 +51,7 @@ public class PostponeFastReciever extends BroadcastReceiver {
     private void postponeFast(Context context, int duration, int id) {
 
         PendingIntent pendingIntent;
-        Intent intent = new Intent(context, RecurringNotificationReciever.class);
+        Intent intent = new Intent(context, RecurringNotificationReceiver.class);
         intent.putExtra("_id", id);
 
         Calendar calendar = Calendar.getInstance();

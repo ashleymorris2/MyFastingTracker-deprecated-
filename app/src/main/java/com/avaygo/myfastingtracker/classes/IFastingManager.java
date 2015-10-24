@@ -7,5 +7,5 @@ import android.content.Context;
  */
 public interface IFastingManager {
 
-    boolean startFast(Context context, long startTime, long endTime);
+    boolean startFast(Context context, long startTime, long endTime, int duration);
 }

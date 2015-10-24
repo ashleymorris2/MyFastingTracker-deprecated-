@@ -22,45 +22,35 @@ import java.util.Calendar;
 /**
  * Created by Ash on 10/09/2014.
  */
-public class RecurringNotificationReciever extends BroadcastReceiver {
+public class RecurringNotificationReceiver extends BroadcastReceiver {
 
-    private RecurringAlarmSetup recurringAlarm;
-    private AlarmsDataSource alarmsDataSource;
-    private Reminder reminder;
     private Calendar alarmTime, timeNow;
     private long timeLeft;
 
-    public RecurringNotificationReciever() {
+    public RecurringNotificationReceiver() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         Bundle extras = intent.getExtras();
+        SharedPreferences preferences = context.getSharedPreferences("appData", 0);
 
         int alarmId = extras.getInt("_id");
-        boolean timerStarted;
-        long timeLeftInMill, endMill;
-
-        SharedPreferences preferences = context.getSharedPreferences("appData", 0);
-        timerStarted = preferences.getBoolean("TIMER_START", false);
-        timeLeftInMill = preferences.getLong("END_MILLISEC", 0);
-        endMill = preferences.getLong("END_TIME", 0);
-
+        boolean timerStarted = preferences.getBoolean("TIMER_START", false);
+        long timeLeftInMill = preferences.getLong("END_MILLISEC", 0);
+        long endMill = preferences.getLong("END_TIME", 0);
 
         alarmTime = Calendar.getInstance();
         timeNow = Calendar.getInstance();
 
         timeNow.setTimeInMillis(System.currentTimeMillis());
 
-        recurringAlarm = new RecurringAlarmSetup();
-        alarmsDataSource = new AlarmsDataSource(context);
+        RecurringAlarmSetup recurringAlarm = new RecurringAlarmSetup();
+        AlarmsDataSource alarmsDataSource = new AlarmsDataSource(context);
 
         //Recalls the saved alarm from the database with the supplied ID, in order to set the alarms
         alarmsDataSource.open();
-
-        reminder = new Reminder();
-        reminder = alarmsDataSource.getAlarm(alarmId);
+        Reminder reminder = alarmsDataSource.getAlarm(alarmId);
 
         //Action Pending Intents
         //For the buttons on the notification
@@ -69,7 +59,8 @@ public class RecurringNotificationReciever extends BroadcastReceiver {
         Intent nowReceive = new Intent(context, PostponeFastReciever.class);
         nowReceive.setAction("NOW_ACTION");
         nowReceive.putExtra("_id", alarmId);
-        nowReceive.putExtra("END_TIME", endMill);
+        nowReceive.putExtra("END_TIME", reminder.getEndTime().getTimeInMillis());
+        nowReceive.putExtra("END_HOUR", reminder.getFastLength());
         PendingIntent pendingIntentNow = PendingIntent.getBroadcast(context, 1, nowReceive,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 

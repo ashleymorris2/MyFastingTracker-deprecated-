@@ -25,18 +25,18 @@ import java.util.Locale;
 
 import de.passy.holocircularprogressbar.HoloCircularProgressBar;
 
-
 public class TimerStartedScreenFragment extends Fragment {
 
-    //CountDownTimer class, overwritten methods to save state.
     private static MyCounter counter;
     private static final String FAST_PROGRESS = "fastProgress";
 
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
-    private Button buttonBreakFast;
-    private TextView textStartTime, textEndTime, textHourAndMinutes, textSeconds, txtFastDuration, textPercentComplete,
-            textStartDay, textEndDay;
+    private TextView textHourAndMinutes;
+    private TextView textSeconds;
+    private TextView textPercentComplete;
+    private TextView textStartDay;
+    private TextView textEndDay;
     private int duration;
 
     //Calendars and time formatting:
@@ -45,8 +45,6 @@ public class TimerStartedScreenFragment extends Fragment {
     private SimpleDateFormat DayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
     private AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
 
-    //Fragment Class:
-    private FragmentTransaction fragmentChange;
     private LogDataSource logDataSource;
 
     public TimerStartedScreenFragment() {
@@ -62,11 +60,13 @@ public class TimerStartedScreenFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //Find View Elements
-        textStartTime = (TextView) getView().findViewById(R.id.start_time);
-        textEndTime = (TextView) getView().findViewById(R.id.end_time);
+
+        TextView textFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
+        TextView textEndTime = (TextView) getView().findViewById(R.id.end_time);
+
         textHourAndMinutes = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
         textSeconds = (TextView) getView().findViewById(R.id.txt_time_seconds);
-        txtFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
+
         textPercentComplete = (TextView) getView().findViewById(R.id.txt_completed);
         textStartDay = (TextView) getView().findViewById(R.id.txt_start_day);
         textEndDay = (TextView) getView().findViewById(R.id.txt_end_day);
@@ -77,10 +77,8 @@ public class TimerStartedScreenFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = preferences.edit();
 
-        buttonBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
+        Button buttonBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
         buttonBreakFast.setOnClickListener(new View.OnClickListener() {
-
-            private View v;
 
             public void onClick(View view) {
                 //Gives the user an alert dialog if they are over 1 percent into their fast.
@@ -155,7 +153,7 @@ public class TimerStartedScreenFragment extends Fragment {
         boolean timerStarted = preferences.getBoolean("TIMER_START", false); //if the timer has started or not
 
         //Calculates the difference between the current time and the end time
-        if (timerStarted == true) {
+        if (timerStarted) {
             timeLeftInMill = endMill - System.currentTimeMillis();
         }
 
@@ -167,7 +165,9 @@ public class TimerStartedScreenFragment extends Fragment {
         startCalendar.setTimeInMillis(startMill);
         endCalendar.setTimeInMillis(endMill);
 
+        TextView textStartTime = (TextView) getView().findViewById(R.id.start_time);
         textStartTime.setText(TimeFormat.format(startCalendar.getTime()));
+
         textStartDay.setText("Today");
 
         //If end day is tomorrow then show tomorrows date for the user, if not then it isn't necessary.
@@ -186,9 +186,9 @@ public class TimerStartedScreenFragment extends Fragment {
         }
 
         if (duration == 1) {
-            txtFastDuration.setText(duration + " Hour");
+            textFastDuration.setText(duration + " Hour");
         } else {
-            txtFastDuration.setText(duration + " Hours");
+            textFastDuration.setText(duration + " Hours");
         }
     }
 
@@ -203,8 +203,8 @@ public class TimerStartedScreenFragment extends Fragment {
         long newRowID;
 
         //Only save to the database if the fast is longer than an hour
-
         if (counter.getPercentageComplete() == 100) {
+
             //If the fast is at 100% only save the start time plus the duration.
             //This is so that the saved time is never beyond 100% of the duration.
             endCalendar.setTimeInMillis(startCalendar.getTimeInMillis());
@@ -212,10 +212,10 @@ public class TimerStartedScreenFragment extends Fragment {
 
             newRowID = logDataSource.createRecord(startCalendar, endCalendar, duration,
                     counter.getPercentageComplete(), "", 5);
-        } else {
+        }
+        else {
             //Else save the current time.
             endCalendar.setTimeInMillis(System.currentTimeMillis());
-
             newRowID = logDataSource.createRecord(startCalendar, endCalendar, duration,
                     counter.getPercentageComplete(), "", 5);
         }
@@ -226,7 +226,6 @@ public class TimerStartedScreenFragment extends Fragment {
     }
 
     private void displayAlert(final long rowId) {
-
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View alertView = layoutInflater.inflate(R.layout.dialog_fast_message, null);
 
@@ -282,7 +281,7 @@ public class TimerStartedScreenFragment extends Fragment {
             //Launches a new fragment and replaces the current one.
             //Toast.makeText(getActivity(), "Fast cancelled", Toast.LENGTH_SHORT).show();
 
-            fragmentChange = getActivity().getFragmentManager().beginTransaction();
+            FragmentTransaction fragmentChange = getActivity().getFragmentManager().beginTransaction();
             fragmentChange.replace(R.id.mainContent, new TimerSettingScreenFragment());
             fragmentChange.commit();
         }
@@ -321,7 +320,7 @@ public class TimerStartedScreenFragment extends Fragment {
 
             endSeconds = preferences.getInt("END_HOUR", 0) * 3600; // 3600 for seconds, 60 for minutes.
             editor.putBoolean("TIMER_START", true);
-            editor.commit();
+            editor.apply();
 
             super.start();
         }

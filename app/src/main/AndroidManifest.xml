@@ -28,7 +28,7 @@
             android:exported="true" />
 
         <receiver
-            android:name=".notifications.RecurringNotificationReciever"
+            android:name=".notifications.RecurringNotificationReceiver"
             android:enabled="true" />
         <receiver
             android:name=".notifications.BootReceiver"
