@@ -90,7 +90,7 @@ public class ReminderListScreenFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("userPref", 0); // 0 - for private mode
         listEnabled = preferences.getBoolean("listEnabled", false);
 
-        if(listEnabled == false){
+        if(!listEnabled){
             listView.setVisibility(View.INVISIBLE);
             textRemindersDisabled.setVisibility(View.VISIBLE);
         }

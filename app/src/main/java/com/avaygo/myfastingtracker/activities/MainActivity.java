@@ -22,6 +22,7 @@ import com.avaygo.myfastingtracker.adapters.ObjectDrawerItem;
 import com.avaygo.myfastingtracker.fragments.HomeScreenFragment;
 import com.avaygo.myfastingtracker.fragments.LogScreenFragment;
 import com.avaygo.myfastingtracker.fragments.ReminderListScreenFragment;
+import com.avaygo.myfastingtracker.fragments.StatsScreenFragment;
 import com.avaygo.myfastingtracker.fragments.TimerSettingScreenFragment;
 import com.avaygo.myfastingtracker.fragments.TimerStartedScreenFragment;
 
@@ -51,7 +52,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_tracker);
 
-        ObjectDrawerItem [] drawerItem = new ObjectDrawerItem[6];
+        ObjectDrawerItem [] drawerItem = new ObjectDrawerItem[7];
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.container);
@@ -61,7 +62,7 @@ public class MainActivity extends FragmentActivity {
         menu = getResources().getStringArray(R.array.array_menu);
 
         //Passes the array of strings to the drawerItem class
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 7; i++){
             drawerItem[i] = new ObjectDrawerItem();
             drawerItem[i].setName(menu[i]);
         }
@@ -70,8 +71,9 @@ public class MainActivity extends FragmentActivity {
         drawerItem[1].setIcon(R.drawable.ic_alarm);//
         drawerItem[2].setIcon(R.drawable.ic_notifications);//
         drawerItem[3].setIcon(R.drawable.ic_action_today);//Log
-        drawerItem[4].setIcon(R.drawable.ic_action_settings);//Settings
+        drawerItem[4].setIcon(R.drawable.ic_action_today);//Stats
         drawerItem[5].setIcon(R.drawable.ic_action_settings);//Settings
+        drawerItem[6].setIcon(R.drawable.ic_action_settings);//Settings
 
 
         // set a custom shadow that overlays the main content when the drawer opens
@@ -168,7 +170,7 @@ public class MainActivity extends FragmentActivity {
                         fragment = new HomeScreenFragment();
                         break;
                     case 1:
-                        if (fastingState == false) {
+                        if (!fastingState) {
                             fragment = new TimerSettingScreenFragment();
 
                             if (fromReminder = true) {
@@ -184,6 +186,9 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case 3:
                         fragment = new LogScreenFragment();
+                        break;
+                    case 4:
+                        fragment = new StatsScreenFragment();
                         break;
                     default:
                         break;

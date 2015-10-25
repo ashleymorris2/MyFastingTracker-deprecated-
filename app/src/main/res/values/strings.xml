@@ -36,8 +36,16 @@
         <item>Timer</item>
         <item>Reminders</item>
         <item>Log</item>
+        <item>Stats</item>
         <item>Settings</item>
         <item>About</item>
+    </string-array>
+
+    <string-array name="array_period">
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
+        <item>All</item>
     </string-array>
 
     <!-- reminder setting activity strings -->
