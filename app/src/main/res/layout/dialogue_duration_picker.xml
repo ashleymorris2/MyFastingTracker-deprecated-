@@ -117,11 +117,9 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="@color/line_background"
+                android:background="@color/Alizarin"
                 android:id="@+id/view"
-                android:layout_below="@+id/circularSeekBar2"
-                android:layout_alignLeft="@+id/circularSeekBar2"
-                android:layout_alignStart="@+id/circularSeekBar2" />
+                 />
 
             <Button
                 android:layout_width="fill_parent"
@@ -129,7 +127,7 @@
                 android:text="Done"
                 android:id="@+id/button_done"
                 android:background="#f2f2f2"
-                android:textColor="@color/done_text_color"
+                android:textColor="@color/Belize_Hole"
                 android:layout_below="@+id/view"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"

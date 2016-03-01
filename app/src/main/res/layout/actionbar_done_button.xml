@@ -17,4 +17,5 @@
         android:paddingRight="20dp"
         android:text="DONE" />
 
+    <!--android:drawableLeft="@drawable/ic_check_normal_dark"-->
 </FrameLayout>

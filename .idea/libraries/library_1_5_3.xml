@@ -5,6 +5,8 @@
       <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.doomonafireball.betterpickers/library/1.5.3/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.doomonafireball.betterpickers/library/1.5.3/8ee6811813de2a0127fe6c53be029fd383cb0e86/library-1.5.3-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
