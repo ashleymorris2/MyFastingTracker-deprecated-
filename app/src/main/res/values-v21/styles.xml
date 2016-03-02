@@ -66,6 +66,8 @@
         <item name="pointer_alpha_ontouch">255</item>
     </style>
 
+
+
     <!--==============================================================================
       Light Application Style
    ===============================================================================-->
@@ -135,6 +137,10 @@
 
         <item name="pointer_halo_color_ontouch">#b334495e</item>
         <item name="pointer_alpha_ontouch">255</item>
+    </style>
+
+    <style name="SomeButtonStyle" parent="@android:style/Widget.Button">
+        <item name="colorButtonNormal">@color/Alizarin</item>
     </style>
 
 
