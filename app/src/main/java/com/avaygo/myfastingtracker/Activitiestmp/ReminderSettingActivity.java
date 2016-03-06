@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.Activities;
+package com.avaygo.myfastingtracker.Activitiestmp;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import com.avaygo.myfastingtracker.Days;
 import com.avaygo.myfastingtracker.R;
-import com.avaygo.myfastingtracker.databases.AlarmsDataSource;
-import com.avaygo.myfastingtracker.notifications.RecurringAlarmSetup;
+import com.avaygo.myfastingtracker.Databases.AlarmsDataSource;
+import com.avaygo.myfastingtracker.Notifications.RecurringAlarmSetup;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
 
 import java.text.SimpleDateFormat;
