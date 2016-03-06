@@ -19,12 +19,12 @@ import android.view.MenuItem;
 
 import com.avaygo.myfastingtracker.R;
 
-import com.avaygo.myfastingtracker.fragments.HomeScreenFragment;
-import com.avaygo.myfastingtracker.fragments.LogScreenFragment;
-import com.avaygo.myfastingtracker.fragments.ReminderListScreenFragment;
-import com.avaygo.myfastingtracker.fragments.StatsScreenFragment;
-import com.avaygo.myfastingtracker.fragments.TimerSettingScreenFragment;
-import com.avaygo.myfastingtracker.fragments.TimerStartedScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.HomeScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.LogScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.ReminderListScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.StatsScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.TimerSettingScreenFragment;
+import com.avaygo.myfastingtracker.Fragments.TimerStartedScreenFragment;
 
 
 public class MainActivity extends AppCompatActivity{
