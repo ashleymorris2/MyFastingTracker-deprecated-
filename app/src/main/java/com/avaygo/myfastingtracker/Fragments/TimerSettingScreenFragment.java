@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.fragments;
+package com.avaygo.myfastingtracker.Fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;

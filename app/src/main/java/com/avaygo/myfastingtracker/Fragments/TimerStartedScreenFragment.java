@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.fragments;
+package com.avaygo.myfastingtracker.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,12 +32,13 @@ public class TimerStartedScreenFragment extends Fragment {
 
     //UI Elements:
     private HoloCircularProgressBar holoCircularProgressBar;
-    private TextView textHourAndMinutes;
-    private TextView textSeconds;
-    private TextView textPercentComplete;
-    private TextView textStartDay;
-    private TextView textEndDay;
+
+    private TextView textHourAndMinutes, textSeconds, textPercentComplete,
+            textStartDay, textEndDay;
+
     private int duration;
+
+    private Button extendFastButton, buttonBreakFast;
 
     //Calendars and time formatting:
     private Calendar startCalendar, endCalendar;
@@ -46,6 +47,7 @@ public class TimerStartedScreenFragment extends Fragment {
     private AlarmSetup myNotification = new AlarmSetup();//Used to set the notification reminder.
 
     private LogDataSource logDataSource;
+
 
     public TimerStartedScreenFragment() {
         // Required empty public constructor
@@ -60,9 +62,10 @@ public class TimerStartedScreenFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //Find View Elements
-
         TextView textFastDuration = (TextView) getView().findViewById(R.id.txt_FastingDuration);
         TextView textEndTime = (TextView) getView().findViewById(R.id.end_time);
+
+        extendFastButton = (Button) getActivity().findViewById(R.id.extend_button);
 
         textHourAndMinutes = (TextView) getView().findViewById(R.id.txt_time_HoursMins);
         textSeconds = (TextView) getView().findViewById(R.id.txt_time_seconds);
@@ -77,7 +80,7 @@ public class TimerStartedScreenFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("appData", 0);
         final SharedPreferences.Editor editor = preferences.edit();
 
-        Button buttonBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
+        buttonBreakFast = (Button) getView().findViewById(R.id.breakFast_button);
         buttonBreakFast.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -150,8 +153,11 @@ public class TimerStartedScreenFragment extends Fragment {
             }
         });
 
-        holoCircularProgressBar = (HoloCircularProgressBar)
-                getView().findViewById(R.id.holoCircularProgressBar1);
+
+
+
+
+        holoCircularProgressBar = (HoloCircularProgressBar)getView().findViewById(R.id.holoCircularProgressBar1);
 
         long startMill = preferences.getLong("START_TIME", 0);//The start time in milliseconds
         long endMill = preferences.getLong("END_TIME", 0);//The end time in milliseconds
@@ -166,10 +172,15 @@ public class TimerStartedScreenFragment extends Fragment {
 
         counter = new MyCounter(timeLeftInMill, 1000);//
 
+        if(counter.percentCompleted == 100){
+            extendFastButton.setVisibility(View.VISIBLE);
+        }
+
         //Starts and sets the clocks.
         startCalendar = Calendar.getInstance();
-        endCalendar = Calendar.getInstance();
         startCalendar.setTimeInMillis(startMill);
+
+        endCalendar = Calendar.getInstance();
         endCalendar.setTimeInMillis(endMill);
 
         TextView textStartTime = (TextView) getView().findViewById(R.id.start_time);
@@ -179,23 +190,17 @@ public class TimerStartedScreenFragment extends Fragment {
 
         //If end day is tomorrow then show tomorrows date for the user, if not then it isn't necessary.
         if (endCalendar.get(Calendar.DATE) != startCalendar.get(Calendar.DATE)) {
-
             textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
             textEndDay.setText("Tomorrow");//If two aren't equal then end must be tomorrow.
-
         } else {
-
             textEndTime.setText(TimeFormat.format(endCalendar.getTime()));
             textEndDay.setText("Today");
-
         }
 
         //Recover the instance from the saved state, only if there is something to recover.
         if (savedInstanceState != null) {
-
             float progress = savedInstanceState.getFloat(FAST_PROGRESS);
             holoCircularProgressBar.setProgress(progress);
-
         }
 
         if (duration == 1) {
@@ -398,6 +403,8 @@ public class TimerStartedScreenFragment extends Fragment {
 
             textHourAndMinutes.setText("00:00");
             textSeconds.setText(":00");
+
+            extendFastButton.setVisibility(View.VISIBLE);
         }
 
         public int getElapsedTime() {

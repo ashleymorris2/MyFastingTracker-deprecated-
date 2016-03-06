@@ -1,4 +1,4 @@
-package com.avaygo.myfastingtracker.fragments;
+package com.avaygo.myfastingtracker.Fragments;
 
 
 import android.app.Activity;
@@ -170,6 +170,7 @@ public class ReminderListScreenFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         switchMenuItem = menu.findItem(R.id.myswitch);
+
         switchMenuItem.setVisible(true);
 
         //Gets the switch to work with from the action bar menu, we can now specify the onClickListener
@@ -180,7 +181,7 @@ public class ReminderListScreenFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                boolean isChecked = ((Switch)view).isChecked();
+                boolean isChecked = ((Switch) view).isChecked();
 
                 SharedPreferences preferences = getActivity().getSharedPreferences("userPref", 0); // 0 - for private mode
                 SharedPreferences.Editor editor = preferences.edit();
@@ -191,16 +192,16 @@ public class ReminderListScreenFragment extends Fragment {
                 recurringAlarm = new RecurringAlarmSetup();
 
                 //ALARMS ON
-                if(isChecked){
+                if (isChecked) {
                     textRemindersDisabled.setVisibility(View.INVISIBLE);
                     listView.setVisibility(View.VISIBLE);
 
                     //Cancel all the set alarms.
-                    for(int i = 0; i <7; i++){
-                        Reminder mReminder =  reminderCardsList.get(i);
+                    for (int i = 0; i < 7; i++) {
+                        Reminder mReminder = reminderCardsList.get(i);
 
                         //If the alarm is enabled then reset  it...
-                        if(mReminder.isEnabled()){
+                        if (mReminder.isEnabled()) {
                             recurringAlarm.createRecurringAlarm(getActivity(), mReminder.getStartTime(),
                                     mReminder.get_id());
                         }
@@ -215,6 +216,7 @@ public class ReminderListScreenFragment extends Fragment {
                 }
             }
         });
+
     }
 
     //Put into a separate thread because it was slightly hanging the UI.
