@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity{
                 selectItem(savedFragment);
             }
             else {
-             screenNumber =  selectItem(R.id.home);//Change for 0 when home has been implemented.
+             screenNumber =  selectItem(R.id.timer);//Change for home when it has been implemented.
             }
         }
         else{

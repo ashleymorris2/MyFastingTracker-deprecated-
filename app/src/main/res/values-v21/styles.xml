@@ -10,10 +10,10 @@
    ===============================================================================-->
 
 
-    <style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.StatusBar.Title">
-        <item name="android:textColor">@color/Clouds</item>
-        <item name="android:textSize">20sp</item>
-    </style>
+    <!--<style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.StatusBar.Title">-->
+        <!--<item name="android:textColor">@color/Clouds</item>-->
+        <!--<item name="android:textSize">20sp</item>-->
+    <!--</style>-->
 
     <style name="title_font_light">
         <item name="android:textColor">#ff424242</item>
@@ -43,11 +43,11 @@
         <item name="android:background">#ffe0e0e0</item>
     </style>
 
-    <style name="divider_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/Peter_River</item>
-    </style>
+    <!--<style name="divider_style">-->
+        <!--<item name="android:layout_width">match_parent</item>-->
+        <!--<item name="android:layout_height">1dp</item>-->
+        <!--<item name="android:background">@color/Peter_River</item>-->
+    <!--</style>-->
 
     <style name="CircularProgressBar_light">
         <item name="android:layout_height">wrap_content</item>
@@ -81,6 +81,11 @@
         <item name="android:colorAccent">@color/red</item>
         <item name="colorButtonNormal">@color/red</item>
         <item name="android:colorButtonNormal">@color/red</item>
+    </style>
+
+    <style name="StartButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#00c853</item>
+        <item name="android:textColorPrimary">#fff</item>
     </style>
 
 

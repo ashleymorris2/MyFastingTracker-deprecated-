@@ -12,10 +12,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.light">
-        
+
         <provider
-            android:authorities="com.avaygo.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.avaygo.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -23,20 +23,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        
-        <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <service
             android:name=".notifications.TimerNotificationService"
             android:enabled="true"
             android:exported="true" />
+
         <receiver
             android:name=".notifications.RecurringNotificationReceiver"
             android:enabled="true" />
@@ -48,6 +39,20 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".notifications.PostponeFastReciever"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activities.ReminderSettingActivity"
@@ -61,9 +66,5 @@
             android:label="@string/title_activity_fast_details"
             android:parentActivityName=".activities.MainActivity"></activity>
 
-        <receiver
-            android:name=".notifications.PostponeFastReciever"
-            android:enabled="true"
-            android:exported="true"></receiver>
     </application>
 </manifest>

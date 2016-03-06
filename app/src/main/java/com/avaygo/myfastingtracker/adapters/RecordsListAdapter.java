@@ -91,7 +91,6 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
             textStartTime.setText(hourMinuteFormat.format(currentRecord.getStartTimeStamp().getTime()));
         }
 
-
         TextView textEndTime = (TextView) itemView.findViewById(R.id.text_end_time);
         textEndTime.setText(hourMinuteFormat.format(currentRecord.getLogTimeStamp().getTime()));
 

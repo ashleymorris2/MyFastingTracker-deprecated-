@@ -3,82 +3,16 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat"></style>
 
-        <!-- Customize your theme here. -->
-     <style name="CircularProgressBar">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="stroke_width">5dp</item>
-        <item name="progress" format="float">0.1</item>
-        <item name="progress_color">#ffff4444</item>
-        <item name="progress_background_color">@android:color/background_light</item>
-        <item name="marker_visible">true</item>
-        <item name="thumb_visible">true</item>
-    </style>
-
-
-    <!--==============================================================================
-        Default Application Style
-    ===============================================================================-->
-
-    <!--<style name="title_font_default">-->
-        <!--<item name="android:textColor">@color/Clouds</item>-->
-    <!--</style>-->
-
-    <!--<style name="font_default" parent="@android:style/TextAppearance.Medium">-->
-        <!--<item name="android:textColor">@color/Clouds</item>-->
-        <!--<item name="android:textSize">14sp</item>-->
-    <!--</style>-->
-
-    <!--<style name="timer_font_default" parent="@android:style/TextAppearance.Medium">-->
-        <!--<item name="android:textColor">@color/Clouds</item>-->
-    <!--</style>-->
-
-    <!--<style name="button_font_default" parent="@android:style/TextAppearance.Medium">-->
-        <!--<item name="android:textColor">@color/Clouds</item>-->
-        <!--<item name="android:textAllCaps">true</item>-->
-    <!--</style>-->
-
-    <style name="background_default">
-        <item name="android:background">@color/Wet_Asphalt</item>
-    </style>
-
-    <style name="CircularProgressBar_default">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="stroke_width">5dp</item>
-        <item name="progress" format="float">0.1</item>
-        <item name="progress_color">@color/Alizarin</item>
-        <item name="progress_background_color">@color/Silver</item>
-        <item name="marker_visible">true</item>
-        <item name="thumb_visible">true</item>
-    </style>
-
-    <style name="CircularSeekBar_default">
-        <item name="circle_color">#bdc3c7</item>
-        <item name="circle_progress_color">#c0392b</item>
-
-        <item name="pointer_color">#b3c0392b</item>
-        <item name="pointer_halo_color">#e74c3c</item>
-
-        <item name="pointer_halo_color_ontouch">#b3e74c3c</item>
-        <item name="pointer_alpha_ontouch">255</item>
-    </style>
 
     <!--==============================================================================
       Light Application Style
    ===============================================================================-->
 
 
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/Peter_River</item>
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
-
-    </style>
-
-    <style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.StatusBar.Title">
-        <item name="android:textColor">@color/Clouds</item>
-        <item name="android:textSize">20sp</item>
-    </style>
+    <!--<style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.StatusBar.Title">-->
+        <!--<item name="android:textColor">@color/Clouds</item>-->
+        <!--<item name="android:textSize">20sp</item>-->
+    <!--</style>-->
 
     <style name="title_font_light">
         <item name="android:textColor">#ff424242</item>
@@ -108,11 +42,11 @@
         <item name="android:background">#ffe0e0e0</item>
     </style>
 
-    <style name="divider_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/Peter_River</item>
-    </style>
+    <!--<style name="divider_style">-->
+        <!--<item name="android:layout_width">match_parent</item>-->
+        <!--<item name="android:layout_height">1dp</item>-->
+        <!--<item name="android:background">@color/Peter_River</item>-->
+    <!--</style>-->
 
     <style name="CircularProgressBar_light">
         <item name="android:layout_height">wrap_content</item>
@@ -136,15 +70,17 @@
         <item name="pointer_alpha_ontouch">255</item>
     </style>
 
-    <style name="Button" parent="Base.Widget.AppCompat.Button.Colored">
-        <item name="colorAccent">@color/Alizarin</item>
-
+    <style name="StartButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#43a047</item>
+        <item name="android:textColorPrimary">#fff</item>
     </style>
 
-    <style name="RedButton" parent="Widget.AppCompat.Button.Colored">
-
-
+    <style name="StopButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#dd2c00</item>
+        <item name="android:textColorPrimary">#fff</item>
     </style>
+
+
 
 
 

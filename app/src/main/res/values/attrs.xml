@@ -48,10 +48,8 @@
     <attr name="textTimer" format="reference" />
 
 
-
     <attr name="textRegular" format="reference" />
     <attr name="textColoured" format="reference"/>
     <attr name="textButton" format="reference" />
-
 
 </resources>

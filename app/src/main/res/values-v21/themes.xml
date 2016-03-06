@@ -2,16 +2,17 @@
 <resources>
 
     <style name="Theme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowContentOverlay">@drawable/ab_transparent_example</item>
     </style>
 
     <style name="Theme.light">
-
 
         <item name="colorPrimary">#3F51B5</item><!-- Light Indigo -->
         <item name="colorPrimaryDark">#3949AB</item><!-- Dark Indigo -->
         <item name="colorAccent">#00B0FF</item> <!-- Blue -->
 
+        <item name="colorButtonNormal">#00B0FF</item>
+
+        <!--<item name="android:colorAccent">@color/Light_Accent</item>-->
 
         <item name="textTitle">@style/title_font_light</item>
         <item name="textTimer">@style/timer_font_light</item>
@@ -19,23 +20,15 @@
         <item name="textColoured">@style/font_light_coloured</item>
 
 
-
-
-
-        <item name="dividerStyle">@style/divider_style</item>
         <item name="textButton">@style/button_font_light</item>
         <item name="pageBackground">@style/background_light</item>
         <item name="circleProgress">@style/CircularProgressBar_light</item>
         <item name="circleSeek">@style/CircularSeekBar_light</item>
 
-
-        <item name="android:colorAccent">@color/Light_Accent</item>
         <item name="android:textColorPrimary">@color/Clouds</item>
 
-        <item name="android:colorPrimary">@color/Peter_River</item>
-        <item name="android:colorPrimaryDark">@color/Belize_Hole</item>
-
         <item name="android:statusBarColor">@android:color/transparent</item>
+
     </style>
 
 

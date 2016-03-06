@@ -2,7 +2,6 @@
 <resources>
 
     <style name="Theme" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="android:windowContentOverlay">@drawable/ab_transparent_example</item>
     </style>
 
     <style name="Theme.light">
@@ -11,19 +10,18 @@
         <item name="colorPrimaryDark">#3949AB</item><!-- Dark Indigo -->
         <item name="colorAccent">#00B0FF</item> <!-- Blue -->
 
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+
         <item name="textTitle">@style/title_font_light</item>
         <item name="textTimer">@style/timer_font_light</item>
         <item name="textRegular">@style/font_light</item>
 
         <item name="textColoured">@style/font_light_coloured</item>
-        <item name="dividerStyle">@style/divider_style</item>
+
 
         <item name="textButton">@style/button_font_light</item>
         <item name="pageBackground">@style/background_light</item>
         <item name="circleProgress">@style/CircularProgressBar_light</item>
         <item name="circleSeek">@style/CircularSeekBar_light</item>
-
 
     </style>
 

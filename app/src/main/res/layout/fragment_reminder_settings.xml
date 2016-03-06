@@ -4,7 +4,7 @@
     android:layout_marginTop="?attr/actionBarSize"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_relative"
-    >
+    style="?pageBackground">
 
     <RelativeLayout
         android:layout_width="wrap_content"
