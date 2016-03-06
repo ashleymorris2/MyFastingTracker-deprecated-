@@ -1,7 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar"></style>
+    <style name="AppTheme" parent="Theme.AppCompat"></style>
 
         <!-- Customize your theme here. -->
      <style name="CircularProgressBar">
@@ -20,23 +20,23 @@
         Default Application Style
     ===============================================================================-->
 
-    <style name="title_font_default">
-        <item name="android:textColor">@color/Clouds</item>
-    </style>
+    <!--<style name="title_font_default">-->
+        <!--<item name="android:textColor">@color/Clouds</item>-->
+    <!--</style>-->
 
-    <style name="font_default" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Clouds</item>
-        <item name="android:textSize">14sp</item>
-    </style>
+    <!--<style name="font_default" parent="@android:style/TextAppearance.Medium">-->
+        <!--<item name="android:textColor">@color/Clouds</item>-->
+        <!--<item name="android:textSize">14sp</item>-->
+    <!--</style>-->
 
-    <style name="timer_font_default" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Clouds</item>
-    </style>
+    <!--<style name="timer_font_default" parent="@android:style/TextAppearance.Medium">-->
+        <!--<item name="android:textColor">@color/Clouds</item>-->
+    <!--</style>-->
 
-    <style name="button_font_default" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Clouds</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
+    <!--<style name="button_font_default" parent="@android:style/TextAppearance.Medium">-->
+        <!--<item name="android:textColor">@color/Clouds</item>-->
+        <!--<item name="android:textAllCaps">true</item>-->
+    <!--</style>-->
 
     <style name="background_default">
         <item name="android:background">@color/Wet_Asphalt</item>
@@ -135,6 +135,17 @@
         <item name="pointer_halo_color_ontouch">#b334495e</item>
         <item name="pointer_alpha_ontouch">255</item>
     </style>
+
+    <style name="Button" parent="Base.Widget.AppCompat.Button.Colored">
+        <item name="colorAccent">@color/Alizarin</item>
+
+    </style>
+
+    <style name="RedButton" parent="Widget.AppCompat.Button.Colored">
+
+
+    </style>
+
 
 
 </resources>

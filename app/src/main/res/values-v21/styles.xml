@@ -1,82 +1,14 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
-    </style>
-
-
-    <!-- Customize your theme here. -->
-    <style name="CircularProgressBar">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="stroke_width">5dp</item>
-        <item name="progress" format="float">0.1</item>
-        <item name="progress_color">#ffff4444</item>
-        <item name="progress_background_color">@android:color/background_light</item>
-        <item name="marker_visible">true</item>
-        <item name="thumb_visible">true</item>
-    </style>
-
-
-    <!--==============================================================================
-        Default Application Style
-    ===============================================================================-->
-
-    <style name="title_font_default">
-        <item name="android:textColor">@color/Clouds</item>
-    </style>
-
-    <style name="font_default" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Clouds</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="timer_font_default" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Clouds</item>
-    </style>
-
-    <style name="button_font_default" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/Clouds</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="background_default">
-        <item name="android:background">@color/Wet_Asphalt</item>
-    </style>
-
-    <style name="CircularProgressBar_default">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="stroke_width">5dp</item>
-        <item name="progress" format="float">0.1</item>
-        <item name="progress_color">@color/Alizarin</item>
-        <item name="progress_background_color">@color/Silver</item>
-        <item name="marker_visible">true</item>
-        <item name="thumb_visible">true</item>
-    </style>
-
-    <style name="CircularSeekBar_default">
-        <item name="circle_color">#bdc3c7</item>
-        <item name="circle_progress_color">#c0392b</item>
-
-        <item name="pointer_color">#b3c0392b</item>
-        <item name="pointer_halo_color">#e74c3c</item>
-
-        <item name="pointer_halo_color_ontouch">#b3e74c3c</item>
-        <item name="pointer_alpha_ontouch">255</item>
-    </style>
-
+    <style name="AppTheme" parent="Theme.AppCompat"></style>
 
 
     <!--==============================================================================
       Light Application Style
    ===============================================================================-->
 
-
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
-        <item name="android:background">@color/Peter_River</item>
-    </style>
 
     <style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.StatusBar.Title">
         <item name="android:textColor">@color/Clouds</item>
@@ -131,16 +63,24 @@
     <style name="CircularSeekBar_light">
         <item name="circle_color">#bdc3c7</item>
         <item name="circle_progress_color">#2980b9</item>
-
         <item name="pointer_color">#34495e</item>
         <item name="pointer_halo_color">#2980b9</item>
-
         <item name="pointer_halo_color_ontouch">#b334495e</item>
         <item name="pointer_alpha_ontouch">255</item>
     </style>
 
-    <style name="SomeButtonStyle" parent="@android:style/Widget.Button">
+    <style name="CustomAccentOverlay" parent="ThemeOverlay.AppCompat">
+    <item name="android:color">@color/Alizarin</item>
+</style>
+
+    <style name="Button" parent="Base.Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/Alizarin</item>
+    </style>
+
+    <style name="RedButton" parent="Widget.AppCompat.Button">
+        <item name="android:colorAccent">@color/red</item>
+        <item name="colorButtonNormal">@color/red</item>
+        <item name="android:colorButtonNormal">@color/red</item>
     </style>
 
 

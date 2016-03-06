@@ -9,8 +9,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_marginTop="@dimen/top_margin"
 
-    style="?pageBackground">
+    android:background="#ffffff">
 
     <LinearLayout
         android:orientation="vertical"
@@ -238,23 +239,29 @@
     </LinearLayout>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
         android:text="@string/btnStop"
         android:id="@+id/breakFast_button"
-        style="?textButton"
         android:singleLine="false"
         android:layout_alignWithParentIfMissing="false"
-        android:background="@drawable/cancel_button"
-        android:textColor="@color/Clouds"
-        android:textSize="18sp"
+
         android:typeface="normal"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/linearLayout5"
-        android:layout_alignStart="@+id/linearLayout5"
-        android:layout_alignRight="@+id/linearLayout5"
-        android:layout_alignEnd="@+id/linearLayout5"
-        android:textStyle="bold" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        style="@style/RedButton" />
+
+    <Button style="?android:borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Extend"
+        android:id="@+id/extend_button"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/breakFast_button"
+        android:layout_toStartOf="@+id/breakFast_button"
+        android:textColor="#29b6f6"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

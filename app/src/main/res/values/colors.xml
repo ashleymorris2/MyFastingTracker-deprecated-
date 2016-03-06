@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="Peter_River">#2196f3</color>
+    <color name="Light_Accent">#f50057</color>
+
+
     <color name="Clouds">#ecf0f1</color>
     <color name="Silver">#bdc3c7</color>
 
@@ -13,13 +18,13 @@
 
     <color name="Midnight_Blue">#2C3E50</color>
     <color name="Wet_Asphalt">#34495e</color>
-    
+
     <color name="Belize_Hole">#2980b9</color>
-    <color name="Peter_River">#2196F3</color>
+
     <color name="Peter_Dark">#1976D2</color>
     <color name="Light_Blue">#94bee5</color>
 
-    <color name="Light_Accent">#00B0FF</color>
+
 
     <color name="Red_Accent">#F44336</color>
     <color name="Blue_Accent">#03A9F4</color>
@@ -28,7 +33,4 @@
     <color name="Background_colour">#ffe0e0e0</color>
 
     <color name="Main_Text">#ff424242</color>
-
-
-
 </resources>

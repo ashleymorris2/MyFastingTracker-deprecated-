@@ -81,9 +81,6 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
         textPercentage.setText(currentRecord.getPercentageComplete() + "%");
 
 
-
-
-
         TextView textStartTime = (TextView) itemView.findViewById(R.id.text_start_time);
 
         //Changes the formatting depending on if the fast started and ended on the same day.
@@ -103,10 +100,9 @@ public class RecordsListAdapter extends ArrayAdapter<FastingRecord> {
 
     public void refill(List<FastingRecord> recordList){
 
-        this.recordList = new ArrayList<FastingRecord>();
+        this.recordList.clear();
         this.recordList.addAll(recordList);
 
         notifyDataSetChanged();
     }
-
 }
